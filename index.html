@@ -7,338 +7,230 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f8f9fb;
-      --white: #ffffff;
-      --primary: #2c3e6b;
-      --primary-light: #3d52a0;
-      --accent: #6b8cda;
-      --accent-soft: #e8edf8;
-      --text: #1a1f36;
-      --text-sub: #5a6278;
-      --border: #e2e6f0;
-      --nav-h: 68px;
+      --bg: #f8f9fb; --white: #ffffff; --primary: #2c3e6b; --primary-light: #3d52a0;
+      --accent: #6b8cda; --accent-soft: #e8edf8; --text: #1a1f36; --text-sub: #5a6278;
+      --border: #e2e6f0; --nav-h: 68px;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 
-    body {
-      font-family: 'Inter', 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: var(--nav-h);
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%;
-      z-index: 100;
+      padding: 0 5%; z-index: 100;
     }
-
-    .nav-logo {
-      display: flex; align-items: center; gap: 12px;
-      text-decoration: none;
-    }
-
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .logo-mark {
       width: 38px; height: 38px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 14px; color: white; letter-spacing: 0.5px;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: white;
     }
-
     .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .logo-text .brand { font-weight: 700; font-size: 17px; color: var(--primary); }
-    .logo-text .sub { font-size: 10px; color: var(--text-sub); letter-spacing: 0.3px; }
-
+    .logo-text .sub { font-size: 10px; color: var(--text-sub); }
     .nav-links { display: flex; gap: 8px; }
     .nav-links a {
       text-decoration: none; font-size: 14px; font-weight: 500;
-      color: var(--text-sub); padding: 7px 14px; border-radius: 8px;
-      transition: all 0.2s;
+      color: var(--text-sub); padding: 7px 14px; border-radius: 8px; transition: all 0.2s;
     }
-    .nav-links a:hover { color: var(--primary); background: var(--accent-soft); }
-    .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
+    .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── HERO ── */
     #home {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
       background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%);
-      padding: calc(var(--nav-h) + 40px) 5% 80px;
-      text-align: center;
+      padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center;
     }
-
     .hero-inner { max-width: 760px; }
-
     .hero-badge {
-      display: inline-block;
-      background: var(--accent-soft);
-      color: var(--primary-light);
-      font-size: 12px; font-weight: 600;
-      letter-spacing: 1.2px; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 20px;
-      margin-bottom: 28px;
+      display: inline-block; background: var(--accent-soft); color: var(--primary-light);
+      font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
     }
-
-    .hero-inner h1 {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 700;
-      color: var(--primary);
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-
-    .hero-inner h1 span {
-      background: linear-gradient(90deg, var(--primary-light), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-inner p {
-      font-size: 1.1rem; color: var(--text-sub);
-      max-width: 540px; margin: 0 auto 40px;
-    }
-
+    .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
+    .hero-inner h1 span { background: linear-gradient(90deg, var(--primary-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-inner > p { font-size: 1.1rem; color: var(--text-sub); max-width: 540px; margin: 0 auto 40px; }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-
     .btn-primary {
-      background: var(--primary);
-      color: white; font-size: 15px; font-weight: 600;
-      padding: 13px 28px; border-radius: 10px;
-      text-decoration: none; transition: all 0.2s;
-      border: none; cursor: pointer;
+      background: var(--primary); color: white; font-size: 15px; font-weight: 600;
+      padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
+      border: none; cursor: pointer; display: inline-block;
     }
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-
     .btn-outline {
-      background: transparent;
-      color: var(--primary); font-size: 15px; font-weight: 600;
-      padding: 13px 28px; border-radius: 10px;
-      text-decoration: none; transition: all 0.2s;
+      background: transparent; color: var(--primary); font-size: 15px; font-weight: 600;
+      padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
       border: 1.5px solid var(--border);
     }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-
-    .hero-stats {
-      display: flex; gap: 40px; justify-content: center;
-      margin-top: 60px; flex-wrap: wrap;
-    }
+    .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
     .stat { text-align: center; }
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
 
-    /* ── SECTIONS COMMON ── */
     section { padding: 100px 5%; }
     .section-header { text-align: center; margin-bottom: 60px; }
-    .section-tag {
-      display: inline-block;
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--accent);
-      margin-bottom: 12px;
-    }
+    .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
-    /* ── ABOUT ── */
     #about { background: var(--white); }
-
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto;
-    }
-
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; }
-
     .about-values { display: flex; flex-direction: column; gap: 18px; }
-    .value-item {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding: 20px; background: var(--bg); border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-    .value-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
+    .value-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
+    .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
 
-    /* ── REPORTS ── */
     #reports { background: var(--bg); }
-
-    .reports-filter {
-      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
+    .reports-filter { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
     .filter-btn {
       padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border);
-      font-size: 13px; font-weight: 500; cursor: pointer;
-      background: white; color: var(--text-sub); transition: all 0.2s;
+      font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s;
     }
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--primary); color: white; border-color: var(--primary);
-    }
-
-    .reports-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px; max-width: 1100px; margin: 0 auto;
-    }
-
-    .report-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 14px; padding: 24px;
-      transition: all 0.25s; cursor: pointer;
-    }
+    .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
+    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
-
-    .report-tag {
-      display: inline-block; font-size: 11px; font-weight: 600;
-      letter-spacing: 0.8px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 6px; margin-bottom: 14px;
-    }
+    .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
     .tag-equity { background: #e6f4ea; color: #2e7d32; }
     .tag-fixed { background: #fce8e6; color: #c62828; }
-    .tag-quant { background: #f3e5f5; color: #6a1b9a; }
-
+    .tag-industry { background: #fff3e0; color: #e65100; }
     .report-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .report-card p { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 16px; }
+    .report-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-sub); border-top: 1px solid var(--border); padding-top: 14px; }
+    .report-dl { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
+    .reports-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; grid-column: 1/-1; background: white; border-radius: 14px; border: 1px solid var(--border); }
 
-    .report-meta {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 12px; color: var(--text-sub);
-      border-top: 1px solid var(--border); padding-top: 14px;
+    /* ── 관리자 영역 ── */
+    .admin-toggle-area { text-align: center; margin-top: 48px; }
+    .admin-toggle-btn {
+      background: none; border: 1.5px solid var(--border); color: var(--text-sub);
+      font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
     }
-    .report-dl {
-      font-size: 12px; font-weight: 600; color: var(--accent);
-      text-decoration: none; display: flex; align-items: center; gap: 4px;
-    }
+    .admin-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* upload area */
-    .upload-area {
-      max-width: 500px; margin: 40px auto 0;
-      border: 2px dashed var(--border); border-radius: 14px;
-      padding: 36px; text-align: center; cursor: pointer;
-      transition: all 0.2s; background: white;
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+      z-index: 200; align-items: center; justify-content: center;
     }
-    .upload-area:hover { border-color: var(--accent); background: var(--accent-soft); }
-    .upload-area .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
-    .upload-area p { color: var(--text-sub); font-size: 0.9rem; }
-    .upload-area strong { color: var(--primary); }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; margin: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
+    .modal h3 { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .modal p { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 24px; }
+    .modal input[type="password"] {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; transition: border-color 0.2s;
+    }
+    .modal input[type="password"]:focus { border-color: var(--accent); }
+    .auth-error { font-size: 13px; color: #c62828; margin-top: 8px; min-height: 18px; }
+    .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-cancel { background: var(--bg); border: 1.5px solid var(--border); color: var(--text-sub); }
+    .btn-confirm { background: var(--primary); border: none; color: white; }
+    .btn-confirm:hover { background: var(--primary-light); }
 
-    /* ── MEMBERS ── */
+    .admin-panel { display: none; max-width: 700px; margin: 32px auto 0; background: white; border: 1.5px solid var(--accent); border-radius: 16px; padding: 32px; }
+    .admin-panel.open { display: block; }
+    .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .admin-panel-header h4 { font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .admin-badge { font-size: 11px; background: var(--accent-soft); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+    .admin-logout { font-size: 12px; color: var(--text-sub); background: none; border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; cursor: pointer; }
+    .admin-logout:hover { color: #c62828; border-color: #c62828; }
+
+    .upload-type-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .upload-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; }
+    .upload-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .form-group label { font-size: 12px; font-weight: 600; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: white; }
+    .form-group textarea { min-height: 72px; resize: vertical; }
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 12px; padding: 28px;
+      text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg);
+    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-soft); }
+    .upload-zone .uz-icon { font-size: 2rem; margin-bottom: 8px; }
+    .upload-zone p { font-size: 0.88rem; color: var(--text-sub); }
+    .file-preview { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-soft); border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--primary); }
+    .fp-remove { margin-left: auto; cursor: pointer; color: var(--text-sub); font-size: 18px; }
+    .github-tip { font-size: 12px; color: var(--text-sub); margin: 8px 0 14px; padding: 10px 14px; background: #fffbea; border-radius: 8px; border-left: 3px solid #f0c040; }
+    .submit-report-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+    .submit-report-btn:hover { background: var(--primary-light); }
+    .submit-feedback { text-align: center; font-size: 13px; margin-top: 12px; min-height: 20px; }
+
     #members { background: var(--white); }
-
-    .members-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 24px; max-width: 1100px; margin: 0 auto;
-    }
-
-    .member-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 14px; padding: 28px 20px; text-align: center;
-      transition: all 0.25s;
-    }
+    .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
+    .member-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; }
     .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
-
-    .member-avatar {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: 700; color: white;
-      margin: 0 auto 16px;
-    }
-
+    .member-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: white; margin: 0 auto 16px; }
     .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-    .member-role {
-      font-size: 12px; font-weight: 600; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
-    }
+    .member-role { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
 
-    /* ── NEWS ── */
+    /* ── 뉴스 카드 수정 ── */
     #news { background: var(--bg); }
-
-    .news-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px; max-width: 1400px; margin: 0 auto;
-    }
-
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
     .news-card {
       background: var(--white); border: 1px solid var(--border);
-      border-radius: 36px; overflow: hidden; transition: all 0.25s;
+      border-radius: 14px; overflow: hidden; transition: all 0.25s;
+      display: flex; flex-direction: column;  /* 카드 높이 자동 맞춤 */
     }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
-
-    .news-header {
-      padding: 20px 24px 0;
-      display: flex; justify-content: space-between; align-items: flex-start;
-    }
-    .news-type {
-      font-size: 9px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; padding: 4px 10px; border-radius: 6px;
-    }
+    .news-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .news-type { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
     .type-notice { background: #fff8e1; color: #f57f17; }
     .type-recruit { background: #e8f5e9; color: #2e7d32; }
     .type-event { background: #e3f2fd; color: #1565c0; }
-
-    .news-date { font-size: 12px; color: var(--text-sub); }
-
-    .news-card .news-body { padding: 18px 28px 28px; }
-    .news-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .news-card p { font-size: 0.84rem; color: var(--text-sub); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--primary);
-      color: rgba(255,255,255,0.7);
-      padding: 48px 5% 32px;
+    .news-date { font-size: 12px; color: var(--text-sub); text-align: right; }
+    .news-card .news-body { padding: 14px 24px 24px; flex: 1; }
+    .news-card h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 8px; word-break: keep-all; }
+    .news-card p {
+      font-size: 0.86rem; color: var(--text-sub);
+      word-break: break-all;       /* 긴 URL 줄바꿈 */
+      overflow-wrap: break-word;   /* 카드 밖으로 안 나가게 */
     }
-    .footer-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: flex-start;
-      flex-wrap: wrap; gap: 32px;
-      padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    .news-dl-btn {
+      display: inline-block; margin-top: 12px;
+      background: var(--primary); color: white;
+      font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; transition: all 0.2s;
     }
+    .news-dl-btn:hover { background: var(--primary-light); }
+
+    footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .footer-brand .brand-name { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
     .footer-brand p { font-size: 0.85rem; max-width: 280px; }
     .footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
-    .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 14px; letter-spacing: 0.5px; }
-    .footer-col a {
-      display: block; color: rgba(255,255,255,0.6); font-size: 13px;
-      text-decoration: none; margin-bottom: 8px; transition: color 0.2s;
-    }
+    .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+    .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; margin-bottom: 8px; transition: color 0.2s; word-break: break-all; }
     .footer-col a:hover { color: white; }
-    .footer-bottom {
-      max-width: 1100px; margin: 24px auto 0;
-      display: flex; justify-content: space-between; font-size: 12px;
-      flex-wrap: wrap; gap: 8px;
-    }
+    .footer-bottom { max-width: 1100px; margin: 24px auto 0; display: flex; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px; }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .about-grid { grid-template-columns: 1fr; }
+      .about-grid, .form-row { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .hero-stats { gap: 24px; }
-      .footer-inner { flex-direction: column; }
-      .footer-links { flex-direction: column; gap: 20px; }
+      .footer-inner, .footer-links { flex-direction: column; gap: 20px; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#home" class="nav-logo">
     <div class="logo-mark">SF</div>
@@ -348,14 +240,13 @@
     </div>
   </a>
   <div class="nav-links">
-    <a href="#about" class="active">About</a>
+    <a href="#about">About</a>
     <a href="#reports">Reports</a>
     <a href="#members">Members</a>
     <a href="#news">News</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section id="home">
   <div class="hero-inner">
     <div class="hero-badge">Sogang University · Finance & Economics</div>
@@ -373,7 +264,6 @@
   </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="section-header">
     <div class="section-tag">About SAFE</div>
@@ -385,64 +275,130 @@
       <h3>서강대 경제·금융 분석 학회</h3>
       <p>SAFE(Sogang Analysis of Finance & Economics)는 2025년 3월에 설립된 서강대학교 경영·경제 기반의 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석 등 다양한 분야에서 체계적인 리서치 활동을 하고 있습니다.</p>
       <p>매 학기 포트폴리오 프로젝트, 정기 발표, 토론, 경제·산업 분석 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.</p>
-      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
+      <a href="#news" class="btn-primary" style="margin-top:8px;">모집 공고 보기 →</a>
     </div>
     <div class="about-values">
       <div class="value-item">
         <div class="value-icon">📊</div>
-        <div>
-          <h4>Data-Driven Research</h4>
-          <p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p>
-        </div>
+        <div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div>
       </div>
       <div class="value-item">
         <div class="value-icon">🤝</div>
-        <div>
-          <h4>Collaborative Learning</h4>
-          <p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p>
-        </div>
+        <div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div>
       </div>
       <div class="value-item">
         <div class="value-icon">🎯</div>
-        <div>
-          <h4>Career-Oriented</h4>
-          <p>금융권·리서치 진학을 위한 실질적인 역량을 기르고자 합니다.</p>
-        </div>
+        <div><h4>Career-Oriented</h4><p>금융권·리서치 진학을 위한 실질적인 역량을 기르고자 합니다.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- REPORTS -->
 <section id="reports">
   <div class="section-header">
     <div class="section-tag">Research</div>
     <h2>리서치 & 보고서</h2>
     <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
   </div>
-
   <div class="reports-filter">
-    <button class="filter-btn active" onclick="filterReports('all', this)">전체</button>
-    <button class="filter-btn" onclick="filterReports('macro', this)">거시경제</button>
-    <button class="filter-btn" onclick="filterReports('fixed', this)">통화정책·채권</button>
-    <button class="filter-btn" onclick="filterReports('fixed', this)">산업 분석</button>
-    <button class="filter-btn" onclick="filterReports('equity', this)">기업 분석</button>
+    <button class="filter-btn active" onclick="filterReports('all',this)">전체</button>
+    <button class="filter-btn" onclick="filterReports('macro',this)">거시경제</button>
+    <button class="filter-btn" onclick="filterReports('monetary',this)">통화정책·채권</button>
+    <button class="filter-btn" onclick="filterReports('industry',this)">산업 분석</button>
+    <button class="filter-btn" onclick="filterReports('equity',this)">기업 분석</button>
+  </div>
+  <div class="reports-grid" id="reportsGrid"></div>
+
+  <!-- 관리자 버튼 -->
+  <div class="admin-toggle-area">
+    <button class="admin-toggle-btn" id="adminToggleBtn" onclick="openAuthModal()">🔒 관리자 로그인</button>
   </div>
 
-  <div class="reports-grid" id="reportsGrid">
-    <!-- Cards injected by JS -->
+  <!-- 관리자 업로드 패널 (로그인 후 표시) -->
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-panel-header">
+      <h4>📋 보고서 업로드 <span class="admin-badge">ADMIN</span></h4>
+      <button class="admin-logout" onclick="logout()">로그아웃</button>
+    </div>
+    <div class="upload-type-tabs">
+      <button class="upload-tab active" onclick="switchTab('file',this)">📄 PDF 직접 업로드</button>
+      <button class="upload-tab" onclick="switchTab('link',this)">🔗 링크로 첨부</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>보고서 제목</label>
+        <input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/>
+      </div>
+      <div class="form-group">
+        <label>카테고리</label>
+        <select id="rCategory">
+          <option value="macro">거시경제</option>
+          <option value="monetary">통화정책·채권</option>
+          <option value="industry">산업 분석</option>
+          <option value="equity">기업 분석</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>작성자</label>
+        <input type="text" id="rAuthor" placeholder="예: 김도현"/>
+      </div>
+      <div class="form-group">
+        <label>작성 연월</label>
+        <input type="month" id="rDate"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>요약 설명</label>
+      <textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea>
+    </div>
+    <div id="tabFile">
+      <div class="form-group">
+        <label>PDF 파일</label>
+        <div class="upload-zone" id="uploadZone"
+             onclick="document.getElementById('pdfInput').click()"
+             ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
+          <div class="uz-icon">📄</div>
+          <p><strong>클릭</strong>하거나 드래그하여 PDF 업로드</p>
+          <input type="file" id="pdfInput" accept=".pdf" style="display:none" onchange="handleFileSelect(event)"/>
+        </div>
+        <div id="filePreview" style="display:none" class="file-preview">
+          <span>📄</span><span id="fileName"></span>
+          <span class="fp-remove" onclick="clearFile()">✕</span>
+        </div>
+      </div>
+      <div class="github-tip">
+        💡 <strong>GitHub Pages 사용 시:</strong> PDF를 저장소의 <code>reports/</code> 폴더에 올린 뒤,
+        링크 탭에서 <code>./reports/파일명.pdf</code> 를 입력하세요.
+      </div>
+    </div>
+    <div id="tabLink" style="display:none">
+      <div class="form-group">
+        <label>다운로드 링크 (Google Drive / GitHub URL)</label>
+        <input type="text" id="rLink" placeholder="https://drive.google.com/... 또는 ./reports/filename.pdf"/>
+      </div>
+    </div>
+    <button class="submit-report-btn" onclick="submitReport()">보고서 등록하기</button>
+    <div class="submit-feedback" id="submitFeedback"></div>
   </div>
-
-  <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-    <div class="upload-icon">📄</div>
-    <p><strong>보고서 업로드</strong></p>
-    <p>클릭하거나 파일을 드래그하여 PDF를 업로드하세요</p>
-    <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleUpload(event)"/>
-  </div>
-  <div id="uploadFeedback" style="text-align:center;margin-top:16px;font-size:0.9rem;color:var(--accent);"></div>
 </section>
 
-<!-- MEMBERS -->
+<!-- 비밀번호 모달 -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <h3>🔐 관리자 인증</h3>
+    <p>보고서 업로드는 권한 있는 학회 관리자만 가능합니다.</p>
+    <input type="password" id="adminPw" placeholder="관리자 비밀번호 입력"
+           onkeydown="if(event.key==='Enter') confirmAuth()"/>
+    <div class="auth-error" id="authError"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeAuthModal()">취소</button>
+      <button class="btn-confirm" onclick="confirmAuth()">확인</button>
+    </div>
+  </div>
+</div>
+
 <section id="members">
   <div class="section-header">
     <div class="section-tag">Team</div>
@@ -452,7 +408,6 @@
   <div class="members-grid" id="membersGrid"></div>
 </section>
 
-<!-- NEWS -->
 <section id="news">
   <div class="section-header">
     <div class="section-tag">Notice</div>
@@ -462,7 +417,6 @@
   <div class="news-grid" id="newsGrid"></div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
@@ -480,12 +434,12 @@
         <h5>리서치</h5>
         <a href="#reports">전체 보고서</a>
         <a href="#reports">거시경제</a>
-        <a href="#reports">주식 분석</a>
+        <a href="#reports">기업 분석</a>
       </div>
       <div class="footer-col">
         <h5>연락처</h5>
-        <a href="#">safe.official.sogang@gmail.com</a>
-        <a href="#">Instagram: @safe._.official</a>
+        <a href="mailto:safe.official.sogang@gmail.com">safe.official.sogang@gmail.com</a>
+        <a href="https://instagram.com/safe._.official" target="_blank">Instagram: @safe._.official</a>
       </div>
     </div>
   </div>
@@ -496,64 +450,73 @@
 </footer>
 
 <script>
-  // ── DATA ──
-  const reports = [
-    //{ id:1, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'2025년 하반기 글로벌 경기 전망', desc:'미국 연준의 금리 경로와 중국 경기 회복세를 중심으로 한 글로벌 매크로 분석', author:'김지수', date:'2025.05', file:'#' },
-    //{ id:2, category:'equity', tag:'주식', tagClass:'tag-equity', title:'2차전지 섹터 밸류에이션 리포트', desc:'LG에너지솔루션, 삼성SDI 등 국내 주요 2차전지 기업의 DCF 및 상대 가치 평가', author:'박현우', date:'2025.04', file:'#' },
-    //{ id:3, category:'fixed', tag:'채권·금리', tagClass:'tag-fixed', title:'한국 기준금리 인하 경로 분석', desc:'소비자물가 추이와 성장률을 바탕으로 한 한국은행 통화정책 시나리오 분석', author:'이서연', date:'2025.03', file:'#' },
-    //{ id:4, category:'quant', tag:'퀀트', tagClass:'tag-quant', title:'팩터 투자 전략 백테스트', desc:'가치·모멘텀·퀄리티 팩터 조합의 코스피 적용 성과 분석 (2015–2024)', author:'최민준', date:'2025.02', file:'#' },
-    //{ id:5, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'달러 강세와 신흥국 자본 유출', desc:'DXY 지수 상승 국면에서의 한국·인도·브라질 자본 흐름 비교 분석', author:'정다은', date:'2025.01', file:'#' },
-    //{ id:6, category:'equity', tag:'주식', tagClass:'tag-equity', title:'AI 인프라 투자 테마 분석', desc:'엔비디아·TSMC 중심의 AI 반도체 공급망과 국내 수혜 기업 탐색', author:'윤성호', date:'2024.12', file:'#' },
-  ];
+  // ★★ 비밀번호 변경 시 여기만 수정하세요 ★★
+  const ADMIN_PASSWORD = 'safe2025';
+
+  // ─── 데이터 ───
+  let reports = JSON.parse(localStorage.getItem('safe_reports') || '[]');
+
+  const CATEGORY_MAP = {
+    macro:    { tag: '거시경제',      cls: 'tag-macro' },
+    monetary: { tag: '통화정책·채권', cls: 'tag-fixed' },
+    industry: { tag: '산업 분석',     cls: 'tag-industry' },
+    equity:   { tag: '기업 분석',     cls: 'tag-equity' },
+  };
 
   const members = [
     { name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조' },
-    //{ name:'이지원', role:'부회장', dept:'경제학과 24', initial:'이' },
-    //{ name:'박서준', role:'리서치 팀장', dept:'경영학과 23', initial:'박' },
-    //{ name:'최수민', role:'기획 팀장', dept:'경제학과 24', initial:'최' },
-    //{ name:'정유진', role:'리서치 파트', dept:'수학과 25', initial:'정' },
-    //{ name:'한민재', role:'리서치 파트', dept:'경제학과 25', initial:'한' },
-    //{ name:'오채은', role:'기획 파트', dept:'경영학과 24', initial:'오' },
-    //{ name:'송지훈', role:'리서치 파트', dept:'경제학과 23', initial:'송' },
   ];
 
   const news = [
-    { type:'recruit', typeLabel:'모집', typeClass:'type-recruit', title:'SAFE 2기 정기 모집 공고', desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.', date:'2026.03.05, 11:59까지' },
-    { type:'event', typeLabel:'모집', typeClass:'type-recruit', title:'지원서', desc:'다운로드 링크: https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--', date:'2026.03.05, 11:59까지' },
-    //{ type:'notice', typeLabel:'공지', typeClass:'type-notice', title:'[공지] 외부 연사 초청 세미나', desc:'전 Goldman Sachs 애널리스트를 초청하여 글로벌 채권 시장 전망에 대한 특강을 진행합니다.', date:'2025.05.22' },
+    {
+      typeLabel:'모집', typeClass:'type-recruit',
+      title:'SAFE 2기 정기 모집 공고',
+      desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.',
+      date:'2026.03.05, 11:59까지',
+      link: null
+    },
+    {
+      typeLabel:'모집', typeClass:'type-recruit',
+      title:'지원서 다운로드',
+      desc:'아래 버튼을 눌러 지원서를 다운로드하세요.',
+      date:'2026.03.05, 11:59까지',
+      link: 'https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--'
+    },
   ];
 
-  // ── RENDER ──
+  // ─── 렌더 ───
   function renderReports(filter = 'all') {
     const grid = document.getElementById('reportsGrid');
-    const filtered = filter === 'all' ? reports : reports.filter(r => r.category === filter);
-    grid.innerHTML = filtered.map(r => `
-      <div class="report-card">
-        <span class="report-tag ${r.tagClass}">${r.tag}</span>
-        <h3>${r.title}</h3>
-        <p>${r.desc}</p>
+    const list = filter === 'all' ? reports : reports.filter(r => r.category === filter);
+    if (!list.length) {
+      grid.innerHTML = '<div class="reports-empty">아직 등록된 보고서가 없습니다.</div>';
+      return;
+    }
+    grid.innerHTML = list.map(r => {
+      const c = CATEGORY_MAP[r.category] || { tag: r.category, cls: 'tag-macro' };
+      return `<div class="report-card">
+        <span class="report-tag ${c.cls}">${c.tag}</span>
+        <h3>${r.title}</h3><p>${r.desc}</p>
         <div class="report-meta">
           <span>✍️ ${r.author} · ${r.date}</span>
-          <a href="${r.file}" class="report-dl">PDF ↓</a>
-        </div>
-      </div>
-    `).join('');
+          <a href="${r.file}" class="report-dl" target="_blank">PDF ↓</a>
+        </div></div>`;
+    }).join('');
   }
 
   function renderMembers() {
-    document.getElementById('membersGrid').innerHTML = members.map(m => `
-      <div class="member-card">
+    document.getElementById('membersGrid').innerHTML = members.map(m =>
+      `<div class="member-card">
         <div class="member-avatar">${m.initial}</div>
         <h4>${m.name}</h4>
         <div class="member-role">${m.role}</div>
         <p>${m.dept}</p>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
 
   function renderNews() {
-    document.getElementById('newsGrid').innerHTML = news.map(n => `
-      <div class="news-card">
+    document.getElementById('newsGrid').innerHTML = news.map(n =>
+      `<div class="news-card">
         <div class="news-header">
           <span class="news-type ${n.typeClass}">${n.typeLabel}</span>
           <span class="news-date">${n.date}</span>
@@ -561,9 +524,9 @@
         <div class="news-body">
           <h3>${n.title}</h3>
           <p>${n.desc}</p>
+          ${n.link ? `<a href="${n.link}" class="news-dl-btn" target="_blank">📎 지원서 다운로드</a>` : ''}
         </div>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
 
   function filterReports(cat, btn) {
@@ -572,30 +535,109 @@
     renderReports(cat);
   }
 
-  function handleUpload(e) {
-    const file = e.target.files[0];
-    if (file) {
-      document.getElementById('uploadFeedback').textContent = `✅ "${file.name}" 업로드 완료! (실제 서버 연동 시 저장됩니다)`;
+  // ─── 관리자 인증 ───
+  let isAdmin = false;
+
+  function openAuthModal() {
+    if (isAdmin) { document.getElementById('adminPanel').classList.toggle('open'); return; }
+    document.getElementById('adminPw').value = '';
+    document.getElementById('authError').textContent = '';
+    document.getElementById('authModal').classList.add('open');
+    setTimeout(() => document.getElementById('adminPw').focus(), 100);
+  }
+  function closeAuthModal() { document.getElementById('authModal').classList.remove('open'); }
+  function confirmAuth() {
+    if (document.getElementById('adminPw').value === ADMIN_PASSWORD) {
+      isAdmin = true; closeAuthModal();
+      document.getElementById('adminToggleBtn').textContent = '🔓 관리자 패널';
+      document.getElementById('adminPanel').classList.add('open');
+    } else {
+      document.getElementById('authError').textContent = '비밀번호가 올바르지 않습니다.';
+      document.getElementById('adminPw').value = '';
+      document.getElementById('adminPw').focus();
     }
   }
+  function logout() {
+    isAdmin = false;
+    document.getElementById('adminPanel').classList.remove('open');
+    document.getElementById('adminToggleBtn').textContent = '🔒 관리자 로그인';
+  }
+  document.getElementById('authModal').addEventListener('click', e => { if (e.target.id === 'authModal') closeAuthModal(); });
 
-  // nav active highlight on scroll
-  const sections = ['home','about','reports','members','news'];
+  // ─── 탭 전환 ───
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.upload-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tabFile').style.display = tab === 'file' ? 'block' : 'none';
+    document.getElementById('tabLink').style.display  = tab === 'link' ? 'block' : 'none';
+  }
+
+  // ─── 파일 처리 ───
+  let selectedFile = null;
+  function handleFileSelect(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
+  function setFile(file) {
+    selectedFile = file;
+    document.getElementById('uploadZone').style.display = 'none';
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('filePreview').style.display = 'flex';
+  }
+  function clearFile() {
+    selectedFile = null;
+    document.getElementById('pdfInput').value = '';
+    document.getElementById('uploadZone').style.display = 'block';
+    document.getElementById('filePreview').style.display = 'none';
+  }
+  function onDragOver(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
+  function onDragLeave()  { document.getElementById('uploadZone').classList.remove('dragover'); }
+  function onDrop(e) {
+    e.preventDefault(); onDragLeave();
+    const f = e.dataTransfer.files[0];
+    if (f && f.type === 'application/pdf') setFile(f);
+    else showFeedback('❌ PDF 파일만 업로드 가능합니다.', '#c62828');
+  }
+
+  // ─── 보고서 등록 ───
+  function submitReport() {
+    const title  = document.getElementById('rTitle').value.trim();
+    const cat    = document.getElementById('rCategory').value;
+    const author = document.getElementById('rAuthor').value.trim();
+    const dateV  = document.getElementById('rDate').value;
+    const desc   = document.getElementById('rDesc').value.trim();
+    const isLink = document.getElementById('tabLink').style.display !== 'none';
+    const link   = document.getElementById('rLink').value.trim();
+
+    if (!title || !author || !dateV || !desc) { showFeedback('❌ 모든 항목을 입력해주세요.', '#c62828'); return; }
+    if (!isLink && !selectedFile)             { showFeedback('❌ PDF 파일을 선택해주세요.', '#c62828'); return; }
+    if (isLink && !link)                      { showFeedback('❌ 링크를 입력해주세요.', '#c62828'); return; }
+
+    const fileUrl = isLink ? link : URL.createObjectURL(selectedFile);
+    reports.unshift({ id: Date.now(), category: cat, title, desc, author, date: dateV.replace('-','.'), file: fileUrl });
+    try { localStorage.setItem('safe_reports', JSON.stringify(reports.map(r => ({ ...r, file: r.file.startsWith('blob:') ? '#' : r.file })))); } catch(e){}
+
+    renderReports('all');
+    document.querySelectorAll('.filter-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+    ['rTitle','rAuthor','rDate','rDesc','rLink'].forEach(id => document.getElementById(id).value = '');
+    clearFile();
+    showFeedback('✅ 보고서가 등록되었습니다!', '#2e7d32');
+  }
+
+  function showFeedback(msg, color) {
+    const el = document.getElementById('submitFeedback');
+    el.textContent = msg; el.style.color = color;
+    setTimeout(() => el.textContent = '', 4000);
+  }
+
+  // ─── 네비 스크롤 하이라이트 ───
   window.addEventListener('scroll', () => {
-    let current = 'home';
-    sections.forEach(id => {
+    let cur = 'home';
+    ['home','about','reports','members','news'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - 100) current = id;
+      if (el && window.scrollY >= el.offsetTop - 100) cur = id;
     });
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-    });
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
   });
 
-  // init
-  renderReports();
-  renderMembers();
-  renderNews();
+  renderReports(); renderMembers(); renderNews();
 </script>
 </body>
 </html>
