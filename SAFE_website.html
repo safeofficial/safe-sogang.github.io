@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAFE — Sogang Analysis of Finance & Economics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --white: #ffffff;
+      --primary: #2c3e6b;
+      --primary-light: #3d52a0;
+      --accent: #6b8cda;
+      --accent-soft: #e8edf8;
+      --text: #1a1f36;
+      --text-sub: #5a6278;
+      --border: #e2e6f0;
+      --nav-h: 68px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: white; letter-spacing: 0.5px;
+    }
+
+    .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .logo-text .brand { font-weight: 700; font-size: 17px; color: var(--primary); }
+    .logo-text .sub { font-size: 10px; color: var(--text-sub); letter-spacing: 0.3px; }
+
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      color: var(--text-sub); padding: 7px 14px; border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); background: var(--accent-soft); }
+    .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%);
+      padding: calc(var(--nav-h) + 40px) 5% 80px;
+      text-align: center;
+    }
+
+    .hero-inner { max-width: 760px; }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--primary-light);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero-inner h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .hero-inner h1 span {
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-inner p {
+      font-size: 1.1rem; color: var(--text-sub);
+      max-width: 540px; margin: 0 auto 40px;
+    }
+
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white; font-size: 15px; font-weight: 600;
+      padding: 13px 28px; border-radius: 10px;
+      text-decoration: none; transition: all 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary); font-size: 15px; font-weight: 600;
+      padding: 13px 28px; border-radius: 10px;
+      text-decoration: none; transition: all 0.2s;
+      border: 1.5px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+    .hero-stats {
+      display: flex; gap: 40px; justify-content: center;
+      margin-top: 60px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 100px 5%; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+    .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto;
+    }
+
+    .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+    .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; }
+
+    .about-values { display: flex; flex-direction: column; gap: 18px; }
+    .value-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px; background: var(--bg); border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .value-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+    .value-item p { font-size: 0.87rem; color: var(--text-sub); }
+
+    /* ── REPORTS ── */
+    #reports { background: var(--bg); }
+
+    .reports-filter {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      background: white; color: var(--text-sub); transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary); color: white; border-color: var(--primary);
+    }
+
+    .reports-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .report-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      transition: all 0.25s; cursor: pointer;
+    }
+    .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
+
+    .report-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 6px; margin-bottom: 14px;
+    }
+    .tag-macro { background: #e8f0fe; color: #3d52a0; }
+    .tag-equity { background: #e6f4ea; color: #2e7d32; }
+    .tag-fixed { background: #fce8e6; color: #c62828; }
+    .tag-quant { background: #f3e5f5; color: #6a1b9a; }
+
+    .report-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .report-card p { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 16px; }
+
+    .report-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--text-sub);
+      border-top: 1px solid var(--border); padding-top: 14px;
+    }
+    .report-dl {
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* upload area */
+    .upload-area {
+      max-width: 500px; margin: 40px auto 0;
+      border: 2px dashed var(--border); border-radius: 14px;
+      padding: 36px; text-align: center; cursor: pointer;
+      transition: all 0.2s; background: white;
+    }
+    .upload-area:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .upload-area .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .upload-area p { color: var(--text-sub); font-size: 0.9rem; }
+    .upload-area strong { color: var(--primary); }
+
+    /* ── MEMBERS ── */
+    #members { background: var(--white); }
+
+    .members-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .member-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px 20px; text-align: center;
+      transition: all 0.25s;
+    }
+    .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
+
+    .member-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; color: white;
+      margin: 0 auto 16px;
+    }
+
+    .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .member-role {
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+    }
+    .member-card p { font-size: 0.83rem; color: var(--text-sub); }
+
+    /* ── NEWS ── */
+    #news { background: var(--bg); }
+
+    .news-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .news-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; transition: all 0.25s;
+    }
+    .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
+
+    .news-header {
+      padding: 20px 24px 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .news-type {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 6px;
+    }
+    .type-notice { background: #fff8e1; color: #f57f17; }
+    .type-recruit { background: #e8f5e9; color: #2e7d32; }
+    .type-event { background: #e3f2fd; color: #1565c0; }
+
+    .news-date { font-size: 12px; color: var(--text-sub); }
+
+    .news-card .news-body { padding: 14px 24px 24px; }
+    .news-card h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .news-card p { font-size: 0.86rem; color: var(--text-sub); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.7);
+      padding: 48px 5% 32px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 32px;
+      padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .footer-brand .brand-name { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
+    .footer-brand p { font-size: 0.85rem; max-width: 280px; }
+    .footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+    .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 14px; letter-spacing: 0.5px; }
+    .footer-col a {
+      display: block; color: rgba(255,255,255,0.6); font-size: 13px;
+      text-decoration: none; margin-bottom: 8px; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: white; }
+    .footer-bottom {
+      max-width: 1100px; margin: 24px auto 0;
+      display: flex; justify-content: space-between; font-size: 12px;
+      flex-wrap: wrap; gap: 8px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero-stats { gap: 24px; }
+      .footer-inner { flex-direction: column; }
+      .footer-links { flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <div class="logo-mark">SF</div>
+    <div class="logo-text">
+      <span class="brand">SAFE</span>
+      <span class="sub">Sogang Analysis of Finance & Economics</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#about" class="active">About</a>
+    <a href="#reports">Reports</a>
+    <a href="#members">Members</a>
+    <a href="#news">News</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-inner">
+    <div class="hero-badge">Sogang University · Finance & Economics</div>
+    <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
+    <p>서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.</p>
+    <div class="hero-btns">
+      <a href="#reports" class="btn-primary">리서치 보기 →</a>
+      <a href="#about" class="btn-outline">학회 소개</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">48+</div><div class="stat-label">활동 멤버</div></div>
+      <div class="stat"><div class="stat-num">120+</div><div class="stat-label">발간 리포트</div></div>
+      <div class="stat"><div class="stat-num">6기</div><div class="stat-label">활동 기수</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">연구 분과</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <div class="section-tag">About SAFE</div>
+    <h2>우리는 왜 SAFE인가</h2>
+    <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h3>서강대 경제·금융 분석 학회</h3>
+      <p>SAFE(Sogang Analysis of Finance & Economics)는 2018년 설립된 서강대학교 경제학과 기반의 학술 학회입니다. 거시경제, 주식 밸류에이션, 채권·금리, 퀀트 투자 등 다양한 분야에서 체계적인 리서치 활동을 이어오고 있습니다.</p>
+      <p>매 학기 정기 발표, 세미나, 외부 연사 초청 프로그램을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.</p>
+      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
+    </div>
+    <div class="about-values">
+      <div class="value-item">
+        <div class="value-icon">📊</div>
+        <div>
+          <h4>Data-Driven Research</h4>
+          <p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🤝</div>
+        <div>
+          <h4>Collaborative Learning</h4>
+          <p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🎯</div>
+        <div>
+          <h4>Career-Oriented</h4>
+          <p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section id="reports">
+  <div class="section-header">
+    <div class="section-tag">Research</div>
+    <h2>리서치 & 보고서</h2>
+    <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
+  </div>
+
+  <div class="reports-filter">
+    <button class="filter-btn active" onclick="filterReports('all', this)">전체</button>
+    <button class="filter-btn" onclick="filterReports('macro', this)">거시경제</button>
+    <button class="filter-btn" onclick="filterReports('equity', this)">주식</button>
+    <button class="filter-btn" onclick="filterReports('fixed', this)">채권·금리</button>
+    <button class="filter-btn" onclick="filterReports('quant', this)">퀀트</button>
+  </div>
+
+  <div class="reports-grid" id="reportsGrid">
+    <!-- Cards injected by JS -->
+  </div>
+
+  <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📄</div>
+    <p><strong>보고서 업로드</strong></p>
+    <p>클릭하거나 파일을 드래그하여 PDF를 업로드하세요</p>
+    <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleUpload(event)"/>
+  </div>
+  <div id="uploadFeedback" style="text-align:center;margin-top:16px;font-size:0.9rem;color:var(--accent);"></div>
+</section>
+
+<!-- MEMBERS -->
+<section id="members">
+  <div class="section-header">
+    <div class="section-tag">Team</div>
+    <h2>멤버 소개</h2>
+    <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
+  </div>
+  <div class="members-grid" id="membersGrid"></div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="section-header">
+    <div class="section-tag">Notice</div>
+    <h2>공지사항 & 뉴스</h2>
+    <p>학회의 최신 소식과 공지를 확인하세요.</p>
+  </div>
+  <div class="news-grid" id="newsGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand-name">SAFE</div>
+      <p>Sogang Analysis of Finance & Economics<br/>서강대학교 경제·금융 학술 학회</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h5>학회</h5>
+        <a href="#about">학회 소개</a>
+        <a href="#members">멤버</a>
+        <a href="#news">공지사항</a>
+      </div>
+      <div class="footer-col">
+        <h5>리서치</h5>
+        <a href="#reports">전체 보고서</a>
+        <a href="#reports">거시경제</a>
+        <a href="#reports">주식 분석</a>
+      </div>
+      <div class="footer-col">
+        <h5>연락처</h5>
+        <a href="#">safe@sogang.ac.kr</a>
+        <a href="#">Instagram</a>
+        <a href="#">Notion</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 SAFE — Sogang Analysis of Finance & Economics</span>
+    <span>Sogang University, Seoul, Korea</span>
+  </div>
+</footer>
+
+<script>
+  // ── DATA ──
+  const reports = [
+    { id:1, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'2025년 하반기 글로벌 경기 전망', desc:'미국 연준의 금리 경로와 중국 경기 회복세를 중심으로 한 글로벌 매크로 분석', author:'김지수', date:'2025.05', file:'#' },
+    { id:2, category:'equity', tag:'주식', tagClass:'tag-equity', title:'2차전지 섹터 밸류에이션 리포트', desc:'LG에너지솔루션, 삼성SDI 등 국내 주요 2차전지 기업의 DCF 및 상대 가치 평가', author:'박현우', date:'2025.04', file:'#' },
+    { id:3, category:'fixed', tag:'채권·금리', tagClass:'tag-fixed', title:'한국 기준금리 인하 경로 분석', desc:'소비자물가 추이와 성장률을 바탕으로 한 한국은행 통화정책 시나리오 분석', author:'이서연', date:'2025.03', file:'#' },
+    { id:4, category:'quant', tag:'퀀트', tagClass:'tag-quant', title:'팩터 투자 전략 백테스트', desc:'가치·모멘텀·퀄리티 팩터 조합의 코스피 적용 성과 분석 (2015–2024)', author:'최민준', date:'2025.02', file:'#' },
+    { id:5, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'달러 강세와 신흥국 자본 유출', desc:'DXY 지수 상승 국면에서의 한국·인도·브라질 자본 흐름 비교 분석', author:'정다은', date:'2025.01', file:'#' },
+    { id:6, category:'equity', tag:'주식', tagClass:'tag-equity', title:'AI 인프라 투자 테마 분석', desc:'엔비디아·TSMC 중심의 AI 반도체 공급망과 국내 수혜 기업 탐색', author:'윤성호', date:'2024.12', file:'#' },
+  ];
+
+  const members = [
+    { name:'김도현', role:'회장', dept:'경제학과 24', initial:'김' },
+    { name:'이지원', role:'부회장', dept:'경제학과 24', initial:'이' },
+    { name:'박서준', role:'리서치 팀장', dept:'경영학과 23', initial:'박' },
+    { name:'최수민', role:'기획 팀장', dept:'경제학과 24', initial:'최' },
+    { name:'정유진', role:'리서치 파트', dept:'수학과 25', initial:'정' },
+    { name:'한민재', role:'리서치 파트', dept:'경제학과 25', initial:'한' },
+    { name:'오채은', role:'기획 파트', dept:'경영학과 24', initial:'오' },
+    { name:'송지훈', role:'리서치 파트', dept:'경제학과 23', initial:'송' },
+  ];
+
+  const news = [
+    { type:'recruit', typeLabel:'모집', typeClass:'type-recruit', title:'SAFE 7기 정기 모집 공고', desc:'2025년 2학기 신입 부원을 모집합니다. 금융·경제에 열정 있는 분이라면 누구든 환영합니다.', date:'2025.08.20' },
+    { type:'event', typeLabel:'이벤트', typeClass:'type-event', title:'하반기 리서치 발표회 개최', desc:'SAFE 멤버들이 한 학기 동안 연구한 보고서를 발표하는 정기 발표회가 개최됩니다.', date:'2025.06.10' },
+    { type:'notice', typeLabel:'공지', typeClass:'type-notice', title:'[공지] 외부 연사 초청 세미나', desc:'전 Goldman Sachs 애널리스트를 초청하여 글로벌 채권 시장 전망에 대한 특강을 진행합니다.', date:'2025.05.22' },
+  ];
+
+  // ── RENDER ──
+  function renderReports(filter = 'all') {
+    const grid = document.getElementById('reportsGrid');
+    const filtered = filter === 'all' ? reports : reports.filter(r => r.category === filter);
+    grid.innerHTML = filtered.map(r => `
+      <div class="report-card">
+        <span class="report-tag ${r.tagClass}">${r.tag}</span>
+        <h3>${r.title}</h3>
+        <p>${r.desc}</p>
+        <div class="report-meta">
+          <span>✍️ ${r.author} · ${r.date}</span>
+          <a href="${r.file}" class="report-dl">PDF ↓</a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderMembers() {
+    document.getElementById('membersGrid').innerHTML = members.map(m => `
+      <div class="member-card">
+        <div class="member-avatar">${m.initial}</div>
+        <h4>${m.name}</h4>
+        <div class="member-role">${m.role}</div>
+        <p>${m.dept}</p>
+      </div>
+    `).join('');
+  }
+
+  function renderNews() {
+    document.getElementById('newsGrid').innerHTML = news.map(n => `
+      <div class="news-card">
+        <div class="news-header">
+          <span class="news-type ${n.typeClass}">${n.typeLabel}</span>
+          <span class="news-date">${n.date}</span>
+        </div>
+        <div class="news-body">
+          <h3>${n.title}</h3>
+          <p>${n.desc}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterReports(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderReports(cat);
+  }
+
+  function handleUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      document.getElementById('uploadFeedback').textContent = `✅ "${file.name}" 업로드 완료! (실제 서버 연동 시 저장됩니다)`;
+    }
+  }
+
+  // nav active highlight on scroll
+  const sections = ['home','about','reports','members','news'];
+  window.addEventListener('scroll', () => {
+    let current = 'home';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 100) current = id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // init
+  renderReports();
+  renderMembers();
+  renderNews();
+</script>
+</body>
+</html>
