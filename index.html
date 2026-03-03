@@ -14,7 +14,6 @@
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-
     nav {
       position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
       background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
@@ -23,60 +22,34 @@
       padding: 0 5%; z-index: 100;
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-mark {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 14px; color: white;
-    }
+    .logo-mark { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; }
     .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .logo-text .brand { font-weight: 700; font-size: 17px; color: var(--primary); }
     .logo-text .sub { font-size: 10px; color: var(--text-sub); }
     .nav-links { display: flex; gap: 8px; }
-    .nav-links a {
-      text-decoration: none; font-size: 14px; font-weight: 500;
-      color: var(--text-sub); padding: 7px 14px; border-radius: 8px; transition: all 0.2s;
-    }
+    .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-sub); padding: 7px 14px; border-radius: 8px; transition: all 0.2s; }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
-
-    #home {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%);
-      padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center;
-    }
+    #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%); padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center; }
     .hero-inner { max-width: 760px; }
-    .hero-badge {
-      display: inline-block; background: var(--accent-soft); color: var(--primary-light);
-      font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
-    }
+    .hero-badge { display: inline-block; background: var(--accent-soft); color: var(--primary-light); font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
     .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
     .hero-inner h1 span { background: linear-gradient(90deg, var(--primary-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-inner > p { font-size: 1.1rem; color: var(--text-sub); max-width: 540px; margin: 0 auto 40px; }
+    .hero-desc { font-size: 1rem; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; margin: 0 auto 40px; }
+    @media (max-width: 720px) { .hero-desc { white-space: normal; font-size: 0.93rem; } }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--primary); color: white; font-size: 15px; font-weight: 600;
-      padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
-      border: none; cursor: pointer; display: inline-block;
-    }
+    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; display: inline-block; }
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-    .btn-outline {
-      background: transparent; color: var(--primary); font-size: 15px; font-weight: 600;
-      padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
-      border: 1.5px solid var(--border);
-    }
+    .btn-outline { background: transparent; color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: 1.5px solid var(--border); }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
     .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
     .stat { text-align: center; }
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
-
     section { padding: 100px 5%; }
     .section-header { text-align: center; margin-bottom: 60px; }
     .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
-
     #about { background: var(--white); }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
@@ -86,16 +59,12 @@
     .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
-
     #reports { background: var(--bg); }
     .reports-filter { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
-    .filter-btn {
-      padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border);
-      font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s;
-    }
+    .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; }
     .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
-    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; }
+    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
     .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
@@ -103,75 +72,60 @@
     .tag-fixed { background: #fce8e6; color: #c62828; }
     .tag-industry { background: #fff3e0; color: #e65100; }
     .report-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .report-card p { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 16px; }
+    .report-card .card-desc { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 16px; }
     .report-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-sub); border-top: 1px solid var(--border); padding-top: 14px; }
     .report-dl { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
     .reports-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; grid-column: 1/-1; background: white; border-radius: 14px; border: 1px solid var(--border); }
-
-    /* ── 관리자 영역 ── */
+    .admin-card-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; }
+    .admin-card-btns.visible { display: flex; }
+    .card-edit-btn, .card-del-btn { border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .card-edit-btn { background: var(--accent-soft); color: var(--primary); }
+    .card-edit-btn:hover { background: var(--accent); color: white; }
+    .card-del-btn { background: #fce8e6; color: #c62828; }
+    .card-del-btn:hover { background: #c62828; color: white; }
     .admin-toggle-area { text-align: center; margin-top: 48px; }
-    .admin-toggle-btn {
-      background: none; border: 1.5px solid var(--border); color: var(--text-sub);
-      font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
-    }
+    .admin-toggle-btn { background: none; border: 1.5px solid var(--border); color: var(--text-sub); font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
     .admin-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
-      z-index: 200; align-items: center; justify-content: center;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
-    .modal { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; margin: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
-    .modal h3 { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
-    .modal p { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 24px; }
-    .modal input[type="password"] {
-      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
-      border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; transition: border-color 0.2s;
-    }
+    .modal { background: white; border-radius: 20px; padding: 36px; width: 100%; max-width: 420px; margin: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+    .modal.wide { max-width: 560px; }
+    .modal h3 { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .modal > p { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 20px; }
+    .modal input[type="password"] { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; transition: border-color 0.2s; }
     .modal input[type="password"]:focus { border-color: var(--accent); }
     .auth-error { font-size: 13px; color: #c62828; margin-top: 8px; min-height: 18px; }
     .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-    .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-cancel { background: var(--bg); border: 1.5px solid var(--border); color: var(--text-sub); }
-    .btn-confirm { background: var(--primary); border: none; color: white; }
+    .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-cancel { background: var(--bg); border: 1.5px solid var(--border) !important; color: var(--text-sub); }
+    .btn-confirm { background: var(--primary); color: white; }
     .btn-confirm:hover { background: var(--primary-light); }
-
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .form-group label { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
+    .form-group input, .form-group select, .form-group textarea { padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: white; }
+    .form-group textarea { min-height: 70px; resize: vertical; }
     .admin-panel { display: none; max-width: 700px; margin: 32px auto 0; background: white; border: 1.5px solid var(--accent); border-radius: 16px; padding: 32px; }
     .admin-panel.open { display: block; }
-    .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .admin-panel-header h4 { font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
     .admin-badge { font-size: 11px; background: var(--accent-soft); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
     .admin-logout { font-size: 12px; color: var(--text-sub); background: none; border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; cursor: pointer; }
     .admin-logout:hover { color: #c62828; border-color: #c62828; }
-
-    .upload-type-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .upload-type-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
     .upload-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; }
     .upload-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-    .form-group label { font-size: 12px; font-weight: 600; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
-    .form-group input, .form-group select, .form-group textarea {
-      padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
-      font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: white; }
-    .form-group textarea { min-height: 72px; resize: vertical; }
-    .upload-zone {
-      border: 2px dashed var(--border); border-radius: 12px; padding: 28px;
-      text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg);
-    }
+    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); }
     .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-soft); }
     .upload-zone .uz-icon { font-size: 2rem; margin-bottom: 8px; }
     .upload-zone p { font-size: 0.88rem; color: var(--text-sub); }
     .file-preview { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-soft); border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--primary); }
     .fp-remove { margin-left: auto; cursor: pointer; color: var(--text-sub); font-size: 18px; }
-    .github-tip { font-size: 12px; color: var(--text-sub); margin: 8px 0 14px; padding: 10px 14px; background: #fffbea; border-radius: 8px; border-left: 3px solid #f0c040; }
-    .submit-report-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
-    .submit-report-btn:hover { background: var(--primary-light); }
-    .submit-feedback { text-align: center; font-size: 13px; margin-top: 12px; min-height: 20px; }
-
+    .github-tip { font-size: 12px; color: var(--text-sub); margin: 8px 0 12px; padding: 10px 14px; background: #fffbea; border-radius: 8px; border-left: 3px solid #f0c040; }
+    .submit-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
+    .submit-btn:hover { background: var(--primary-light); }
+    .submit-feedback { text-align: center; font-size: 13px; margin-top: 10px; min-height: 20px; }
     #members { background: var(--white); }
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
     .member-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; }
@@ -180,15 +134,17 @@
     .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
     .member-role { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
-
-    /* ── 뉴스 카드 수정 ── */
     #news { background: var(--bg); }
-    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
-    .news-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 14px; overflow: hidden; transition: all 0.25s;
-      display: flex; flex-direction: column;  /* 카드 높이 자동 맞춤 */
-    }
+    .news-section-top { display: flex; align-items: flex-end; justify-content: space-between; max-width: 1100px; margin: 0 auto 32px; flex-wrap: wrap; gap: 16px; }
+    .news-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+    .news-add-btn.visible { display: block; }
+    .news-add-btn:hover { background: var(--primary-light); }
+    .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    .news-scroll-wrap::-webkit-scrollbar { height: 6px; }
+    .news-scroll-wrap::-webkit-scrollbar-track { background: transparent; }
+    .news-scroll-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .news-grid { display: flex; gap: 20px; width: max-content; }
+    .news-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; display: flex; flex-direction: column; width: 320px; flex-shrink: 0; position: relative; }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
     .news-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
     .news-type { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
@@ -198,19 +154,11 @@
     .news-date { font-size: 12px; color: var(--text-sub); text-align: right; }
     .news-card .news-body { padding: 14px 24px 24px; flex: 1; }
     .news-card h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 8px; word-break: keep-all; }
-    .news-card p {
-      font-size: 0.86rem; color: var(--text-sub);
-      word-break: break-all;       /* 긴 URL 줄바꿈 */
-      overflow-wrap: break-word;   /* 카드 밖으로 안 나가게 */
-    }
-    .news-dl-btn {
-      display: inline-block; margin-top: 12px;
-      background: var(--primary); color: white;
-      font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px;
-      text-decoration: none; transition: all 0.2s;
-    }
+    .news-card p { font-size: 0.86rem; color: var(--text-sub); word-break: break-all; overflow-wrap: break-word; }
+    .news-dl-btn { display: inline-block; margin-top: 12px; background: var(--primary); color: white; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
     .news-dl-btn:hover { background: var(--primary-light); }
-
+    .news-admin-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; z-index: 1; }
+    .news-admin-btns.visible { display: flex; }
     footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; }
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .footer-brand .brand-name { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
@@ -220,12 +168,12 @@
     .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; margin-bottom: 8px; transition: color 0.2s; word-break: break-all; }
     .footer-col a:hover { color: white; }
     .footer-bottom { max-width: 1100px; margin: 24px auto 0; display: flex; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px; }
-
     @media (max-width: 768px) {
       .about-grid, .form-row { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .hero-stats { gap: 24px; }
       .footer-inner, .footer-links { flex-direction: column; gap: 20px; }
+      .news-section-top { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -240,18 +188,18 @@
     </div>
   </a>
   <div class="nav-links">
-    <a href="#about">About</a>
-    <a href="#reports">Reports</a>
-    <a href="#members">Members</a>
-    <a href="#news">News</a>
+    <a href="#about">소개</a>
+    <a href="#reports">보고서</a>
+    <a href="#members">멤버</a>
+    <a href="#news">공지</a>
   </div>
 </nav>
 
 <section id="home">
   <div class="hero-inner">
-    <div class="hero-badge">Sogang University · Finance & Economics</div>
+    <div class="hero-badge">Sogang University · Finance &amp; Economics</div>
     <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
-    <p>서강대학교 경제·금융 분석 학회 SAFE는 거시경제, 통화 정책, 산업·기업 분석을 중심으로 깊이 있는 연구와 리서치 라이팅을 통해 금융 문해력을 키웁니다.</p>
+    <p class="hero-desc">서강대학교 경제·금융 분석 학회 SAFE는 거시경제, 통화 정책, 산업·기업 분석을 중심으로 깊이 있는 연구와 리서치 라이팅을 통해 금융 문해력을 키웁니다.</p>
     <div class="hero-btns">
       <a href="#reports" class="btn-primary">리서치 보기 →</a>
       <a href="#about" class="btn-outline">학회 소개</a>
@@ -273,7 +221,7 @@
   <div class="about-grid">
     <div class="about-text">
       <h3>서강대 경제·금융 분석 학회</h3>
-      <p>SAFE(Sogang Analysis of Finance & Economics)는 2025년 3월에 설립된 서강대학교 경영·경제 기반의 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석 등 다양한 분야에서 체계적인 리서치 활동을 하고 있습니다.</p>
+      <p>SAFE(Sogang Analysis of Finance &amp; Economics)는 2025년 3월에 설립된 서강대학교 경영·경제 기반의 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석 등 다양한 분야에서 체계적인 리서치 활동을 하고 있습니다.</p>
       <p>매 학기 포트폴리오 프로젝트, 정기 발표, 토론, 경제·산업 분석 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.</p>
       <a href="#news" class="btn-primary" style="margin-top:8px;">모집 공고 보기 →</a>
     </div>
@@ -297,7 +245,7 @@
 <section id="reports">
   <div class="section-header">
     <div class="section-tag">Research</div>
-    <h2>리서치 & 보고서</h2>
+    <h2>리서치 &amp; 보고서</h2>
     <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
   </div>
   <div class="reports-filter">
@@ -308,13 +256,9 @@
     <button class="filter-btn" onclick="filterReports('equity',this)">기업 분석</button>
   </div>
   <div class="reports-grid" id="reportsGrid"></div>
-
-  <!-- 관리자 버튼 -->
   <div class="admin-toggle-area">
     <button class="admin-toggle-btn" id="adminToggleBtn" onclick="openAuthModal()">🔒 관리자 로그인</button>
   </div>
-
-  <!-- 관리자 업로드 패널 (로그인 후 표시) -->
   <div class="admin-panel" id="adminPanel">
     <div class="admin-panel-header">
       <h4>📋 보고서 업로드 <span class="admin-badge">ADMIN</span></h4>
@@ -325,12 +269,8 @@
       <button class="upload-tab" onclick="switchTab('link',this)">🔗 링크로 첨부</button>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>보고서 제목</label>
-        <input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/>
-      </div>
-      <div class="form-group">
-        <label>카테고리</label>
+      <div class="form-group"><label>보고서 제목</label><input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/></div>
+      <div class="form-group"><label>카테고리</label>
         <select id="rCategory">
           <option value="macro">거시경제</option>
           <option value="monetary">통화정책·채권</option>
@@ -340,61 +280,93 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>작성자</label>
-        <input type="text" id="rAuthor" placeholder="예: 김도현"/>
-      </div>
-      <div class="form-group">
-        <label>작성 연월</label>
-        <input type="month" id="rDate"/>
-      </div>
+      <div class="form-group"><label>작성자</label><input type="text" id="rAuthor" placeholder="예: 김도현"/></div>
+      <div class="form-group"><label>작성 연월</label><input type="month" id="rDate"/></div>
     </div>
-    <div class="form-group">
-      <label>요약 설명</label>
-      <textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea>
-    </div>
+    <div class="form-group"><label>요약 설명</label><textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea></div>
     <div id="tabFile">
-      <div class="form-group">
-        <label>PDF 파일</label>
-        <div class="upload-zone" id="uploadZone"
-             onclick="document.getElementById('pdfInput').click()"
-             ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
+      <div class="form-group"><label>PDF 파일</label>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('pdfInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
           <div class="uz-icon">📄</div>
           <p><strong>클릭</strong>하거나 드래그하여 PDF 업로드</p>
           <input type="file" id="pdfInput" accept=".pdf" style="display:none" onchange="handleFileSelect(event)"/>
         </div>
         <div id="filePreview" style="display:none" class="file-preview">
-          <span>📄</span><span id="fileName"></span>
-          <span class="fp-remove" onclick="clearFile()">✕</span>
+          <span>📄</span><span id="fileName"></span><span class="fp-remove" onclick="clearFile()">✕</span>
         </div>
       </div>
-      <div class="github-tip">
-        💡 <strong>GitHub Pages 사용 시:</strong> PDF를 저장소의 <code>reports/</code> 폴더에 올린 뒤,
-        링크 탭에서 <code>./reports/파일명.pdf</code> 를 입력하세요.
-      </div>
+      <div class="github-tip">💡 <strong>GitHub Pages:</strong> PDF를 <code>reports/</code> 폴더에 올린 뒤 링크 탭에서 <code>./reports/파일명.pdf</code> 입력</div>
     </div>
     <div id="tabLink" style="display:none">
-      <div class="form-group">
-        <label>다운로드 링크 (Google Drive / GitHub URL)</label>
-        <input type="text" id="rLink" placeholder="https://drive.google.com/... 또는 ./reports/filename.pdf"/>
-      </div>
+      <div class="form-group"><label>다운로드 링크</label><input type="text" id="rLink" placeholder="https://drive.google.com/..."/></div>
     </div>
-    <button class="submit-report-btn" onclick="submitReport()">보고서 등록하기</button>
-    <div class="submit-feedback" id="submitFeedback"></div>
+    <button class="submit-btn" onclick="submitReport()">보고서 등록하기</button>
+    <div class="submit-feedback" id="reportFeedback"></div>
   </div>
 </section>
 
-<!-- 비밀번호 모달 -->
+<!-- 관리자 인증 모달 -->
 <div class="modal-overlay" id="authModal">
   <div class="modal">
     <h3>🔐 관리자 인증</h3>
-    <p>보고서 업로드는 권한 있는 학회 관리자만 가능합니다.</p>
-    <input type="password" id="adminPw" placeholder="관리자 비밀번호 입력"
-           onkeydown="if(event.key==='Enter') confirmAuth()"/>
+    <p>보고서·공지 관리는 권한 있는 학회 관리자만 가능합니다.</p>
+    <input type="password" id="adminPw" placeholder="관리자 비밀번호 입력" onkeydown="if(event.key==='Enter') confirmAuth()"/>
     <div class="auth-error" id="authError"></div>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeAuthModal()">취소</button>
+      <button class="btn-cancel" onclick="closeModal('authModal')">취소</button>
       <button class="btn-confirm" onclick="confirmAuth()">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 보고서 수정 모달 -->
+<div class="modal-overlay" id="editReportModal">
+  <div class="modal wide">
+    <h3>✏️ 보고서 수정</h3>
+    <div class="form-row">
+      <div class="form-group"><label>제목</label><input type="text" id="eTitle"/></div>
+      <div class="form-group"><label>카테고리</label>
+        <select id="eCategory">
+          <option value="macro">거시경제</option>
+          <option value="monetary">통화정책·채권</option>
+          <option value="industry">산업 분석</option>
+          <option value="equity">기업 분석</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>작성자</label><input type="text" id="eAuthor"/></div>
+      <div class="form-group"><label>작성 연월</label><input type="month" id="eDate"/></div>
+    </div>
+    <div class="form-group"><label>요약 설명</label><textarea id="eDesc"></textarea></div>
+    <div class="form-group"><label>링크 변경 (비우면 기존 유지)</label><input type="text" id="eLink" placeholder="변경할 링크 (선택사항)"/></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('editReportModal')">취소</button>
+      <button class="btn-confirm" onclick="saveReportEdit()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 공지 작성/수정 모달 -->
+<div class="modal-overlay" id="editNewsModal">
+  <div class="modal wide">
+    <h3 id="newsModalTitle">📢 공지 작성</h3>
+    <div class="form-row">
+      <div class="form-group"><label>유형</label>
+        <select id="nType">
+          <option value="type-notice">공지</option>
+          <option value="type-recruit">모집</option>
+          <option value="type-event">이벤트</option>
+        </select>
+      </div>
+      <div class="form-group"><label>날짜 / 마감</label><input type="text" id="nDate" placeholder="예: 2026.03.05, 11:59까지"/></div>
+    </div>
+    <div class="form-group"><label>제목</label><input type="text" id="nTitle" placeholder="공지 제목"/></div>
+    <div class="form-group"><label>내용</label><textarea id="nDesc" placeholder="공지 내용을 입력하세요."></textarea></div>
+    <div class="form-group"><label>다운로드 링크 (선택사항)</label><input type="text" id="nLink" placeholder="https://..."/></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('editNewsModal')">취소</button>
+      <button class="btn-confirm" onclick="saveNewsItem()">저장</button>
     </div>
   </div>
 </div>
@@ -408,33 +380,34 @@
   <div class="members-grid" id="membersGrid"></div>
 </section>
 
-<section id="news">
-  <div class="section-header">
-    <div class="section-tag">Notice</div>
-    <h2>공지사항 & 뉴스</h2>
-    <p>학회의 최신 소식과 공지를 확인하세요.</p>
+<section id="news" style="padding-bottom:80px;">
+  <div class="news-section-top">
+    <div class="section-header" style="margin-bottom:0; text-align:left;">
+      <div class="section-tag">Notice</div>
+      <h2>공지사항 &amp; 뉴스</h2>
+      <p>학회의 최신 소식과 공지를 확인하세요.</p>
+    </div>
+    <button class="news-add-btn" id="newsAddBtn" onclick="openNewsModal()">+ 공지 작성</button>
   </div>
-  <div class="news-grid" id="newsGrid"></div>
+  <div class="news-scroll-wrap">
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
 </section>
 
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="brand-name">SAFE</div>
-      <p>Sogang Analysis of Finance & Economics<br/>서강대학교 경제·금융 분석 학회</p>
+      <p>Sogang Analysis of Finance &amp; Economics<br/>서강대학교 경제·금융 분석 학회</p>
     </div>
     <div class="footer-links">
       <div class="footer-col">
         <h5>학회</h5>
-        <a href="#about">학회 소개</a>
-        <a href="#members">멤버</a>
-        <a href="#news">공지사항</a>
+        <a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a>
       </div>
       <div class="footer-col">
         <h5>리서치</h5>
-        <a href="#reports">전체 보고서</a>
-        <a href="#reports">거시경제</a>
-        <a href="#reports">기업 분석</a>
+        <a href="#reports">전체 보고서</a><a href="#reports">거시경제</a><a href="#reports">기업 분석</a>
       </div>
       <div class="footer-col">
         <h5>연락처</h5>
@@ -444,136 +417,273 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 SAFE — Sogang Analysis of Finance & Economics</span>
+    <span>© 2025 SAFE — Sogang Analysis of Finance &amp; Economics</span>
     <span>Sogang University, Seoul, Korea</span>
   </div>
 </footer>
 
 <script>
-  // ★★ 비밀번호 변경 시 여기만 수정하세요 ★★
-  const ADMIN_PASSWORD = 'safe2025';
 
-  // ─── 데이터 ───
-  let reports = JSON.parse(localStorage.getItem('safe_reports') || '[]');
+  var ADMIN_PASSWORD = 'safesogang20250318';
+  var TYPE_LABELS = {'type-notice':'공지','type-recruit':'모집','type-event':'이벤트'};
 
-  const CATEGORY_MAP = {
-    macro:    { tag: '거시경제',      cls: 'tag-macro' },
-    monetary: { tag: '통화정책·채권', cls: 'tag-fixed' },
-    industry: { tag: '산업 분석',     cls: 'tag-industry' },
-    equity:   { tag: '기업 분석',     cls: 'tag-equity' },
+  var reports = JSON.parse(localStorage.getItem('safe_reports') || '[]');
+  var storedNews = localStorage.getItem('safe_news');
+  var newsItems = storedNews ? JSON.parse(storedNews) : [
+    {id:1, typeClass:'type-recruit', title:'SAFE 2기 정기 모집 공고',
+     desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.',
+     date:'2026.03.05, 11:59까지', link:null},
+    {id:2, typeClass:'type-recruit', title:'지원서 다운로드',
+     desc:'아래 버튼을 눌러 지원서를 다운로드하세요.',
+     date:'2026.03.05, 11:59까지',
+     link:'https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--'}
+  ];
+
+  var isAdmin = false;
+  var editingReportId = null;
+  var editingNewsId = null;
+
+  var CATEGORY_MAP = {
+    macro:    {tag:'거시경제',      cls:'tag-macro'},
+    monetary: {tag:'통화정책·채권', cls:'tag-fixed'},
+    industry: {tag:'산업 분석',     cls:'tag-industry'},
+    equity:   {tag:'기업 분석',     cls:'tag-equity'}
   };
 
-  const members = [
-    { name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조' },
+  var members = [
+    {name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조'}
   ];
 
-  const news = [
-    {
-      typeLabel:'모집', typeClass:'type-recruit',
-      title:'SAFE 2기 정기 모집 공고',
-      desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.',
-      date:'2026.03.05, 11:59까지',
-      link: null
-    },
-    {
-      typeLabel:'모집', typeClass:'type-recruit',
-      title:'지원서 다운로드',
-      desc:'아래 버튼을 눌러 지원서를 다운로드하세요.',
-      date:'2026.03.05, 11:59까지',
-      link: 'https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--'
-    },
-  ];
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
-  // ─── 렌더 ───
-  function renderReports(filter = 'all') {
-    const grid = document.getElementById('reportsGrid');
-    const list = filter === 'all' ? reports : reports.filter(r => r.category === filter);
+  function renderReports(filter) {
+    filter = filter || 'all';
+    var grid = document.getElementById('reportsGrid');
+    var list = filter === 'all' ? reports : reports.filter(function(r){ return r.category === filter; });
     if (!list.length) {
       grid.innerHTML = '<div class="reports-empty">아직 등록된 보고서가 없습니다.</div>';
       return;
     }
-    grid.innerHTML = list.map(r => {
-      const c = CATEGORY_MAP[r.category] || { tag: r.category, cls: 'tag-macro' };
-      return `<div class="report-card">
-        <span class="report-tag ${c.cls}">${c.tag}</span>
-        <h3>${r.title}</h3><p>${r.desc}</p>
-        <div class="report-meta">
-          <span>✍️ ${r.author} · ${r.date}</span>
-          <a href="${r.file}" class="report-dl" target="_blank">PDF ↓</a>
-        </div></div>`;
-    }).join('');
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i];
+      var c = CATEGORY_MAP[r.category] || {tag:r.category, cls:'tag-macro'};
+      var adminBtns = isAdmin
+        ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openReportEdit(' + r.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteReport(' + r.id + ')">🗑 삭제</button></div>'
+        : '<div class="admin-card-btns"></div>';
+      html += '<div class="report-card">' + adminBtns;
+      html += '<span class="report-tag ' + c.cls + '">' + c.tag + '</span>';
+      html += '<h3>' + esc(r.title) + '</h3>';
+      html += '<p class="card-desc">' + esc(r.desc) + '</p>';
+      html += '<div class="report-meta"><span>✍️ ' + esc(r.author) + ' · ' + esc(r.date) + '</span>';
+      html += '<a href="' + esc(r.file) + '" class="report-dl" target="_blank">PDF ↓</a></div></div>';
+    }
+    grid.innerHTML = html;
   }
 
   function renderMembers() {
-    document.getElementById('membersGrid').innerHTML = members.map(m =>
-      `<div class="member-card">
-        <div class="member-avatar">${m.initial}</div>
-        <h4>${m.name}</h4>
-        <div class="member-role">${m.role}</div>
-        <p>${m.dept}</p>
-      </div>`).join('');
+    var html = '';
+    for (var i = 0; i < members.length; i++) {
+      var m = members[i];
+      html += '<div class="member-card"><div class="member-avatar">' + esc(m.initial) + '</div>';
+      html += '<h4>' + esc(m.name) + '</h4><div class="member-role">' + esc(m.role) + '</div>';
+      html += '<p>' + esc(m.dept) + '</p></div>';
+    }
+    document.getElementById('membersGrid').innerHTML = html;
   }
 
   function renderNews() {
-    document.getElementById('newsGrid').innerHTML = news.map(n =>
-      `<div class="news-card">
-        <div class="news-header">
-          <span class="news-type ${n.typeClass}">${n.typeLabel}</span>
-          <span class="news-date">${n.date}</span>
-        </div>
-        <div class="news-body">
-          <h3>${n.title}</h3>
-          <p>${n.desc}</p>
-          ${n.link ? `<a href="${n.link}" class="news-dl-btn" target="_blank">📎 지원서 다운로드</a>` : ''}
-        </div>
-      </div>`).join('');
+    var html = '';
+    for (var i = 0; i < newsItems.length; i++) {
+      var n = newsItems[i];
+      var lbl = TYPE_LABELS[n.typeClass] || '공지';
+      var adminBtns = isAdmin
+        ? '<div class="news-admin-btns visible"><button class="card-edit-btn" onclick="openNewsEdit(' + n.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteNews(' + n.id + ')">🗑 삭제</button></div>'
+        : '<div class="news-admin-btns"></div>';
+      html += '<div class="news-card">' + adminBtns;
+      html += '<div class="news-header"><span class="news-type ' + n.typeClass + '">' + lbl + '</span>';
+      html += '<span class="news-date">' + esc(n.date) + '</span></div>';
+      html += '<div class="news-body"><h3>' + esc(n.title) + '</h3><p>' + esc(n.desc) + '</p>';
+      if (n.link) {
+        html += '<a href="' + esc(n.link) + '" class="news-dl-btn" target="_blank">📎 다운로드</a>';
+      }
+      html += '</div></div>';
+    }
+    document.getElementById('newsGrid').innerHTML = html;
+    var addBtn = document.getElementById('newsAddBtn');
+    if (isAdmin) { addBtn.classList.add('visible'); } else { addBtn.classList.remove('visible'); }
   }
 
   function filterReports(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
     btn.classList.add('active');
     renderReports(cat);
   }
 
-  // ─── 관리자 인증 ───
-  let isAdmin = false;
+  function saveReportsData() {
+    try {
+      localStorage.setItem('safe_reports', JSON.stringify(reports.map(function(r){
+        return Object.assign({}, r, {file: r.file && r.file.indexOf('blob:') === 0 ? '#' : r.file});
+      })));
+    } catch(e) {}
+  }
 
+  function saveNewsData() {
+    try { localStorage.setItem('safe_news', JSON.stringify(newsItems)); } catch(e) {}
+  }
+
+  /* ── 보고서 CRUD ── */
+  function deleteReport(id) {
+    if (!confirm('이 보고서를 삭제할까요?')) return;
+    reports = reports.filter(function(r){ return r.id !== id; });
+    saveReportsData(); renderReports('all');
+    resetFilterBtns();
+  }
+
+  function openReportEdit(id) {
+    var r = null;
+    for (var i = 0; i < reports.length; i++) { if (reports[i].id === id) { r = reports[i]; break; } }
+    if (!r) return;
+    editingReportId = id;
+    document.getElementById('eTitle').value = r.title;
+    document.getElementById('eCategory').value = r.category;
+    document.getElementById('eAuthor').value = r.author;
+    document.getElementById('eDate').value = r.date.replace('.', '-');
+    document.getElementById('eDesc').value = r.desc;
+    var f = r.file;
+    document.getElementById('eLink').value = (!f || f === '#' || f.indexOf('blob:') === 0) ? '' : f;
+    document.getElementById('editReportModal').classList.add('open');
+  }
+
+  function saveReportEdit() {
+    var idx = -1;
+    for (var i = 0; i < reports.length; i++) { if (reports[i].id === editingReportId) { idx = i; break; } }
+    if (idx === -1) return;
+    var newLink = document.getElementById('eLink').value.trim();
+    reports[idx] = {
+      id: reports[idx].id,
+      category: document.getElementById('eCategory').value,
+      title: document.getElementById('eTitle').value.trim(),
+      desc: document.getElementById('eDesc').value.trim(),
+      author: document.getElementById('eAuthor').value.trim(),
+      date: document.getElementById('eDate').value.replace('-', '.'),
+      file: newLink || reports[idx].file
+    };
+    saveReportsData(); renderReports('all'); resetFilterBtns();
+    closeModal('editReportModal');
+  }
+
+  /* ── 공지 CRUD ── */
+  function deleteNews(id) {
+    if (!confirm('이 공지를 삭제할까요?')) return;
+    newsItems = newsItems.filter(function(n){ return n.id !== id; });
+    saveNewsData(); renderNews();
+  }
+
+  function openNewsModal() {
+    editingNewsId = null;
+    document.getElementById('newsModalTitle').textContent = '📢 공지 작성';
+    document.getElementById('nType').value = 'type-notice';
+    document.getElementById('nDate').value = '';
+    document.getElementById('nTitle').value = '';
+    document.getElementById('nDesc').value = '';
+    document.getElementById('nLink').value = '';
+    document.getElementById('editNewsModal').classList.add('open');
+  }
+
+  function openNewsEdit(id) {
+    var n = null;
+    for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === id) { n = newsItems[i]; break; } }
+    if (!n) return;
+    editingNewsId = id;
+    document.getElementById('newsModalTitle').textContent = '✏️ 공지 수정';
+    document.getElementById('nType').value = n.typeClass;
+    document.getElementById('nDate').value = n.date;
+    document.getElementById('nTitle').value = n.title;
+    document.getElementById('nDesc').value = n.desc;
+    document.getElementById('nLink').value = n.link || '';
+    document.getElementById('editNewsModal').classList.add('open');
+  }
+
+  function saveNewsItem() {
+    var title = document.getElementById('nTitle').value.trim();
+    var desc  = document.getElementById('nDesc').value.trim();
+    var date  = document.getElementById('nDate').value.trim();
+    if (!title || !desc || !date) { alert('제목, 내용, 날짜를 모두 입력해주세요.'); return; }
+    var item = {
+      id: editingNewsId || Date.now(),
+      typeClass: document.getElementById('nType').value,
+      title: title, desc: desc, date: date,
+      link: document.getElementById('nLink').value.trim() || null
+    };
+    if (editingNewsId) {
+      for (var i = 0; i < newsItems.length; i++) {
+        if (newsItems[i].id === editingNewsId) { newsItems[i] = item; break; }
+      }
+    } else {
+      newsItems.unshift(item);
+    }
+    saveNewsData(); renderNews(); closeModal('editNewsModal');
+  }
+
+  /* ── 공통 ── */
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  var overlays = document.querySelectorAll('.modal-overlay');
+  for (var oi = 0; oi < overlays.length; oi++) {
+    overlays[oi].addEventListener('click', function(e){ if (e.target === this) this.classList.remove('open'); });
+  }
+
+  function resetFilterBtns() {
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('active', i === 0);
+  }
+
+  /* ── 관리자 인증 ── */
   function openAuthModal() {
     if (isAdmin) { document.getElementById('adminPanel').classList.toggle('open'); return; }
     document.getElementById('adminPw').value = '';
     document.getElementById('authError').textContent = '';
     document.getElementById('authModal').classList.add('open');
-    setTimeout(() => document.getElementById('adminPw').focus(), 100);
+    setTimeout(function(){ document.getElementById('adminPw').focus(); }, 100);
   }
-  function closeAuthModal() { document.getElementById('authModal').classList.remove('open'); }
+
   function confirmAuth() {
     if (document.getElementById('adminPw').value === ADMIN_PASSWORD) {
-      isAdmin = true; closeAuthModal();
+      isAdmin = true;
+      closeModal('authModal');
       document.getElementById('adminToggleBtn').textContent = '🔓 관리자 패널';
       document.getElementById('adminPanel').classList.add('open');
+      renderReports('all');
+      renderNews();
     } else {
       document.getElementById('authError').textContent = '비밀번호가 올바르지 않습니다.';
       document.getElementById('adminPw').value = '';
       document.getElementById('adminPw').focus();
     }
   }
+
   function logout() {
     isAdmin = false;
     document.getElementById('adminPanel').classList.remove('open');
     document.getElementById('adminToggleBtn').textContent = '🔒 관리자 로그인';
+    renderReports('all');
+    renderNews();
   }
-  document.getElementById('authModal').addEventListener('click', e => { if (e.target.id === 'authModal') closeAuthModal(); });
 
-  // ─── 탭 전환 ───
+  /* ── 업로드 탭 ── */
   function switchTab(tab, btn) {
-    document.querySelectorAll('.upload-tab').forEach(b => b.classList.remove('active'));
+    var tabs = document.querySelectorAll('.upload-tab');
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
     btn.classList.add('active');
     document.getElementById('tabFile').style.display = tab === 'file' ? 'block' : 'none';
     document.getElementById('tabLink').style.display  = tab === 'link' ? 'block' : 'none';
   }
 
-  // ─── 파일 처리 ───
-  let selectedFile = null;
+  var selectedFile = null;
   function handleFileSelect(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
   function setFile(file) {
     selectedFile = file;
@@ -588,56 +698,56 @@
     document.getElementById('filePreview').style.display = 'none';
   }
   function onDragOver(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
-  function onDragLeave()  { document.getElementById('uploadZone').classList.remove('dragover'); }
+  function onDragLeave() { document.getElementById('uploadZone').classList.remove('dragover'); }
   function onDrop(e) {
     e.preventDefault(); onDragLeave();
-    const f = e.dataTransfer.files[0];
+    var f = e.dataTransfer.files[0];
     if (f && f.type === 'application/pdf') setFile(f);
-    else showFeedback('❌ PDF 파일만 업로드 가능합니다.', '#c62828');
+    else showFeedback('reportFeedback', '❌ PDF 파일만 업로드 가능합니다.', '#c62828');
   }
 
-  // ─── 보고서 등록 ───
   function submitReport() {
-    const title  = document.getElementById('rTitle').value.trim();
-    const cat    = document.getElementById('rCategory').value;
-    const author = document.getElementById('rAuthor').value.trim();
-    const dateV  = document.getElementById('rDate').value;
-    const desc   = document.getElementById('rDesc').value.trim();
-    const isLink = document.getElementById('tabLink').style.display !== 'none';
-    const link   = document.getElementById('rLink').value.trim();
-
-    if (!title || !author || !dateV || !desc) { showFeedback('❌ 모든 항목을 입력해주세요.', '#c62828'); return; }
-    if (!isLink && !selectedFile)             { showFeedback('❌ PDF 파일을 선택해주세요.', '#c62828'); return; }
-    if (isLink && !link)                      { showFeedback('❌ 링크를 입력해주세요.', '#c62828'); return; }
-
-    const fileUrl = isLink ? link : URL.createObjectURL(selectedFile);
-    reports.unshift({ id: Date.now(), category: cat, title, desc, author, date: dateV.replace('-','.'), file: fileUrl });
-    try { localStorage.setItem('safe_reports', JSON.stringify(reports.map(r => ({ ...r, file: r.file.startsWith('blob:') ? '#' : r.file })))); } catch(e){}
-
-    renderReports('all');
-    document.querySelectorAll('.filter-btn').forEach((b,i) => b.classList.toggle('active', i===0));
-    ['rTitle','rAuthor','rDate','rDesc','rLink'].forEach(id => document.getElementById(id).value = '');
+    var title  = document.getElementById('rTitle').value.trim();
+    var cat    = document.getElementById('rCategory').value;
+    var author = document.getElementById('rAuthor').value.trim();
+    var dateV  = document.getElementById('rDate').value;
+    var desc   = document.getElementById('rDesc').value.trim();
+    var isLink = document.getElementById('tabLink').style.display !== 'none';
+    var link   = document.getElementById('rLink').value.trim();
+    if (!title || !author || !dateV || !desc) { showFeedback('reportFeedback','❌ 모든 항목을 입력해주세요.','#c62828'); return; }
+    if (!isLink && !selectedFile)             { showFeedback('reportFeedback','❌ PDF 파일을 선택해주세요.','#c62828'); return; }
+    if (isLink && !link)                      { showFeedback('reportFeedback','❌ 링크를 입력해주세요.','#c62828'); return; }
+    var fileUrl = isLink ? link : URL.createObjectURL(selectedFile);
+    reports.unshift({id:Date.now(), category:cat, title:title, desc:desc, author:author, date:dateV.replace('-','.'), file:fileUrl});
+    saveReportsData(); renderReports('all'); resetFilterBtns();
+    ['rTitle','rAuthor','rDate','rDesc','rLink'].forEach(function(id){ document.getElementById(id).value=''; });
     clearFile();
-    showFeedback('✅ 보고서가 등록되었습니다!', '#2e7d32');
+    showFeedback('reportFeedback','✅ 보고서가 등록되었습니다!','#2e7d32');
   }
 
-  function showFeedback(msg, color) {
-    const el = document.getElementById('submitFeedback');
+  function showFeedback(elId, msg, color) {
+    var el = document.getElementById(elId);
     el.textContent = msg; el.style.color = color;
-    setTimeout(() => el.textContent = '', 4000);
+    setTimeout(function(){ el.textContent = ''; }, 4000);
   }
 
-  // ─── 네비 스크롤 하이라이트 ───
-  window.addEventListener('scroll', () => {
-    let cur = 'home';
-    ['home','about','reports','members','news'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - 100) cur = id;
-    });
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+  /* ── 네비 스크롤 ── */
+  window.addEventListener('scroll', function(){
+    var cur = 'home';
+    var ids = ['home','about','reports','members','news'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && window.scrollY >= el.offsetTop - 100) cur = ids[i];
+    }
+    var links = document.querySelectorAll('.nav-links a');
+    for (var j = 0; j < links.length; j++) {
+      links[j].classList.toggle('active', links[j].getAttribute('href') === '#' + cur);
+    }
   });
 
   renderReports(); renderMembers(); renderNews();
+
 </script>
 </body>
+</html>
 </html>
