@@ -1,3 +1,6 @@
+Safe website v6 · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -14,39 +17,43 @@
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* ── ADMIN BAR ── */
+    .admin-bar { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: var(--primary); color: white; padding: 9px 5%; font-size: 13px; font-weight: 500; z-index: 99; align-items: center; gap: 12px; }
+    .admin-bar.visible { display: flex; }
+    .admin-bar-badge { background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .admin-bar span.hint { opacity: 0.75; font-size: 12px; }
+    .admin-bar-logout { margin-left: auto; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .admin-bar-logout:hover { background: rgba(255,255,255,0.28); }
+
+    /* ── EDITABLE ── */
+    body.admin-mode [data-editable] { outline: 2px dashed rgba(107,140,218,0.55); outline-offset: 3px; border-radius: 4px; cursor: text; }
+    body.admin-mode [data-editable]:hover { outline-color: var(--accent); background: rgba(107,140,218,0.06); }
+    body.admin-mode [data-editable]:focus { outline: 2px solid var(--primary); background: rgba(107,140,218,0.1); }
+
+    /* ── NAV ── */
     nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; z-index: 100; }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .logo-mark { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; }
     .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .logo-text .brand { font-weight: 700; font-size: 17px; color: var(--primary); }
     .logo-text .sub { font-size: 10px; color: var(--text-sub); }
-    .nav-links { display: flex; gap: 8px; }
-    .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-sub); padding: 7px 14px; border-radius: 8px; transition: all 0.2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
+    .nav-center { display: flex; gap: 8px; }
+    .nav-center a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-sub); padding: 7px 14px; border-radius: 8px; transition: all 0.2s; }
+    .nav-center a:hover, .nav-center a.active { color: var(--primary); background: var(--accent-soft); }
+    .nav-admin-btn { display: flex; align-items: center; gap: 6px; background: none; border: 1.5px solid var(--border); color: var(--text-sub); font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
+    .nav-admin-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .nav-admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
 
-    /* ADMIN BAR */
-    .admin-bar { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: var(--primary); color: white; padding: 9px 5%; font-size: 13px; font-weight: 500; z-index: 99; align-items: center; gap: 12px; }
-    .admin-bar.visible { display: flex; }
-    .admin-bar-badge { background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-    .admin-bar span.hint { opacity: 0.75; font-size: 12px; }
-    .admin-bar button { margin-left: auto; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .admin-bar button:hover { background: rgba(255,255,255,0.28); }
-
-    /* EDITABLE HIGHLIGHT */
-    body.admin-mode [data-editable] { outline: 2px dashed rgba(107,140,218,0.55); outline-offset: 3px; border-radius: 4px; cursor: text; min-width: 20px; display: inline-block; }
-    body.admin-mode [data-editable]:hover { outline-color: var(--accent); background: rgba(107,140,218,0.06); }
-    body.admin-mode [data-editable]:focus { outline: 2px solid var(--primary); background: rgba(107,140,218,0.1); }
-
-    /* HERO */
+    /* ── HERO ── */
     #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%); padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center; }
     .hero-inner { max-width: 760px; }
     .hero-badge { display: inline-block; background: var(--accent-soft); color: var(--primary-light); font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
     .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
     .hero-inner h1 span { background: linear-gradient(90deg, var(--primary-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-desc { font-size: 1rem; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; margin: 0 auto 40px; }
-    @media (max-width: 720px) { .hero-desc { white-space: normal; font-size: 0.93rem; } }
+    .hero-desc { font-size: 1rem; color: var(--text-sub); max-width: 580px; margin: 0 auto 40px; }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; display: inline-block; }
+    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; display: inline-block; font-family: inherit; }
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
     .btn-outline { background: transparent; color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: 1.5px solid var(--border); }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
@@ -55,13 +62,14 @@
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
 
+    /* ── SECTIONS ── */
     section { padding: 100px 5%; }
     .section-header { text-align: center; margin-bottom: 60px; }
     .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
-    /* ABOUT */
+    /* ── ABOUT ── */
     #about { background: var(--white); }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
@@ -72,18 +80,34 @@
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
 
-    /* REPORTS */
+    /* ── REPORTS ── */
     #reports { background: var(--bg); }
+
+    /* 연도 드롭다운 */
+    .year-selector-wrap { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+    .year-selector-label { font-size: 13px; font-weight: 600; color: var(--text-sub); }
+    .year-dropdown-wrap { position: relative; display: inline-block; }
+    .year-dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 15px; font-weight: 700; color: var(--primary); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; min-width: 120px; justify-content: space-between; }
+    .year-dropdown-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .year-dropdown-btn .arrow { font-size: 11px; color: var(--text-sub); transition: transform 0.2s; }
+    .year-dropdown-btn.open .arrow { transform: rotate(180deg); }
+    .year-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; max-height: 240px; overflow-y: auto; display: none; min-width: 120px; }
+    .year-dropdown-menu.open { display: block; }
+    .year-option { padding: 11px 16px; font-size: 14px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.15s; margin: 3px; border-radius: 8px; }
+    .year-option:hover { background: var(--accent-soft); color: var(--primary); }
+    .year-option.active { background: var(--primary); color: white; }
+
+    /* 분야 필터 */
     .reports-filter { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
-    .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; }
+    .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
     .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
     .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
     .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
     .tag-equity { background: #e6f4ea; color: #2e7d32; }
-    .tag-fixed { background: #fce8e6; color: #c62828; }
     .tag-industry { background: #fff3e0; color: #e65100; }
     .report-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .report-card .card-desc { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 16px; }
@@ -92,14 +116,39 @@
     .reports-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; grid-column: 1/-1; background: white; border-radius: 14px; border: 1px solid var(--border); }
     .admin-card-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; }
     .admin-card-btns.visible { display: flex; }
-    .card-edit-btn, .card-del-btn { border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .card-edit-btn, .card-del-btn { border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
     .card-edit-btn { background: var(--accent-soft); color: var(--primary); }
     .card-edit-btn:hover { background: var(--accent); color: white; }
     .card-del-btn { background: #fce8e6; color: #c62828; }
     .card-del-btn:hover { background: #c62828; color: white; }
-    .admin-toggle-area { text-align: center; margin-top: 48px; }
-    .admin-toggle-btn { background: none; border: 1.5px solid var(--border); color: var(--text-sub); font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
-    .admin-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ADMIN PANEL */
+    .admin-panel { display: none; max-width: 700px; margin: 40px auto 0; background: white; border: 1.5px solid var(--accent); border-radius: 16px; padding: 32px; }
+    .admin-panel.open { display: block; }
+    .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .admin-panel-header h4 { font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .admin-badge { font-size: 11px; background: var(--accent-soft); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+    .upload-type-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+    .upload-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
+    .upload-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-soft); }
+    .upload-zone .uz-icon { font-size: 2rem; margin-bottom: 8px; }
+    .upload-zone p { font-size: 0.88rem; color: var(--text-sub); }
+    .file-preview { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-soft); border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--primary); }
+    .fp-remove { margin-left: auto; cursor: pointer; color: var(--text-sub); font-size: 18px; }
+    .github-tip { font-size: 12px; color: var(--text-sub); margin: 8px 0 12px; padding: 10px 14px; background: #fffbea; border-radius: 8px; border-left: 3px solid #f0c040; }
+    .submit-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 6px; font-family: inherit; }
+    .submit-btn:hover { background: var(--primary-light); }
+    .submit-feedback { text-align: center; font-size: 13px; margin-top: 10px; min-height: 20px; }
+
+    /* FORM */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .form-group label { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
+    .form-group input, .form-group select, .form-group textarea { padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: white; }
+    .form-group textarea { min-height: 70px; resize: vertical; }
 
     /* MODAL */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
@@ -112,64 +161,38 @@
     .modal input[type="password"]:focus { border-color: var(--accent); }
     .auth-error { font-size: 13px; color: #c62828; margin-top: 8px; min-height: 18px; }
     .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-    .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+    .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: inherit; }
     .btn-cancel { background: var(--bg); border: 1.5px solid var(--border) !important; color: var(--text-sub); }
     .btn-confirm { background: var(--primary); color: white; }
     .btn-confirm:hover { background: var(--primary-light); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-    .form-group label { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
-    .form-group input, .form-group select, .form-group textarea { padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: white; }
-    .form-group textarea { min-height: 70px; resize: vertical; }
 
-    /* ADMIN PANEL */
-    .admin-panel { display: none; max-width: 700px; margin: 32px auto 0; background: white; border: 1.5px solid var(--accent); border-radius: 16px; padding: 32px; }
-    .admin-panel.open { display: block; }
-    .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .admin-panel-header h4 { font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-    .admin-badge { font-size: 11px; background: var(--accent-soft); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
-    .upload-type-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
-    .upload-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; }
-    .upload-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); }
-    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-soft); }
-    .upload-zone .uz-icon { font-size: 2rem; margin-bottom: 8px; }
-    .upload-zone p { font-size: 0.88rem; color: var(--text-sub); }
-    .file-preview { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-soft); border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--primary); }
-    .fp-remove { margin-left: auto; cursor: pointer; color: var(--text-sub); font-size: 18px; }
-    .github-tip { font-size: 12px; color: var(--text-sub); margin: 8px 0 12px; padding: 10px 14px; background: #fffbea; border-radius: 8px; border-left: 3px solid #f0c040; }
-    .submit-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
-    .submit-btn:hover { background: var(--primary-light); }
-    .submit-feedback { text-align: center; font-size: 13px; margin-top: 10px; min-height: 20px; }
-
-    /* MEMBERS — 가로 스크롤 */
+    /* ── MEMBERS — 가로 스크롤 ── */
     #members { background: var(--white); }
-    .members-section-top { display: flex; align-items: flex-end; justify-content: space-between; max-width: 1100px; margin: 0 auto 32px; flex-wrap: wrap; gap: 16px; }
-    .members-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    .members-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .members-scroll-wrap::-webkit-scrollbar { height: 6px; }
-    .members-scroll-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    .members-grid { display: flex; gap: 20px; width: max-content; }
+    .members-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
+    .members-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+    .members-grid { display: flex; gap: 20px; width: max-content; padding: 4px 2px; }
     .member-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; width: 200px; flex-shrink: 0; position: relative; }
     .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
     .member-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: white; margin: 0 auto 16px; }
     .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
     .member-role { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
-    .member-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .member-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; margin: 0 auto 32px; }
     .member-add-btn.visible { display: block; }
     .member-add-btn:hover { background: var(--primary-light); }
 
-    /* NEWS — 가로 스크롤 */
+    /* ── NEWS — 가로 스크롤 ── */
     #news { background: var(--bg); }
-    .news-section-top { display: flex; align-items: flex-end; justify-content: space-between; max-width: 1100px; margin: 0 auto 32px; flex-wrap: wrap; gap: 16px; }
-    .news-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .news-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; margin: 0 auto 32px; }
     .news-add-btn.visible { display: block; }
     .news-add-btn:hover { background: var(--primary-light); }
-    .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .news-scroll-wrap::-webkit-scrollbar { height: 6px; }
-    .news-scroll-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    .news-grid { display: flex; gap: 20px; width: max-content; }
+    .news-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
+    .news-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+    .news-grid { display: flex; gap: 20px; width: max-content; padding: 4px 2px; }
     .news-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; display: flex; flex-direction: column; width: 320px; flex-shrink: 0; position: relative; }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
     .news-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
@@ -186,6 +209,7 @@
     .news-admin-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; z-index: 1; }
     .news-admin-btns.visible { display: flex; }
 
+    /* ── FOOTER ── */
     footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; }
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .footer-brand .brand-name { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
@@ -195,7 +219,13 @@
     .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; margin-bottom: 8px; transition: color 0.2s; word-break: break-all; }
     .footer-col a:hover { color: white; }
     .footer-bottom { max-width: 1100px; margin: 24px auto 0; display: flex; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px; }
-    @media (max-width: 768px) { .about-grid, .form-row { grid-template-columns: 1fr; } .nav-links { display: none; } .hero-stats { gap: 24px; } .footer-inner, .footer-links { flex-direction: column; gap: 20px; } }
+
+    @media (max-width: 768px) {
+      .about-grid, .form-row { grid-template-columns: 1fr; }
+      .nav-center { display: none; }
+      .hero-stats { gap: 24px; }
+      .footer-inner, .footer-links { flex-direction: column; gap: 20px; }
+    }
   </style>
 </head>
 <body>
@@ -204,7 +234,7 @@
 <div class="admin-bar" id="adminBar">
   <span class="admin-bar-badge">ADMIN MODE</span>
   <span class="hint">파란 점선 텍스트를 클릭해서 바로 수정하세요 — 자동 저장됩니다.</span>
-  <button onclick="logout()">로그아웃</button>
+  <button class="admin-bar-logout" onclick="logout()">로그아웃</button>
 </div>
 
 <nav>
@@ -212,19 +242,29 @@
     <div class="logo-mark">SF</div>
     <div class="logo-text"><span class="brand">SAFE</span><span class="sub">Sogang Analysis of Finance &amp; Economics</span></div>
   </a>
-  <div class="nav-links">
-    <a href="#about">소개</a><a href="#reports">보고서</a><a href="#members">멤버</a><a href="#news">공지</a>
+  <div class="nav-center">
+    <a href="#about">소개</a>
+    <a href="#reports">보고서</a>
+    <a href="#members">멤버</a>
+    <a href="#news">공지</a>
   </div>
+  <button class="nav-admin-btn" id="navAdminBtn" onclick="openAuthModal()">
+    <span id="navLockIcon">🔒</span><span id="navAdminLabel">관리자</span>
+  </button>
 </nav>
 
+<!-- ── HOME ── -->
 <section id="home">
   <div class="hero-inner">
-    <div class="hero-badge">Sogang University · Finance &amp; Economics</div>
-    <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
+    <div class="hero-badge" data-editable data-key="hero_badge">Sogang University · Finance &amp; Economics</div>
+    <h1>
+      <span data-editable data-key="hero_title1">Analyze.</span><br/>
+      <span data-editable data-key="hero_title2">Understand. Invest.</span>
+    </h1>
     <p class="hero-desc" data-editable data-key="hero_desc">서강대학교 경제·금융 분석 학회 SAFE는 거시경제, 통화 정책, 산업·기업 분석을 중심으로 깊이 있는 연구와 리서치 라이팅을 통해 금융 문해력을 키웁니다.</p>
     <div class="hero-btns">
-      <a href="#reports" class="btn-primary">리서치 보기 →</a>
-      <a href="#about" class="btn-outline">학회 소개</a>
+      <a href="#reports" class="btn-primary" data-editable data-key="hero_btn1">리서치 보기 →</a>
+      <a href="#about" class="btn-outline" data-editable data-key="hero_btn2">학회 소개</a>
     </div>
     <div class="hero-stats">
       <div class="stat">
@@ -243,9 +283,10 @@
   </div>
 </section>
 
+<!-- ── ABOUT ── -->
 <section id="about">
   <div class="section-header">
-    <div class="section-tag">About SAFE</div>
+    <div class="section-tag">소개</div>
     <h2 data-editable data-key="about_h2">우리는 왜 SAFE인가</h2>
     <p data-editable data-key="about_sub">건설적이고 'SAFE'한 투자를 지양하는 학회로서 금융 시장을 분석하고 경제 현상을 탐구하며, 함께 성장하는 학술 공동체</p>
   </div>
@@ -264,35 +305,50 @@
   </div>
 </section>
 
+<!-- ── REPORTS ── -->
 <section id="reports">
   <div class="section-header">
-    <div class="section-tag">Research</div>
+    <div class="section-tag">보고서</div>
     <h2>리서치 &amp; 보고서</h2>
     <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
   </div>
+
+  <div class="year-selector-wrap">
+    <span class="year-selector-label">연도</span>
+    <div class="year-dropdown-wrap" id="yearDropdownWrap">
+      <button class="year-dropdown-btn" id="yearDropdownBtn" onclick="toggleYearDropdown()">
+        <span id="yearDropdownLabel">전체</span>
+        <span class="arrow">▾</span>
+      </button>
+      <div class="year-dropdown-menu" id="yearDropdownMenu"></div>
+    </div>
+  </div>
+
   <div class="reports-filter">
-    <button class="filter-btn active" onclick="filterReports('all',this)">전체</button>
-    <button class="filter-btn" onclick="filterReports('macro',this)">거시경제</button>
-    <button class="filter-btn" onclick="filterReports('monetary',this)">통화정책·채권</button>
-    <button class="filter-btn" onclick="filterReports('industry',this)">산업 분석</button>
-    <button class="filter-btn" onclick="filterReports('equity',this)">기업 분석</button>
+    <button class="filter-btn active" onclick="filterReports('all', this)">전체</button>
+    <button class="filter-btn" onclick="filterReports('macro', this)">거시경제</button>
+    <button class="filter-btn" onclick="filterReports('industry', this)">산업분석</button>
+    <button class="filter-btn" onclick="filterReports('equity', this)">기업분석</button>
   </div>
+
   <div class="reports-grid" id="reportsGrid"></div>
-  <div class="admin-toggle-area">
-    <button class="admin-toggle-btn" id="adminToggleBtn" onclick="openAuthModal()">🔒 관리자 로그인</button>
-  </div>
+
   <div class="admin-panel" id="adminPanel">
     <div class="admin-panel-header">
       <h4>📋 보고서 업로드 <span class="admin-badge">ADMIN</span></h4>
     </div>
     <div class="upload-type-tabs">
-      <button class="upload-tab active" onclick="switchTab('file',this)">📄 PDF 직접 업로드</button>
-      <button class="upload-tab" onclick="switchTab('link',this)">🔗 링크로 첨부</button>
+      <button class="upload-tab active" onclick="switchTab('file', this)">📄 PDF 직접 업로드</button>
+      <button class="upload-tab" onclick="switchTab('link', this)">🔗 링크로 첨부</button>
     </div>
     <div class="form-row">
       <div class="form-group"><label>보고서 제목</label><input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/></div>
       <div class="form-group"><label>카테고리</label>
-        <select id="rCategory"><option value="macro">거시경제</option><option value="monetary">통화정책·채권</option><option value="industry">산업 분석</option><option value="equity">기업 분석</option></select>
+        <select id="rCategory">
+          <option value="macro">거시경제</option>
+          <option value="industry">산업분석</option>
+          <option value="equity">기업분석</option>
+        </select>
       </div>
     </div>
     <div class="form-row">
@@ -339,7 +395,11 @@
     <div class="form-row">
       <div class="form-group"><label>제목</label><input type="text" id="eTitle"/></div>
       <div class="form-group"><label>카테고리</label>
-        <select id="eCategory"><option value="macro">거시경제</option><option value="monetary">통화정책·채권</option><option value="industry">산업 분석</option><option value="equity">기업 분석</option></select>
+        <select id="eCategory">
+          <option value="macro">거시경제</option>
+          <option value="industry">산업분석</option>
+          <option value="equity">기업분석</option>
+        </select>
       </div>
     </div>
     <div class="form-row">
@@ -389,28 +449,34 @@
   </div>
 </div>
 
+<!-- ── MEMBERS ── -->
 <section id="members" style="padding-bottom:80px;">
-  <div class="members-section-top">
-    <div class="section-header" style="margin-bottom:0;text-align:left;">
-      <div class="section-tag">Team</div>
-      <h2>임원 소개</h2>
-      <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
-    </div>
+  <div class="section-header">
+    <div class="section-tag">멤버</div>
+    <h2>임원 소개</h2>
+    <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
+  </div>
+  <div style="text-align:center; margin: -20px 0 32px;">
     <button class="member-add-btn" id="memberAddBtn" onclick="openMemberModal()">+ 멤버 추가</button>
   </div>
-  <div class="members-scroll-wrap"><div class="members-grid" id="membersGrid"></div></div>
+  <div class="members-scroll-wrap">
+    <div class="members-grid" id="membersGrid"></div>
+  </div>
 </section>
 
+<!-- ── NEWS ── -->
 <section id="news" style="padding-bottom:80px;">
-  <div class="news-section-top">
-    <div class="section-header" style="margin-bottom:0;text-align:left;">
-      <div class="section-tag">Notice</div>
-      <h2>공지사항 &amp; 뉴스</h2>
-      <p>학회의 최신 소식과 공지를 확인하세요.</p>
-    </div>
+  <div class="section-header">
+    <div class="section-tag">공지</div>
+    <h2>공지사항 &amp; 뉴스</h2>
+    <p>학회의 최신 소식과 공지를 확인하세요.</p>
+  </div>
+  <div style="text-align:center; margin: -20px 0 32px;">
     <button class="news-add-btn" id="newsAddBtn" onclick="openNewsModal()">+ 공지 작성</button>
   </div>
-  <div class="news-scroll-wrap"><div class="news-grid" id="newsGrid"></div></div>
+  <div class="news-scroll-wrap">
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
 </section>
 
 <footer>
@@ -423,7 +489,7 @@
       <div class="footer-col"><h5>학회</h5><a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a></div>
       <div class="footer-col"><h5>리서치</h5><a href="#reports">전체 보고서</a><a href="#reports">거시경제</a><a href="#reports">기업 분석</a></div>
       <div class="footer-col"><h5>연락처</h5>
-        <a href="mailto:safe.official.sogang@gmail.com">safe.official.sogang@gmail.com</a>
+        <a href="mailto:safe.official.sogang&#64;gmail.com">safe.official.sogang&#64;gmail.com</a>
         <a href="https://instagram.com/safe._.official" target="_blank">Instagram: @safe._.official</a>
       </div>
     </div>
@@ -435,259 +501,483 @@
 </footer>
 
 <script>
-  var ADMIN_PASSWORD = 'safesogang20250318';
-  var TYPE_LABELS = {'type-notice':'공지','type-recruit':'모집','type-event':'이벤트'};
+var ADMIN_PASSWORD = 'safesogang20250318';
+var TYPE_LABELS = {'type-notice':'공지','type-recruit':'모집','type-event':'이벤트'};
 
-  var reports   = JSON.parse(localStorage.getItem('safe_reports') || '[]');
-  var members   = JSON.parse(localStorage.getItem('safe_members') || 'null');
-  if (!members) members = [{id:1,name:'조영진',role:'설립자, 1·2기 회장',dept:'경영학과 21',initial:'조'}];
-  var storedNews  = localStorage.getItem('safe_news');
-  var newsItems = storedNews ? JSON.parse(storedNews) : [
-    {id:1,typeClass:'type-recruit',title:'SAFE 2기 정기 모집 공고',desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.',date:'2026.03.05, 11:59까지',link:null},
-    {id:2,typeClass:'type-recruit',title:'지원서 다운로드',desc:'아래 버튼을 눌러 지원서를 다운로드하세요.',date:'2026.03.05, 11:59까지',link:'https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--'}
-  ];
-  var textData = JSON.parse(localStorage.getItem('safe_texts') || '{}');
+var reports = JSON.parse(localStorage.getItem('safe_reports') || '[]');
+var members = JSON.parse(localStorage.getItem('safe_members') || 'null');
+if (!members) {
+  members = [{id:1, name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조'}];
+}
+var storedNews = localStorage.getItem('safe_news');
+var newsItems = storedNews ? JSON.parse(storedNews) : [
+  {id:1, typeClass:'type-recruit', title:'SAFE 2기 정기 모집 공고', desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.', date:'2026.03.05, 11:59까지', link:null},
+  {id:2, typeClass:'type-recruit', title:'지원서 다운로드', desc:'아래 버튼을 눌러 지원서를 다운로드하세요.', date:'2026.03.05, 11:59까지', link:'https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--'}
+];
+var textData = JSON.parse(localStorage.getItem('safe_texts') || '{}');
 
-  var isAdmin = false;
-  var editingReportId = null, editingMemberId = null, editingNewsId = null;
+var isAdmin = false;
+var editingReportId = null;
+var editingMemberId = null;
+var editingNewsId = null;
+var activeYear = 'all';
+var activeFilter = 'all';
 
-  var CATEGORY_MAP = {
-    macro:{tag:'거시경제',cls:'tag-macro'}, monetary:{tag:'통화정책·채권',cls:'tag-fixed'},
-    industry:{tag:'산업 분석',cls:'tag-industry'}, equity:{tag:'기업 분석',cls:'tag-equity'}
-  };
+var CATEGORY_MAP = {
+  macro:    {tag:'거시경제', cls:'tag-macro'},
+  industry: {tag:'산업분석', cls:'tag-industry'},
+  equity:   {tag:'기업분석', cls:'tag-equity'}
+};
 
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-  // ── 텍스트 편집 ──
-  function applyTextData(){
-    var els = document.querySelectorAll('[data-editable]');
-    for(var i=0;i<els.length;i++){
-      var key = els[i].getAttribute('data-key');
-      if(textData[key] !== undefined) els[i].textContent = textData[key];
-    }
+/* ── 텍스트 편집 ── */
+function applyTextData() {
+  var els = document.querySelectorAll('[data-editable]');
+  for (var i = 0; i < els.length; i++) {
+    var key = els[i].getAttribute('data-key');
+    if (textData[key] !== undefined) els[i].textContent = textData[key];
   }
-  function enableEditMode(){
-    var els = document.querySelectorAll('[data-editable]');
-    for(var i=0;i<els.length;i++){
-      els[i].setAttribute('contenteditable','true');
-      (function(el){
-        el.addEventListener('blur', function(){
-          var key = el.getAttribute('data-key');
-          textData[key] = el.textContent;
-          try{ localStorage.setItem('safe_texts', JSON.stringify(textData)); }catch(e){}
-        });
-      })(els[i]);
-    }
-  }
-  function disableEditMode(){
-    var els = document.querySelectorAll('[data-editable]');
-    for(var i=0;i<els.length;i++) els[i].removeAttribute('contenteditable');
-  }
+}
 
-  // ── 렌더 ──
-  function renderReports(filter){
-    filter = filter||'all';
-    var grid = document.getElementById('reportsGrid');
-    var list = filter==='all' ? reports : reports.filter(function(r){return r.category===filter;});
-    if(!list.length){grid.innerHTML='<div class="reports-empty">아직 등록된 보고서가 없습니다.</div>';return;}
-    var html='';
-    for(var i=0;i<list.length;i++){
-      var r=list[i], c=CATEGORY_MAP[r.category]||{tag:r.category,cls:'tag-macro'};
-      var btns = isAdmin ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openReportEdit('+r.id+')">✏️ 수정</button><button class="card-del-btn" onclick="deleteReport('+r.id+')">🗑 삭제</button></div>' : '';
-      html += '<div class="report-card">'+btns+'<span class="report-tag '+c.cls+'">'+c.tag+'</span>';
-      html += '<h3>'+esc(r.title)+'</h3><p class="card-desc">'+esc(r.desc)+'</p>';
-      html += '<div class="report-meta"><span>✍️ '+esc(r.author)+' · '+esc(r.date)+'</span><a href="'+esc(r.file)+'" class="report-dl" target="_blank">PDF ↓</a></div></div>';
-    }
-    grid.innerHTML = html;
+function enableEditMode() {
+  var els = document.querySelectorAll('[data-editable]');
+  for (var i = 0; i < els.length; i++) {
+    els[i].setAttribute('contenteditable', 'true');
+    (function(el) {
+      el.addEventListener('blur', function() {
+        var key = el.getAttribute('data-key');
+        textData[key] = el.textContent;
+        try { localStorage.setItem('safe_texts', JSON.stringify(textData)); } catch(e) {}
+      });
+    })(els[i]);
   }
-  function renderMembers(){
-    var html='';
-    for(var i=0;i<members.length;i++){
-      var m=members[i];
-      var btns = isAdmin ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit('+m.id+')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember('+m.id+')">🗑 삭제</button></div>' : '';
-      html += '<div class="member-card">'+btns+'<div class="member-avatar">'+esc(m.initial)+'</div>';
-      html += '<h4>'+esc(m.name)+'</h4><div class="member-role">'+esc(m.role)+'</div><p>'+esc(m.dept)+'</p></div>';
-    }
-    document.getElementById('membersGrid').innerHTML = html;
-    var btn=document.getElementById('memberAddBtn');
-    if(isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
-  }
-  function renderNews(){
-    var html='';
-    for(var i=0;i<newsItems.length;i++){
-      var n=newsItems[i], lbl=TYPE_LABELS[n.typeClass]||'공지';
-      var btns = isAdmin ? '<div class="news-admin-btns visible"><button class="card-edit-btn" onclick="openNewsEdit('+n.id+')">✏️ 수정</button><button class="card-del-btn" onclick="deleteNews('+n.id+')">🗑 삭제</button></div>' : '';
-      html += '<div class="news-card">'+btns;
-      html += '<div class="news-header"><span class="news-type '+n.typeClass+'">'+lbl+'</span><span class="news-date">'+esc(n.date)+'</span></div>';
-      html += '<div class="news-body"><h3>'+esc(n.title)+'</h3><p>'+esc(n.desc)+'</p>';
-      if(n.link) html += '<a href="'+esc(n.link)+'" class="news-dl-btn" target="_blank">📎 다운로드</a>';
-      html += '</div></div>';
-    }
-    document.getElementById('newsGrid').innerHTML = html;
-    var btn=document.getElementById('newsAddBtn');
-    if(isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
-  }
+}
 
-  function filterReports(cat,btn){
-    var btns=document.querySelectorAll('.filter-btn');
-    for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
-    btn.classList.add('active'); renderReports(cat);
+function disableEditMode() {
+  var els = document.querySelectorAll('[data-editable]');
+  for (var i = 0; i < els.length; i++) {
+    els[i].removeAttribute('contenteditable');
   }
-  function resetFilterBtns(){
-    var btns=document.querySelectorAll('.filter-btn');
-    for(var i=0;i<btns.length;i++) btns[i].classList.toggle('active',i===0);
-  }
+}
 
-  // ── 저장 ──
-  function saveReportsData(){ try{localStorage.setItem('safe_reports',JSON.stringify(reports.map(function(r){return Object.assign({},r,{file:r.file&&r.file.indexOf('blob:')===0?'#':r.file});})));}catch(e){} }
-  function saveMembersData(){ try{localStorage.setItem('safe_members',JSON.stringify(members));}catch(e){} }
-  function saveNewsData(){    try{localStorage.setItem('safe_news',   JSON.stringify(newsItems));}catch(e){} }
+/* ── 연도 드롭다운 ── */
+function getYears() {
+  var set = {};
+  for (var i = 0; i < reports.length; i++) {
+    var y = reports[i].date ? reports[i].date.split('.')[0] : null;
+    if (y) set[y] = true;
+  }
+  return Object.keys(set).sort(function(a,b){ return b - a; });
+}
 
-  // ── 보고서 CRUD ──
-  function deleteReport(id){ if(!confirm('이 보고서를 삭제할까요?')) return; reports=reports.filter(function(r){return r.id!==id;}); saveReportsData(); renderReports('all'); resetFilterBtns(); }
-  function openReportEdit(id){
-    var r=null; for(var i=0;i<reports.length;i++) if(reports[i].id===id){r=reports[i];break;}
-    if(!r) return; editingReportId=id;
-    document.getElementById('eTitle').value=r.title; document.getElementById('eCategory').value=r.category;
-    document.getElementById('eAuthor').value=r.author; document.getElementById('eDate').value=r.date.replace('.','-');
-    document.getElementById('eDesc').value=r.desc;
-    var f=r.file; document.getElementById('eLink').value=(!f||f==='#'||f.indexOf('blob:')===0)?'':f;
-    document.getElementById('editReportModal').classList.add('open');
+function renderYearDropdown() {
+  var years = getYears();
+  var menu = document.getElementById('yearDropdownMenu');
+  var html = '<div class="year-option ' + (activeYear === 'all' ? 'active' : '') + '" onclick="selectYear(\'all\')">전체</div>';
+  for (var i = 0; i < years.length; i++) {
+    html += '<div class="year-option ' + (activeYear === years[i] ? 'active' : '') + '" onclick="selectYear(\'' + years[i] + '\')">' + years[i] + '년</div>';
   }
-  function saveReportEdit(){
-    var idx=-1; for(var i=0;i<reports.length;i++) if(reports[i].id===editingReportId){idx=i;break;}
-    if(idx===-1) return;
-    var newLink=document.getElementById('eLink').value.trim();
-    reports[idx]={id:reports[idx].id,category:document.getElementById('eCategory').value,title:document.getElementById('eTitle').value.trim(),desc:document.getElementById('eDesc').value.trim(),author:document.getElementById('eAuthor').value.trim(),date:document.getElementById('eDate').value.replace('-','.'),file:newLink||reports[idx].file};
-    saveReportsData(); renderReports('all'); resetFilterBtns(); closeModal('editReportModal');
-  }
+  menu.innerHTML = html;
+  document.getElementById('yearDropdownLabel').textContent = (activeYear === 'all') ? '전체' : activeYear + '년';
+}
 
-  // ── 멤버 CRUD ──
-  function deleteMember(id){ if(!confirm('이 멤버를 삭제할까요?')) return; members=members.filter(function(m){return m.id!==id;}); saveMembersData(); renderMembers(); }
-  function openMemberModal(){
-    editingMemberId=null;
-    document.getElementById('memberModalTitle').textContent='👤 멤버 추가';
-    document.getElementById('mName').value=''; document.getElementById('mRole').value=''; document.getElementById('mDept').value='';
-    document.getElementById('editMemberModal').classList.add('open');
-  }
-  function openMemberEdit(id){
-    var m=null; for(var i=0;i<members.length;i++) if(members[i].id===id){m=members[i];break;}
-    if(!m) return; editingMemberId=id;
-    document.getElementById('memberModalTitle').textContent='✏️ 멤버 수정';
-    document.getElementById('mName').value=m.name; document.getElementById('mRole').value=m.role; document.getElementById('mDept').value=m.dept;
-    document.getElementById('editMemberModal').classList.add('open');
-  }
-  function saveMember(){
-    var name=document.getElementById('mName').value.trim(),role=document.getElementById('mRole').value.trim(),dept=document.getElementById('mDept').value.trim();
-    if(!name||!role||!dept){alert('이름, 역할, 학과를 모두 입력해주세요.');return;}
-    var item={id:editingMemberId||Date.now(),name:name,role:role,dept:dept,initial:name.charAt(0)};
-    if(editingMemberId){ for(var i=0;i<members.length;i++) if(members[i].id===editingMemberId){members[i]=item;break;} }
-    else members.push(item);
-    saveMembersData(); renderMembers(); closeModal('editMemberModal');
-  }
+function toggleYearDropdown() {
+  var btn = document.getElementById('yearDropdownBtn');
+  var menu = document.getElementById('yearDropdownMenu');
+  var isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
 
-  // ── 공지 CRUD ──
-  function deleteNews(id){ if(!confirm('이 공지를 삭제할까요?')) return; newsItems=newsItems.filter(function(n){return n.id!==id;}); saveNewsData(); renderNews(); }
-  function openNewsModal(){
-    editingNewsId=null;
-    document.getElementById('newsModalTitle').textContent='📢 공지 작성';
-    document.getElementById('nType').value='type-notice'; document.getElementById('nDate').value='';
-    document.getElementById('nTitle').value=''; document.getElementById('nDesc').value=''; document.getElementById('nLink').value='';
-    document.getElementById('editNewsModal').classList.add('open');
-  }
-  function openNewsEdit(id){
-    var n=null; for(var i=0;i<newsItems.length;i++) if(newsItems[i].id===id){n=newsItems[i];break;}
-    if(!n) return; editingNewsId=id;
-    document.getElementById('newsModalTitle').textContent='✏️ 공지 수정';
-    document.getElementById('nType').value=n.typeClass; document.getElementById('nDate').value=n.date;
-    document.getElementById('nTitle').value=n.title; document.getElementById('nDesc').value=n.desc; document.getElementById('nLink').value=n.link||'';
-    document.getElementById('editNewsModal').classList.add('open');
-  }
-  function saveNewsItem(){
-    var title=document.getElementById('nTitle').value.trim(),desc=document.getElementById('nDesc').value.trim(),date=document.getElementById('nDate').value.trim();
-    if(!title||!desc||!date){alert('제목, 내용, 날짜를 모두 입력해주세요.');return;}
-    var item={id:editingNewsId||Date.now(),typeClass:document.getElementById('nType').value,title:title,desc:desc,date:date,link:document.getElementById('nLink').value.trim()||null};
-    if(editingNewsId){ for(var i=0;i<newsItems.length;i++) if(newsItems[i].id===editingNewsId){newsItems[i]=item;break;} }
-    else newsItems.unshift(item);
-    saveNewsData(); renderNews(); closeModal('editNewsModal');
-  }
+function selectYear(y) {
+  activeYear = y;
+  document.getElementById('yearDropdownMenu').classList.remove('open');
+  document.getElementById('yearDropdownBtn').classList.remove('open');
+  renderYearDropdown();
+  renderReports(activeFilter);
+}
 
-  // ── 공통 ──
-  function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-  var overlays=document.querySelectorAll('.modal-overlay');
-  for(var oi=0;oi<overlays.length;oi++) overlays[oi].addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+document.addEventListener('click', function(e) {
+  var wrap = document.getElementById('yearDropdownWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('yearDropdownMenu').classList.remove('open');
+    document.getElementById('yearDropdownBtn').classList.remove('open');
+  }
+});
 
-  // ── 관리자 인증 ──
-  function openAuthModal(){
-    if(isAdmin){document.getElementById('adminPanel').classList.toggle('open');return;}
-    document.getElementById('adminPw').value=''; document.getElementById('authError').textContent='';
-    document.getElementById('authModal').classList.add('open');
-    setTimeout(function(){document.getElementById('adminPw').focus();},100);
-  }
-  function confirmAuth(){
-    if(document.getElementById('adminPw').value===ADMIN_PASSWORD){
-      isAdmin=true; closeModal('authModal');
-      document.getElementById('adminToggleBtn').textContent='🔓 관리자 패널';
-      document.getElementById('adminPanel').classList.add('open');
-      document.getElementById('adminBar').classList.add('visible');
-      document.body.classList.add('admin-mode');
-      enableEditMode();
-      renderReports('all'); renderMembers(); renderNews();
-    } else {
-      document.getElementById('authError').textContent='비밀번호가 올바르지 않습니다.';
-      document.getElementById('adminPw').value=''; document.getElementById('adminPw').focus();
-    }
-  }
-  function logout(){
-    isAdmin=false;
-    document.getElementById('adminPanel').classList.remove('open');
-    document.getElementById('adminToggleBtn').textContent='🔒 관리자 로그인';
-    document.getElementById('adminBar').classList.remove('visible');
-    document.body.classList.remove('admin-mode');
-    disableEditMode();
-    renderReports('all'); renderMembers(); renderNews();
-  }
-
-  // ── 업로드 탭 ──
-  function switchTab(tab,btn){
-    var tabs=document.querySelectorAll('.upload-tab');
-    for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
-    btn.classList.add('active');
-    document.getElementById('tabFile').style.display=tab==='file'?'block':'none';
-    document.getElementById('tabLink').style.display=tab==='link'?'block':'none';
-  }
-  var selectedFile=null;
-  function handleFileSelect(e){if(e.target.files[0])setFile(e.target.files[0]);}
-  function setFile(file){selectedFile=file;document.getElementById('uploadZone').style.display='none';document.getElementById('fileName').textContent=file.name;document.getElementById('filePreview').style.display='flex';}
-  function clearFile(){selectedFile=null;document.getElementById('pdfInput').value='';document.getElementById('uploadZone').style.display='block';document.getElementById('filePreview').style.display='none';}
-  function onDragOver(e){e.preventDefault();document.getElementById('uploadZone').classList.add('dragover');}
-  function onDragLeave(){document.getElementById('uploadZone').classList.remove('dragover');}
-  function onDrop(e){e.preventDefault();onDragLeave();var f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')setFile(f);else showFeedback('reportFeedback','❌ PDF 파일만 업로드 가능합니다.','#c62828');}
-  function submitReport(){
-    var title=document.getElementById('rTitle').value.trim(),cat=document.getElementById('rCategory').value;
-    var author=document.getElementById('rAuthor').value.trim(),dateV=document.getElementById('rDate').value;
-    var desc=document.getElementById('rDesc').value.trim(),isLink=document.getElementById('tabLink').style.display!=='none';
-    var link=document.getElementById('rLink').value.trim();
-    if(!title||!author||!dateV||!desc){showFeedback('reportFeedback','❌ 모든 항목을 입력해주세요.','#c62828');return;}
-    if(!isLink&&!selectedFile){showFeedback('reportFeedback','❌ PDF 파일을 선택해주세요.','#c62828');return;}
-    if(isLink&&!link){showFeedback('reportFeedback','❌ 링크를 입력해주세요.','#c62828');return;}
-    var fileUrl=isLink?link:URL.createObjectURL(selectedFile);
-    reports.unshift({id:Date.now(),category:cat,title:title,desc:desc,author:author,date:dateV.replace('-','.'),file:fileUrl});
-    saveReportsData(); renderReports('all'); resetFilterBtns();
-    ['rTitle','rAuthor','rDate','rDesc','rLink'].forEach(function(id){document.getElementById(id).value='';});
-    clearFile(); showFeedback('reportFeedback','✅ 보고서가 등록되었습니다!','#2e7d32');
-  }
-  function showFeedback(elId,msg,color){var el=document.getElementById(elId);el.textContent=msg;el.style.color=color;setTimeout(function(){el.textContent='';},4000);}
-
-  // ── 네비 스크롤 ──
-  window.addEventListener('scroll',function(){
-    var cur='home',ids=['home','about','reports','members','news'];
-    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&window.scrollY>=el.offsetTop-100)cur=ids[i];}
-    var links=document.querySelectorAll('.nav-links a');
-    for(var j=0;j<links.length;j++) links[j].classList.toggle('active',links[j].getAttribute('href')==='#'+cur);
+/* ── 보고서 렌더 ── */
+function renderReports(filter) {
+  if (filter !== undefined) activeFilter = filter;
+  var grid = document.getElementById('reportsGrid');
+  var list = reports.filter(function(r) {
+    var yearMatch = (activeYear === 'all') || (r.date && r.date.startsWith(activeYear));
+    var catMatch  = (activeFilter === 'all') || (r.category === activeFilter);
+    return yearMatch && catMatch;
   });
+  if (!list.length) {
+    grid.innerHTML = '<div class="reports-empty">아직 등록된 보고서가 없습니다.</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var r = list[i];
+    var c = CATEGORY_MAP[r.category] || {tag: r.category, cls: 'tag-macro'};
+    var btns = isAdmin
+      ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openReportEdit(' + r.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteReport(' + r.id + ')">🗑 삭제</button></div>'
+      : '';
+    html += '<div class="report-card">' + btns + '<span class="report-tag ' + c.cls + '">' + esc(c.tag) + '</span>';
+    html += '<h3>' + esc(r.title) + '</h3><p class="card-desc">' + esc(r.desc) + '</p>';
+    html += '<div class="report-meta"><span>✍️ ' + esc(r.author) + ' · ' + esc(r.date) + '</span><a href="' + esc(r.file) + '" class="report-dl" target="_blank">PDF ↓</a></div></div>';
+  }
+  grid.innerHTML = html;
+}
 
-  applyTextData(); renderReports(); renderMembers(); renderNews();
+function filterReports(cat, btn) {
+  var btns = document.querySelectorAll('.filter-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  btn.classList.add('active');
+  renderReports(cat);
+}
+
+function resetFilterBtns() {
+  var btns = document.querySelectorAll('.filter-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('active', i === 0);
+}
+
+/* ── 멤버 렌더 ── */
+function renderMembers() {
+  var html = '';
+  for (var i = 0; i < members.length; i++) {
+    var m = members[i];
+    var btns = isAdmin
+      ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit(' + m.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember(' + m.id + ')">🗑 삭제</button></div>'
+      : '';
+    html += '<div class="member-card">' + btns + '<div class="member-avatar">' + esc(m.initial) + '</div>';
+    html += '<h4>' + esc(m.name) + '</h4><div class="member-role">' + esc(m.role) + '</div><p>' + esc(m.dept) + '</p></div>';
+  }
+  document.getElementById('membersGrid').innerHTML = html;
+  var btn = document.getElementById('memberAddBtn');
+  if (isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
+}
+
+/* ── 공지 렌더 ── */
+function renderNews() {
+  var html = '';
+  for (var i = 0; i < newsItems.length; i++) {
+    var n = newsItems[i];
+    var lbl = TYPE_LABELS[n.typeClass] || '공지';
+    var btns = isAdmin
+      ? '<div class="news-admin-btns visible"><button class="card-edit-btn" onclick="openNewsEdit(' + n.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteNews(' + n.id + ')">🗑 삭제</button></div>'
+      : '';
+    html += '<div class="news-card">' + btns;
+    html += '<div class="news-header"><span class="news-type ' + n.typeClass + '">' + lbl + '</span><span class="news-date">' + esc(n.date) + '</span></div>';
+    html += '<div class="news-body"><h3>' + esc(n.title) + '</h3><p>' + esc(n.desc) + '</p>';
+    if (n.link) html += '<a href="' + esc(n.link) + '" class="news-dl-btn" target="_blank">📎 다운로드</a>';
+    html += '</div></div>';
+  }
+  if (!html) html = '<div style="padding:40px;color:var(--text-sub);font-size:14px;">등록된 공지가 없습니다.</div>';
+  document.getElementById('newsGrid').innerHTML = html;
+  var btn = document.getElementById('newsAddBtn');
+  if (isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
+}
+
+/* ── 저장 ── */
+function saveReportsData() {
+  try {
+    localStorage.setItem('safe_reports', JSON.stringify(reports.map(function(r) {
+      return Object.assign({}, r, {file: (r.file && r.file.indexOf('blob:') === 0) ? '#' : r.file});
+    })));
+  } catch(e) {}
+}
+function saveMembersData() { try { localStorage.setItem('safe_members', JSON.stringify(members)); } catch(e) {} }
+function saveNewsData()    { try { localStorage.setItem('safe_news',    JSON.stringify(newsItems)); } catch(e) {} }
+
+/* ── 보고서 CRUD ── */
+function deleteReport(id) {
+  if (!confirm('이 보고서를 삭제할까요?')) return;
+  reports = reports.filter(function(r) { return r.id !== id; });
+  saveReportsData();
+  renderYearDropdown();
+  renderReports(activeFilter);
+  resetFilterBtns();
+}
+
+function openReportEdit(id) {
+  var r = null;
+  for (var i = 0; i < reports.length; i++) { if (reports[i].id === id) { r = reports[i]; break; } }
+  if (!r) return;
+  editingReportId = id;
+  document.getElementById('eTitle').value    = r.title;
+  document.getElementById('eCategory').value = r.category;
+  document.getElementById('eAuthor').value   = r.author;
+  document.getElementById('eDate').value     = r.date.replace('.', '-');
+  document.getElementById('eDesc').value     = r.desc;
+  var f = r.file;
+  document.getElementById('eLink').value = (!f || f === '#' || f.indexOf('blob:') === 0) ? '' : f;
+  document.getElementById('editReportModal').classList.add('open');
+}
+
+function saveReportEdit() {
+  var idx = -1;
+  for (var i = 0; i < reports.length; i++) { if (reports[i].id === editingReportId) { idx = i; break; } }
+  if (idx === -1) return;
+  var newLink = document.getElementById('eLink').value.trim();
+  reports[idx] = {
+    id: reports[idx].id,
+    category: document.getElementById('eCategory').value,
+    title:    document.getElementById('eTitle').value.trim(),
+    desc:     document.getElementById('eDesc').value.trim(),
+    author:   document.getElementById('eAuthor').value.trim(),
+    date:     document.getElementById('eDate').value.replace('-', '.'),
+    file:     newLink || reports[idx].file
+  };
+  saveReportsData();
+  renderYearDropdown();
+  renderReports(activeFilter);
+  resetFilterBtns();
+  closeModal('editReportModal');
+}
+
+/* ── 멤버 CRUD ── */
+function deleteMember(id) {
+  if (!confirm('이 멤버를 삭제할까요?')) return;
+  members = members.filter(function(m) { return m.id !== id; });
+  saveMembersData();
+  renderMembers();
+}
+
+function openMemberModal() {
+  editingMemberId = null;
+  document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
+  document.getElementById('mName').value = '';
+  document.getElementById('mRole').value = '';
+  document.getElementById('mDept').value = '';
+  document.getElementById('editMemberModal').classList.add('open');
+}
+
+function openMemberEdit(id) {
+  var m = null;
+  for (var i = 0; i < members.length; i++) { if (members[i].id === id) { m = members[i]; break; } }
+  if (!m) return;
+  editingMemberId = id;
+  document.getElementById('memberModalTitle').textContent = '✏️ 멤버 수정';
+  document.getElementById('mName').value = m.name;
+  document.getElementById('mRole').value = m.role;
+  document.getElementById('mDept').value = m.dept;
+  document.getElementById('editMemberModal').classList.add('open');
+}
+
+function saveMember() {
+  var name = document.getElementById('mName').value.trim();
+  var role = document.getElementById('mRole').value.trim();
+  var dept = document.getElementById('mDept').value.trim();
+  if (!name || !role || !dept) { alert('이름, 역할, 학과를 모두 입력해주세요.'); return; }
+  var item = {id: editingMemberId || Date.now(), name: name, role: role, dept: dept, initial: name.charAt(0)};
+  if (editingMemberId) {
+    for (var i = 0; i < members.length; i++) { if (members[i].id === editingMemberId) { members[i] = item; break; } }
+  } else {
+    members.push(item);
+  }
+  saveMembersData();
+  renderMembers();
+  closeModal('editMemberModal');
+}
+
+/* ── 공지 CRUD ── */
+function deleteNews(id) {
+  if (!confirm('이 공지를 삭제할까요?')) return;
+  newsItems = newsItems.filter(function(n) { return n.id !== id; });
+  saveNewsData();
+  renderNews();
+}
+
+function openNewsModal() {
+  editingNewsId = null;
+  document.getElementById('newsModalTitle').textContent = '📢 공지 작성';
+  document.getElementById('nType').value  = 'type-notice';
+  document.getElementById('nDate').value  = '';
+  document.getElementById('nTitle').value = '';
+  document.getElementById('nDesc').value  = '';
+  document.getElementById('nLink').value  = '';
+  document.getElementById('editNewsModal').classList.add('open');
+}
+
+function openNewsEdit(id) {
+  var n = null;
+  for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === id) { n = newsItems[i]; break; } }
+  if (!n) return;
+  editingNewsId = id;
+  document.getElementById('newsModalTitle').textContent = '✏️ 공지 수정';
+  document.getElementById('nType').value  = n.typeClass;
+  document.getElementById('nDate').value  = n.date;
+  document.getElementById('nTitle').value = n.title;
+  document.getElementById('nDesc').value  = n.desc;
+  document.getElementById('nLink').value  = n.link || '';
+  document.getElementById('editNewsModal').classList.add('open');
+}
+
+function saveNewsItem() {
+  var title = document.getElementById('nTitle').value.trim();
+  var desc  = document.getElementById('nDesc').value.trim();
+  var date  = document.getElementById('nDate').value.trim();
+  if (!title || !desc || !date) { alert('제목, 내용, 날짜를 모두 입력해주세요.'); return; }
+  var item = {
+    id: editingNewsId || Date.now(),
+    typeClass: document.getElementById('nType').value,
+    title: title, desc: desc, date: date,
+    link: document.getElementById('nLink').value.trim() || null
+  };
+  if (editingNewsId) {
+    for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === editingNewsId) { newsItems[i] = item; break; } }
+  } else {
+    newsItems.unshift(item);
+  }
+  saveNewsData();
+  renderNews();
+  closeModal('editNewsModal');
+}
+
+/* ── 공통 모달 ── */
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+var overlays = document.querySelectorAll('.modal-overlay');
+for (var oi = 0; oi < overlays.length; oi++) {
+  overlays[oi].addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+}
+
+/* ── 관리자 인증 ── */
+function openAuthModal() {
+  if (isAdmin) {
+    document.getElementById('adminPanel').classList.toggle('open');
+    return;
+  }
+  document.getElementById('adminPw').value = '';
+  document.getElementById('authError').textContent = '';
+  document.getElementById('authModal').classList.add('open');
+  setTimeout(function() { document.getElementById('adminPw').focus(); }, 100);
+}
+
+function confirmAuth() {
+  if (document.getElementById('adminPw').value === ADMIN_PASSWORD) {
+    isAdmin = true;
+    closeModal('authModal');
+    document.getElementById('navLockIcon').textContent = '🔓';
+    document.getElementById('navAdminLabel').textContent = '관리자 패널';
+    document.getElementById('navAdminBtn').classList.add('logged-in');
+    document.getElementById('adminPanel').classList.add('open');
+    document.getElementById('adminBar').classList.add('visible');
+    document.body.classList.add('admin-mode');
+    enableEditMode();
+    renderReports(activeFilter);
+    renderMembers();
+    renderNews();
+  } else {
+    document.getElementById('authError').textContent = '비밀번호가 올바르지 않습니다.';
+    document.getElementById('adminPw').value = '';
+    document.getElementById('adminPw').focus();
+  }
+}
+
+function logout() {
+  isAdmin = false;
+  document.getElementById('adminPanel').classList.remove('open');
+  document.getElementById('navLockIcon').textContent = '🔒';
+  document.getElementById('navAdminLabel').textContent = '관리자';
+  document.getElementById('navAdminBtn').classList.remove('logged-in');
+  document.getElementById('adminBar').classList.remove('visible');
+  document.body.classList.remove('admin-mode');
+  disableEditMode();
+  renderReports(activeFilter);
+  renderMembers();
+  renderNews();
+}
+
+/* ── 업로드 탭 ── */
+function switchTab(tab, btn) {
+  var tabs = document.querySelectorAll('.upload-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  btn.classList.add('active');
+  document.getElementById('tabFile').style.display = (tab === 'file') ? 'block' : 'none';
+  document.getElementById('tabLink').style.display = (tab === 'link') ? 'block' : 'none';
+}
+
+var selectedFile = null;
+
+function handleFileSelect(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
+function setFile(file) {
+  selectedFile = file;
+  document.getElementById('uploadZone').style.display = 'none';
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('filePreview').style.display = 'flex';
+}
+function clearFile() {
+  selectedFile = null;
+  document.getElementById('pdfInput').value = '';
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('filePreview').style.display = 'none';
+}
+function onDragOver(e)  { e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
+function onDragLeave()  { document.getElementById('uploadZone').classList.remove('dragover'); }
+function onDrop(e) {
+  e.preventDefault();
+  onDragLeave();
+  var f = e.dataTransfer.files[0];
+  if (f && f.type === 'application/pdf') setFile(f);
+  else showFeedback('reportFeedback', '❌ PDF 파일만 업로드 가능합니다.', '#c62828');
+}
+
+function submitReport() {
+  var title  = document.getElementById('rTitle').value.trim();
+  var cat    = document.getElementById('rCategory').value;
+  var author = document.getElementById('rAuthor').value.trim();
+  var dateV  = document.getElementById('rDate').value;
+  var desc   = document.getElementById('rDesc').value.trim();
+  var isLink = document.getElementById('tabLink').style.display !== 'none';
+  var link   = document.getElementById('rLink').value.trim();
+  if (!title || !author || !dateV || !desc) { showFeedback('reportFeedback', '❌ 모든 항목을 입력해주세요.', '#c62828'); return; }
+  if (!isLink && !selectedFile) { showFeedback('reportFeedback', '❌ PDF 파일을 선택해주세요.', '#c62828'); return; }
+  if (isLink && !link) { showFeedback('reportFeedback', '❌ 링크를 입력해주세요.', '#c62828'); return; }
+  var fileUrl = isLink ? link : URL.createObjectURL(selectedFile);
+  reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), file: fileUrl});
+  saveReportsData();
+  renderYearDropdown();
+  renderReports(activeFilter);
+  resetFilterBtns();
+  ['rTitle','rAuthor','rDate','rDesc','rLink'].forEach(function(id) { document.getElementById(id).value = ''; });
+  clearFile();
+  showFeedback('reportFeedback', '✅ 보고서가 등록되었습니다!', '#2e7d32');
+}
+
+function showFeedback(elId, msg, color) {
+  var el = document.getElementById(elId);
+  el.textContent = msg;
+  el.style.color = color;
+  setTimeout(function() { el.textContent = ''; }, 4000);
+}
+
+/* ── 네비 스크롤 ── */
+window.addEventListener('scroll', function() {
+  var cur = 'home';
+  var ids = ['home', 'about', 'reports', 'members', 'news'];
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el && window.scrollY >= el.offsetTop - 100) cur = ids[i];
+  }
+  var links = document.querySelectorAll('.nav-center a');
+  for (var j = 0; j < links.length; j++) {
+    links[j].classList.toggle('active', links[j].getAttribute('href') === '#' + cur);
+  }
+});
+
+/* ── 초기 실행 ── */
+applyTextData();
+renderYearDropdown();
+renderReports('all');
+renderMembers();
+renderNews();
 </script>
 </body>
+</html>
 </html>
