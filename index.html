@@ -320,7 +320,7 @@
     <span class="year-selector-label">연도</span>
     <div class="year-dropdown-wrap" id="yearDropdownWrap">
       <button class="year-dropdown-btn" id="yearDropdownBtn" onclick="toggleYearDropdown()">
-        <span id="yearDropdownLabel">전체</span>
+        <span id="yearDropdownLabel">연도 선택</span>
         <span class="arrow">▾</span>
       </button>
       <div class="year-dropdown-menu" id="yearDropdownMenu"></div>
@@ -529,7 +529,7 @@ var isAdmin = false;
 var editingReportId = null;
 var editingMemberId = null;
 var editingNewsId = null;
-var activeYear = 'all';
+var activeYear = null;
 var activeGen = 'all';
 var activeFilter = 'all';
 
@@ -596,12 +596,25 @@ function getGenerationsForYear(y) {
 function renderYearDropdown() {
   var years = getYears();
   var menu = document.getElementById('yearDropdownMenu');
-  var html = '<div class="year-option ' + (activeYear === 'all' ? 'active' : '') + '" onclick="selectYear(\'all\')">전체</div>';
+  var html = '';
   for (var i = 0; i < years.length; i++) {
-    html += '<div class="year-option ' + (activeYear === years[i] ? 'active' : '') + '" onclick="selectYear(\'' + years[i] + '\')">' + years[i] + '년</div>';
+    var y = years[i];
+    var isYearActive = (activeYear === y && activeGen === 'all');
+    html += '<div class="year-option ' + (isYearActive ? 'active' : '') + '" onclick="selectYear(\'' + y + '\')">' + y + '년 전체</div>';
+    var gens = getGenerationsForYear(y);
+    for (var j = 0; j < gens.length; j++) {
+      var g = gens[j];
+      var isGenActive = (activeYear === y && activeGen == g);
+      html += '<div class="year-option gen-option ' + (isGenActive ? 'active' : '') + '" onclick="selectYearGen(\'' + y + '\', ' + g + ')">' + y + '년 · ' + g + '기</div>';
+    }
   }
   menu.innerHTML = html;
-  document.getElementById('yearDropdownLabel').textContent = (activeYear === 'all') ? '전체' : activeYear + '년';
+  var lbl = '연도 선택';
+  if (activeYear !== null) {
+    lbl = activeYear + '년';
+    if (activeGen !== 'all') lbl += ' · ' + activeGen + '기';
+  }
+  document.getElementById('yearDropdownLabel').textContent = lbl;
 }
 
 function toggleYearDropdown() {
@@ -642,6 +655,10 @@ document.addEventListener('click', function(e) {
 function renderReports(filter) {
   if (filter !== undefined) activeFilter = filter;
   var grid = document.getElementById('reportsGrid');
+  if (activeYear === null) {
+    grid.innerHTML = '<div class="reports-empty">연도를 선택하면 보고서가 표시됩니다.</div>';
+    return;
+  }
   var list = reports.filter(function(r) {
     var yearMatch = (activeYear === 'all') || (r.date && r.date.startsWith(activeYear));
     var genMatch  = (activeGen === 'all') || (r.gen == activeGen);
@@ -1009,7 +1026,7 @@ window.addEventListener('scroll', function() {
 /* ── 초기 실행 ── */
 applyTextData();
 renderYearDropdown();
-renderReports('all');
+renderReports();
 renderMembers();
 renderNews();
 </script>
