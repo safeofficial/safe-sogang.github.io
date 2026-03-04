@@ -1,6 +1,3 @@
-Safe website v6 · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -94,16 +91,22 @@ Copy
     .year-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; max-height: 240px; overflow-y: auto; display: none; min-width: 120px; }
     .year-dropdown-menu.open { display: block; }
     .year-option { padding: 11px 16px; font-size: 14px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.15s; margin: 3px; border-radius: 8px; }
+    .gen-option { padding-left: 28px; font-size: 13px; font-weight: 500; }
     .year-option:hover { background: var(--accent-soft); color: var(--primary); }
     .year-option.active { background: var(--primary); color: white; }
+
+    .reports-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
+    .reports-scroll-wrap::-webkit-scrollbar { height: 6px; }
+    .reports-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
+    .reports-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
     /* 분야 필터 */
     .reports-filter { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
     .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
     .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-    .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
-    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; }
+    .reports-grid { display: flex; gap: 24px; width: max-content; padding: 4px 2px; }
+    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; width: 300px; flex-shrink: 0; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
     .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
@@ -331,7 +334,9 @@ Copy
     <button class="filter-btn" onclick="filterReports('equity', this)">기업분석</button>
   </div>
 
-  <div class="reports-grid" id="reportsGrid"></div>
+  <div class="reports-scroll-wrap">
+    <div class="reports-grid" id="reportsGrid"></div>
+  </div>
 
   <div class="admin-panel" id="adminPanel">
     <div class="admin-panel-header">
@@ -354,6 +359,10 @@ Copy
     <div class="form-row">
       <div class="form-group"><label>작성자</label><input type="text" id="rAuthor" placeholder="예: 김도현"/></div>
       <div class="form-group"><label>작성 연월</label><input type="month" id="rDate"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>기수</label><input type="number" id="rGen" placeholder="예: 1 (1기 입력)" min="1" style="width:100%"/></div>
+      <div class="form-group"></div>
     </div>
     <div class="form-group"><label>요약 설명</label><textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea></div>
     <div id="tabFile">
@@ -521,6 +530,7 @@ var editingReportId = null;
 var editingMemberId = null;
 var editingNewsId = null;
 var activeYear = 'all';
+var activeGen = 'all';
 var activeFilter = 'all';
 
 var CATEGORY_MAP = {
@@ -573,6 +583,16 @@ function getYears() {
   return Object.keys(set).sort(function(a,b){ return b - a; });
 }
 
+function getGenerationsForYear(y) {
+  var set = {};
+  for (var i = 0; i < reports.length; i++) {
+    var r = reports[i];
+    var ry = r.date ? r.date.split('.')[0] : null;
+    if (ry === y && r.gen != null) set[r.gen] = true;
+  }
+  return Object.keys(set).map(Number).sort(function(a,b){ return b - a; });
+}
+
 function renderYearDropdown() {
   var years = getYears();
   var menu = document.getElementById('yearDropdownMenu');
@@ -594,6 +614,16 @@ function toggleYearDropdown() {
 
 function selectYear(y) {
   activeYear = y;
+  activeGen = 'all';
+  document.getElementById('yearDropdownMenu').classList.remove('open');
+  document.getElementById('yearDropdownBtn').classList.remove('open');
+  renderYearDropdown();
+  renderReports(activeFilter);
+}
+
+function selectYearGen(y, g) {
+  activeYear = y;
+  activeGen = g;
   document.getElementById('yearDropdownMenu').classList.remove('open');
   document.getElementById('yearDropdownBtn').classList.remove('open');
   renderYearDropdown();
@@ -614,8 +644,9 @@ function renderReports(filter) {
   var grid = document.getElementById('reportsGrid');
   var list = reports.filter(function(r) {
     var yearMatch = (activeYear === 'all') || (r.date && r.date.startsWith(activeYear));
+    var genMatch  = (activeGen === 'all') || (r.gen == activeGen);
     var catMatch  = (activeFilter === 'all') || (r.category === activeFilter);
-    return yearMatch && catMatch;
+    return yearMatch && genMatch && catMatch;
   });
   if (!list.length) {
     grid.innerHTML = '<div class="reports-empty">아직 등록된 보고서가 없습니다.</div>';
@@ -630,7 +661,8 @@ function renderReports(filter) {
       : '';
     html += '<div class="report-card">' + btns + '<span class="report-tag ' + c.cls + '">' + esc(c.tag) + '</span>';
     html += '<h3>' + esc(r.title) + '</h3><p class="card-desc">' + esc(r.desc) + '</p>';
-    html += '<div class="report-meta"><span>✍️ ' + esc(r.author) + ' · ' + esc(r.date) + '</span><a href="' + esc(r.file) + '" class="report-dl" target="_blank">PDF ↓</a></div></div>';
+    var genLabel = (r.gen != null) ? ' · ' + r.gen + '기' : '';
+    html += '<div class="report-meta"><span>✍️ ' + esc(r.author) + ' · ' + esc(r.date) + genLabel + '</span><a href="' + esc(r.file) + '" class="report-dl" target="_blank">PDF ↓</a></div></div>';
   }
   grid.innerHTML = html;
 }
@@ -726,7 +758,8 @@ function saveReportEdit() {
   if (idx === -1) return;
   var newLink = document.getElementById('eLink').value.trim();
   reports[idx] = {
-    id: reports[idx].id,
+    id:  reports[idx].id,
+    gen: reports[idx].gen,
     category: document.getElementById('eCategory').value,
     title:    document.getElementById('eTitle').value.trim(),
     desc:     document.getElementById('eDesc').value.trim(),
@@ -940,12 +973,14 @@ function submitReport() {
   if (!isLink && !selectedFile) { showFeedback('reportFeedback', '❌ PDF 파일을 선택해주세요.', '#c62828'); return; }
   if (isLink && !link) { showFeedback('reportFeedback', '❌ 링크를 입력해주세요.', '#c62828'); return; }
   var fileUrl = isLink ? link : URL.createObjectURL(selectedFile);
-  reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), file: fileUrl});
+  var genVal = document.getElementById('rGen').value.trim();
+  var genNum = genVal ? parseInt(genVal) : null;
+  reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), gen: genNum, file: fileUrl});
   saveReportsData();
   renderYearDropdown();
   renderReports(activeFilter);
   resetFilterBtns();
-  ['rTitle','rAuthor','rDate','rDesc','rLink'].forEach(function(id) { document.getElementById(id).value = ''; });
+  ['rTitle','rAuthor','rDate','rGen','rDesc','rLink'].forEach(function(id) { document.getElementById(id).value = ''; });
   clearFile();
   showFeedback('reportFeedback', '✅ 보고서가 등록되었습니다!', '#2e7d32');
 }
@@ -979,5 +1014,4 @@ renderMembers();
 renderNews();
 </script>
 </body>
-</html>
 </html>
