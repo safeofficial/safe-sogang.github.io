@@ -43,7 +43,30 @@
     .nav-admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
 
     /* ── HERO ── */
-    #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%); padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center; }
+    #home {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #home-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80');
+      background-size: cover; background-position: center 30%;
+      filter: brightness(0.38) saturate(0.7);
+    }
+    #home-fade {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 220px; z-index: 1;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+    }
+    #home .hero-inner { position: relative; z-index: 2; }
+    #home .hero-badge { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.25); }
+    #home h1 { color: #ffffff; }
+    #home h1 span { background: linear-gradient(90deg, #a8c0ff, #c8d8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    #home .hero-desc { color: rgba(255,255,255,0.75); }
+    #home .stat-num { color: #ffffff; }
+    #home .stat-label { color: rgba(255,255,255,0.65); }
+    #home .btn-outline { border-color: rgba(255,255,255,0.4); color: white; background: rgba(255,255,255,0.1); }
+    #home .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: white; color: white; }
     .hero-inner { max-width: 760px; }
     .hero-badge { display: inline-block; background: var(--accent-soft); color: var(--primary-light); font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
     .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
@@ -258,6 +281,8 @@
 
 <!-- ── HOME ── -->
 <section id="home">
+  <div id="home-bg"></div>
+  <div id="home-fade"></div>
   <div class="hero-inner">
     <div class="hero-badge" data-editable data-key="hero_badge">Sogang University · Finance &amp; Economics</div>
     <h1>
