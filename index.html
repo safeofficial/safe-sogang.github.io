@@ -342,9 +342,11 @@
     <div class="admin-panel-header">
       <h4>📋 보고서 업로드 <span class="admin-badge">ADMIN</span></h4>
     </div>
-    <div class="upload-type-tabs">
-      <button class="upload-tab active" onclick="switchTab('file', this)">📄 PDF 직접 업로드</button>
-      <button class="upload-tab" onclick="switchTab('link', this)">🔗 링크로 첨부</button>
+    <div style="margin-bottom:16px; padding:14px 16px; background:#e8f5e9; border-radius:10px; border-left:3px solid #2e7d32; font-size:13px; color:#1b5e20; line-height:1.8;">
+      🔗 <strong>Google Drive 링크로 등록하세요.</strong><br/>
+      ① Drive에서 PDF 파일 우클릭<br/>
+      ② <strong>공유</strong> 클릭 → <strong>"링크가 있는 모든 사용자"</strong> 설정<br/>
+      ③ <strong>링크 복사</strong> 후 아래 입력란에 붙여넣기
     </div>
     <div class="form-row">
       <div class="form-group"><label>보고서 제목</label><input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/></div>
@@ -365,19 +367,11 @@
       <div class="form-group"></div>
     </div>
     <div class="form-group"><label>요약 설명</label><textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea></div>
-    <div id="tabFile">
-      <div class="form-group"><label>PDF 파일</label>
-        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('pdfInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
-          <div class="uz-icon">📄</div><p><strong>클릭</strong>하거나 드래그하여 PDF 업로드</p>
-          <input type="file" id="pdfInput" accept=".pdf" style="display:none" onchange="handleFileSelect(event)"/>
-        </div>
-        <div id="filePreview" style="display:none" class="file-preview"><span>📄</span><span id="fileName"></span><span class="fp-remove" onclick="clearFile()">✕</span></div>
-      </div>
-      <div class="github-tip">💡 <strong>GitHub Pages:</strong> PDF를 <code>reports/</code> 폴더에 올린 뒤 링크 탭에서 <code>./reports/파일명.pdf</code> 입력</div>
+    <div class="form-group">
+      <label>다운로드 링크</label>
+      <input type="text" id="rLink" placeholder="https://drive.google.com/file/d/..."/>
     </div>
-    <div id="tabLink" style="display:none">
-      <div class="form-group"><label>다운로드 링크</label><input type="text" id="rLink" placeholder="https://drive.google.com/..."/></div>
-    </div>
+
     <button class="submit-btn" onclick="submitReport()">보고서 등록하기</button>
     <div class="submit-feedback" id="reportFeedback"></div>
   </div>
@@ -997,12 +991,10 @@ function submitReport() {
   var author = document.getElementById('rAuthor').value.trim();
   var dateV  = document.getElementById('rDate').value;
   var desc   = document.getElementById('rDesc').value.trim();
-  var isLink = document.getElementById('tabLink').style.display !== 'none';
-  var link   = document.getElementById('rLink').value.trim();
+  var link = document.getElementById('rLink').value.trim();
   if (!title || !author || !dateV || !desc) { showFeedback('reportFeedback', '❌ 모든 항목을 입력해주세요.', '#c62828'); return; }
-  if (!isLink && !selectedFile) { showFeedback('reportFeedback', '❌ PDF 파일을 선택해주세요.', '#c62828'); return; }
-  if (isLink && !link) { showFeedback('reportFeedback', '❌ 링크를 입력해주세요.', '#c62828'); return; }
-  var fileUrl = isLink ? link : URL.createObjectURL(selectedFile);
+  if (!link) { showFeedback('reportFeedback', '❌ 다운로드 링크를 입력해주세요.', '#c62828'); return; }
+  var fileUrl = link;
   var genVal = document.getElementById('rGen').value.trim();
   var genNum = genVal ? parseInt(genVal) : null;
   reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), gen: genNum, file: fileUrl});
