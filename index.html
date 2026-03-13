@@ -43,30 +43,7 @@
     .nav-admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
 
     /* ── HERO ── */
-    #home {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    #home-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80');
-      background-size: cover; background-position: center 30%;
-      filter: brightness(0.38) saturate(0.7);
-    }
-    #home-fade {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 220px; z-index: 1;
-      background: linear-gradient(to bottom, transparent, var(--bg));
-    }
-    #home .hero-inner { position: relative; z-index: 2; }
-    #home .hero-badge { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.25); }
-    #home h1 { color: #ffffff; }
-    #home h1 span { background: linear-gradient(90deg, #a8c0ff, #c8d8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    #home .hero-desc { color: rgba(255,255,255,0.75); }
-    #home .stat-num { color: #ffffff; }
-    #home .stat-label { color: rgba(255,255,255,0.65); }
-    #home .btn-outline { border-color: rgba(255,255,255,0.4); color: white; background: rgba(255,255,255,0.1); }
-    #home .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: white; color: white; }
+    #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%); padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center; }
     .hero-inner { max-width: 760px; }
     .hero-badge { display: inline-block; background: var(--accent-soft); color: var(--primary-light); font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
     .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
@@ -102,44 +79,38 @@
 
     /* ── REPORTS ── */
     #reports { background: var(--bg); }
-
-    /* 연도 드롭다운 */
     .year-selector-wrap { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
     .year-selector-label { font-size: 13px; font-weight: 600; color: var(--text-sub); }
     .year-dropdown-wrap { position: relative; display: inline-block; }
-    .year-dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 15px; font-weight: 700; color: var(--primary); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; min-width: 120px; justify-content: space-between; }
+    .year-dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 15px; font-weight: 700; color: var(--primary); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; min-width: 140px; justify-content: space-between; }
     .year-dropdown-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
     .year-dropdown-btn .arrow { font-size: 11px; color: var(--text-sub); transition: transform 0.2s; }
     .year-dropdown-btn.open .arrow { transform: rotate(180deg); }
-    .year-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; max-height: 240px; overflow-y: auto; display: none; min-width: 120px; }
+    .year-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; max-height: 240px; overflow-y: auto; display: none; min-width: 160px; }
     .year-dropdown-menu.open { display: block; }
     .year-option { padding: 11px 16px; font-size: 14px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.15s; margin: 3px; border-radius: 8px; }
     .gen-option { padding-left: 28px; font-size: 13px; font-weight: 500; }
     .year-option:hover { background: var(--accent-soft); color: var(--primary); }
     .year-option.active { background: var(--primary); color: white; }
-
     .reports-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .reports-scroll-wrap::-webkit-scrollbar { height: 6px; }
     .reports-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
     .reports-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-
-    /* 분야 필터 */
     .reports-filter { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
     .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
     .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
     .reports-grid { display: flex; gap: 24px; width: max-content; padding: 4px 2px; }
-    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; width: 300px; flex-shrink: 0; }
+    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; width: 300px; flex-shrink: 0; display: flex; flex-direction: column; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
     .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
     .tag-equity { background: #e6f4ea; color: #2e7d32; }
     .tag-industry { background: #fff3e0; color: #e65100; }
     .report-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .report-card .card-desc { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 28px; }
+    .report-card .card-desc { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 28px; flex: 1; }
     .report-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-sub); border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto; }
     .report-dl { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
-    .reports-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; grid-column: 1/-1; background: white; border-radius: 14px; border: 1px solid var(--border); }
+    .reports-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; background: white; border-radius: 14px; border: 1px solid var(--border); min-width: 300px; }
     .admin-card-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; }
     .admin-card-btns.visible { display: flex; }
     .card-edit-btn, .card-del-btn { border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
@@ -154,16 +125,6 @@
     .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .admin-panel-header h4 { font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
     .admin-badge { font-size: 11px; background: var(--accent-soft); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
-    .upload-type-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
-    .upload-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
-    .upload-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); }
-    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-soft); }
-    .upload-zone .uz-icon { font-size: 2rem; margin-bottom: 8px; }
-    .upload-zone p { font-size: 0.88rem; color: var(--text-sub); }
-    .file-preview { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-soft); border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--primary); }
-    .fp-remove { margin-left: auto; cursor: pointer; color: var(--text-sub); font-size: 18px; }
-    .github-tip { font-size: 12px; color: var(--text-sub); margin: 8px 0 12px; padding: 10px 14px; background: #fffbea; border-radius: 8px; border-left: 3px solid #f0c040; }
     .submit-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 6px; font-family: inherit; }
     .submit-btn:hover { background: var(--primary-light); }
     .submit-feedback { text-align: center; font-size: 13px; margin-top: 10px; min-height: 20px; }
@@ -192,8 +153,15 @@
     .btn-confirm { background: var(--primary); color: white; }
     .btn-confirm:hover { background: var(--primary-light); }
 
-    /* ── MEMBERS — 가로 스크롤 ── */
+    /* ── MEMBERS ── */
     #members { background: var(--white); }
+
+    /* 기수 탭 필터 */
+    .gen-tabs-wrap { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
+    .gen-tab-btn { padding: 9px 22px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 600; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
+    .gen-tab-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .gen-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
     .members-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .members-scroll-wrap::-webkit-scrollbar { height: 6px; }
     .members-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
@@ -205,9 +173,11 @@
     .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
     .member-role { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
+    .member-gen-badge { display: inline-block; font-size: 10px; font-weight: 700; color: var(--primary-light); background: var(--accent-soft); padding: 2px 8px; border-radius: 10px; margin-bottom: 10px; letter-spacing: 0.3px; }
     .member-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; margin: 0 auto 32px; }
     .member-add-btn.visible { display: block; }
     .member-add-btn:hover { background: var(--primary-light); }
+    .members-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; min-width: 300px; }
 
     /* ── NEWS — 가로 스크롤 ── */
     #news { background: var(--bg); }
@@ -256,7 +226,6 @@
 </head>
 <body>
 
-<!-- 관리자 상단 바 -->
 <div class="admin-bar" id="adminBar">
   <span class="admin-bar-badge">ADMIN MODE</span>
   <span class="hint">파란 점선 텍스트를 클릭해서 바로 수정하세요 — 자동 저장됩니다.</span>
@@ -281,8 +250,6 @@
 
 <!-- ── HOME ── -->
 <section id="home">
-  <div id="home-bg"></div>
-  <div id="home-fade"></div>
   <div class="hero-inner">
     <div class="hero-badge" data-editable data-key="hero_badge">Sogang University · Finance &amp; Economics</div>
     <h1>
@@ -295,18 +262,9 @@
       <a href="#about" class="btn-outline" data-editable data-key="hero_btn2">학회 소개</a>
     </div>
     <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num" data-editable data-key="stat_members">10+</div>
-        <div class="stat-label" data-editable data-key="stat_members_lbl">활동 멤버</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" data-editable data-key="stat_reports">10+</div>
-        <div class="stat-label" data-editable data-key="stat_reports_lbl">발간 리포트</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" data-editable data-key="stat_gen">2기</div>
-        <div class="stat-label" data-editable data-key="stat_gen_lbl">활동 기수</div>
-      </div>
+      <div class="stat"><div class="stat-num" data-editable data-key="stat_members">10+</div><div class="stat-label" data-editable data-key="stat_members_lbl">활동 멤버</div></div>
+      <div class="stat"><div class="stat-num" data-editable data-key="stat_reports">10+</div><div class="stat-label" data-editable data-key="stat_reports_lbl">발간 리포트</div></div>
+      <div class="stat"><div class="stat-num" data-editable data-key="stat_gen">2기</div><div class="stat-label" data-editable data-key="stat_gen_lbl">활동 기수</div></div>
     </div>
   </div>
 </section>
@@ -340,7 +298,6 @@
     <h2>리서치 &amp; 보고서</h2>
     <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
   </div>
-
   <div class="year-selector-wrap">
     <span class="year-selector-label">연도</span>
     <div class="year-dropdown-wrap" id="yearDropdownWrap">
@@ -351,27 +308,22 @@
       <div class="year-dropdown-menu" id="yearDropdownMenu"></div>
     </div>
   </div>
-
   <div class="reports-filter">
     <button class="filter-btn active" onclick="filterReports('all', this)">전체</button>
     <button class="filter-btn" onclick="filterReports('macro', this)">거시경제</button>
     <button class="filter-btn" onclick="filterReports('industry', this)">산업분석</button>
     <button class="filter-btn" onclick="filterReports('equity', this)">기업분석</button>
   </div>
-
   <div class="reports-scroll-wrap">
     <div class="reports-grid" id="reportsGrid"></div>
   </div>
-
   <div class="admin-panel" id="adminPanel">
     <div class="admin-panel-header">
       <h4>📋 보고서 업로드 <span class="admin-badge">ADMIN</span></h4>
     </div>
     <div style="margin-bottom:16px; padding:14px 16px; background:#e8f5e9; border-radius:10px; border-left:3px solid #2e7d32; font-size:13px; color:#1b5e20; line-height:1.8;">
       🔗 <strong>Google Drive 링크로 등록하세요.</strong><br/>
-      ① Drive에서 PDF 파일 우클릭<br/>
-      ② <strong>공유</strong> 클릭 → <strong>"링크가 있는 모든 사용자"</strong> 설정<br/>
-      ③ <strong>링크 복사</strong> 후 아래 입력란에 붙여넣기
+      ① Drive에서 PDF 파일 우클릭 &nbsp;② <strong>공유</strong> → <strong>"링크가 있는 모든 사용자"</strong> 설정 &nbsp;③ <strong>링크 복사</strong> 후 아래 입력란에 붙여넣기
     </div>
     <div class="form-row">
       <div class="form-group"><label>보고서 제목</label><input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/></div>
@@ -388,15 +340,11 @@
       <div class="form-group"><label>작성 연월</label><input type="month" id="rDate"/></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>기수</label><input type="number" id="rGen" placeholder="예: 1 (1기 입력)" min="1" style="width:100%"/></div>
+      <div class="form-group"><label>기수</label><input type="number" id="rGen" placeholder="예: 1" min="1"/></div>
       <div class="form-group"></div>
     </div>
     <div class="form-group"><label>요약 설명</label><textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea></div>
-    <div class="form-group">
-      <label>다운로드 링크</label>
-      <input type="text" id="rLink" placeholder="https://drive.google.com/file/d/..."/>
-    </div>
-
+    <div class="form-group"><label>Google Drive 링크</label><input type="text" id="rLink" placeholder="https://drive.google.com/file/d/..."/></div>
     <button class="submit-btn" onclick="submitReport()">보고서 등록하기</button>
     <div class="submit-feedback" id="reportFeedback"></div>
   </div>
@@ -448,8 +396,9 @@
   <div class="modal">
     <h3 id="memberModalTitle">👤 멤버 추가</h3>
     <div class="form-group"><label>이름</label><input type="text" id="mName" placeholder="예: 홍길동"/></div>
-    <div class="form-group"><label>역할</label><input type="text" id="mRole" placeholder="예: 리서치 파트"/></div>
+    <div class="form-group"><label>역할 / 직책</label><input type="text" id="mRole" placeholder="예: 회장 / 리서치 파트"/></div>
     <div class="form-group"><label>학과 &amp; 학번</label><input type="text" id="mDept" placeholder="예: 경영학과 25"/></div>
+    <div class="form-group"><label>기수</label><input type="number" id="mGen" placeholder="예: 1" min="1"/></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('editMemberModal')">취소</button>
       <button class="btn-confirm" onclick="saveMember()">저장</button>
@@ -484,7 +433,10 @@
     <h2>임원 소개</h2>
     <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
   </div>
-  <div style="text-align:center; margin: -20px 0 32px;">
+  <!-- 기수 탭 -->
+  <div class="gen-tabs-wrap" id="genTabsWrap"></div>
+  <!-- 관리자 멤버 추가 버튼 -->
+  <div style="text-align:center; margin:-12px 0 32px;">
     <button class="member-add-btn" id="memberAddBtn" onclick="openMemberModal()">+ 멤버 추가</button>
   </div>
   <div class="members-scroll-wrap">
@@ -499,7 +451,7 @@
     <h2>공지사항 &amp; 뉴스</h2>
     <p>학회의 최신 소식과 공지를 확인하세요.</p>
   </div>
-  <div style="text-align:center; margin: -20px 0 32px;">
+  <div style="text-align:center; margin:-20px 0 32px;">
     <button class="news-add-btn" id="newsAddBtn" onclick="openNewsModal()">+ 공지 작성</button>
   </div>
   <div class="news-scroll-wrap">
@@ -535,7 +487,7 @@ var TYPE_LABELS = {'type-notice':'공지','type-recruit':'모집','type-event':'
 var reports = JSON.parse(localStorage.getItem('safe_reports') || '[]');
 var members = JSON.parse(localStorage.getItem('safe_members') || 'null');
 if (!members) {
-  members = [{id:1, name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조'}];
+  members = [{id:1, name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조', gen:1}];
 }
 var storedNews = localStorage.getItem('safe_news');
 var newsItems = storedNews ? JSON.parse(storedNews) : [
@@ -549,8 +501,9 @@ var editingReportId = null;
 var editingMemberId = null;
 var editingNewsId = null;
 var activeYear = null;
-var activeGen = 'all';
+var activeReportGen = 'all';
 var activeFilter = 'all';
+var activeMemberGen = 'all'; // 멤버 기수 필터
 
 var CATEGORY_MAP = {
   macro:    {tag:'거시경제', cls:'tag-macro'},
@@ -560,12 +513,9 @@ var CATEGORY_MAP = {
 
 function toDownloadUrl(url) {
   if (!url || url === '#') return '#';
-  // Google Drive: /file/d/ID/view -> /uc?export=download&id=ID
   var driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
   if (driveMatch) return 'https://drive.google.com/uc?export=download&id=' + driveMatch[1];
-  // Google Drive: already export=download format -> keep as is
   if (url.indexOf('drive.google.com/uc?export=download') !== -1) return url;
-  // Google Docs export
   var docsMatch = url.match(/docs\.google\.com.*\/d\/([^/]+)/);
   if (docsMatch) return 'https://drive.google.com/uc?export=download&id=' + docsMatch[1];
   return url;
@@ -583,29 +533,24 @@ function applyTextData() {
     if (textData[key] !== undefined) els[i].textContent = textData[key];
   }
 }
-
 function enableEditMode() {
   var els = document.querySelectorAll('[data-editable]');
   for (var i = 0; i < els.length; i++) {
     els[i].setAttribute('contenteditable', 'true');
     (function(el) {
       el.addEventListener('blur', function() {
-        var key = el.getAttribute('data-key');
-        textData[key] = el.textContent;
+        textData[el.getAttribute('data-key')] = el.textContent;
         try { localStorage.setItem('safe_texts', JSON.stringify(textData)); } catch(e) {}
       });
     })(els[i]);
   }
 }
-
 function disableEditMode() {
   var els = document.querySelectorAll('[data-editable]');
-  for (var i = 0; i < els.length; i++) {
-    els[i].removeAttribute('contenteditable');
-  }
+  for (var i = 0; i < els.length; i++) els[i].removeAttribute('contenteditable');
 }
 
-/* ── 연도 드롭다운 ── */
+/* ── 보고서 연도 드롭다운 ── */
 function getYears() {
   var set = {};
   for (var i = 0; i < reports.length; i++) {
@@ -614,8 +559,7 @@ function getYears() {
   }
   return Object.keys(set).sort(function(a,b){ return b - a; });
 }
-
-function getGenerationsForYear(y) {
+function getReportGensForYear(y) {
   var set = {};
   for (var i = 0; i < reports.length; i++) {
     var r = reports[i];
@@ -624,19 +568,18 @@ function getGenerationsForYear(y) {
   }
   return Object.keys(set).map(Number).sort(function(a,b){ return b - a; });
 }
-
 function renderYearDropdown() {
   var years = getYears();
   var menu = document.getElementById('yearDropdownMenu');
   var html = '';
   for (var i = 0; i < years.length; i++) {
     var y = years[i];
-    var isYearActive = (activeYear === y && activeGen === 'all');
+    var isYearActive = (activeYear === y && activeReportGen === 'all');
     html += '<div class="year-option ' + (isYearActive ? 'active' : '') + '" onclick="selectYear(\'' + y + '\')">' + y + '년 전체</div>';
-    var gens = getGenerationsForYear(y);
+    var gens = getReportGensForYear(y);
     for (var j = 0; j < gens.length; j++) {
       var g = gens[j];
-      var isGenActive = (activeYear === y && activeGen == g);
+      var isGenActive = (activeYear === y && activeReportGen == g);
       html += '<div class="year-option gen-option ' + (isGenActive ? 'active' : '') + '" onclick="selectYearGen(\'' + y + '\', ' + g + ')">' + y + '년 · ' + g + '기</div>';
     }
   }
@@ -644,11 +587,10 @@ function renderYearDropdown() {
   var lbl = '연도 선택';
   if (activeYear !== null) {
     lbl = activeYear + '년';
-    if (activeGen !== 'all') lbl += ' · ' + activeGen + '기';
+    if (activeReportGen !== 'all') lbl += ' · ' + activeReportGen + '기';
   }
   document.getElementById('yearDropdownLabel').textContent = lbl;
 }
-
 function toggleYearDropdown() {
   var btn = document.getElementById('yearDropdownBtn');
   var menu = document.getElementById('yearDropdownMenu');
@@ -656,25 +598,18 @@ function toggleYearDropdown() {
   menu.classList.toggle('open', !isOpen);
   btn.classList.toggle('open', !isOpen);
 }
-
 function selectYear(y) {
-  activeYear = y;
-  activeGen = 'all';
+  activeYear = y; activeReportGen = 'all';
   document.getElementById('yearDropdownMenu').classList.remove('open');
   document.getElementById('yearDropdownBtn').classList.remove('open');
-  renderYearDropdown();
-  renderReports(activeFilter);
+  renderYearDropdown(); renderReports(activeFilter);
 }
-
 function selectYearGen(y, g) {
-  activeYear = y;
-  activeGen = g;
+  activeYear = y; activeReportGen = g;
   document.getElementById('yearDropdownMenu').classList.remove('open');
   document.getElementById('yearDropdownBtn').classList.remove('open');
-  renderYearDropdown();
-  renderReports(activeFilter);
+  renderYearDropdown(); renderReports(activeFilter);
 }
-
 document.addEventListener('click', function(e) {
   var wrap = document.getElementById('yearDropdownWrap');
   if (wrap && !wrap.contains(e.target)) {
@@ -692,22 +627,17 @@ function renderReports(filter) {
     return;
   }
   var list = reports.filter(function(r) {
-    var yearMatch = (activeYear === 'all') || (r.date && r.date.startsWith(activeYear));
-    var genMatch  = (activeGen === 'all') || (r.gen == activeGen);
+    var yearMatch = (r.date && r.date.startsWith(activeYear));
+    var genMatch  = (activeReportGen === 'all') || (r.gen == activeReportGen);
     var catMatch  = (activeFilter === 'all') || (r.category === activeFilter);
     return yearMatch && genMatch && catMatch;
   });
-  if (!list.length) {
-    grid.innerHTML = '<div class="reports-empty">아직 등록된 보고서가 없습니다.</div>';
-    return;
-  }
+  if (!list.length) { grid.innerHTML = '<div class="reports-empty">등록된 보고서가 없습니다.</div>'; return; }
   var html = '';
   for (var i = 0; i < list.length; i++) {
     var r = list[i];
     var c = CATEGORY_MAP[r.category] || {tag: r.category, cls: 'tag-macro'};
-    var btns = isAdmin
-      ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openReportEdit(' + r.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteReport(' + r.id + ')">🗑 삭제</button></div>'
-      : '';
+    var btns = isAdmin ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openReportEdit(' + r.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteReport(' + r.id + ')">🗑 삭제</button></div>' : '';
     html += '<div class="report-card">' + btns + '<span class="report-tag ' + c.cls + '">' + esc(c.tag) + '</span>';
     html += '<h3>' + esc(r.title) + '</h3><p class="card-desc">' + esc(r.desc) + '</p>';
     var genLabel = (r.gen != null) ? ' · ' + r.gen + '기' : '';
@@ -715,30 +645,59 @@ function renderReports(filter) {
   }
   grid.innerHTML = html;
 }
-
 function filterReports(cat, btn) {
   var btns = document.querySelectorAll('.filter-btn');
   for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
   btn.classList.add('active');
   renderReports(cat);
 }
-
 function resetFilterBtns() {
   var btns = document.querySelectorAll('.filter-btn');
   for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('active', i === 0);
 }
 
+/* ── 멤버 기수 탭 ── */
+function getMemberGens() {
+  var set = {};
+  for (var i = 0; i < members.length; i++) {
+    if (members[i].gen != null) set[members[i].gen] = true;
+  }
+  return Object.keys(set).map(Number).sort(function(a,b){ return a - b; });
+}
+
+function renderGenTabs() {
+  var gens = getMemberGens();
+  var wrap = document.getElementById('genTabsWrap');
+  if (!gens.length) { wrap.innerHTML = ''; return; }
+  var html = '<button class="gen-tab-btn ' + (activeMemberGen === 'all' ? 'active' : '') + '" onclick="selectMemberGen(\'all\', this)">전체</button>';
+  for (var i = 0; i < gens.length; i++) {
+    var g = gens[i];
+    html += '<button class="gen-tab-btn ' + (activeMemberGen == g ? 'active' : '') + '" onclick="selectMemberGen(' + g + ', this)">' + g + '기</button>';
+  }
+  wrap.innerHTML = html;
+}
+
+function selectMemberGen(g, btn) {
+  activeMemberGen = g;
+  renderGenTabs();
+  renderMembers();
+}
+
 /* ── 멤버 렌더 ── */
 function renderMembers() {
+  var list = (activeMemberGen === 'all')
+    ? members
+    : members.filter(function(m) { return m.gen == activeMemberGen; });
+
   var html = '';
-  for (var i = 0; i < members.length; i++) {
-    var m = members[i];
-    var btns = isAdmin
-      ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit(' + m.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember(' + m.id + ')">🗑 삭제</button></div>'
-      : '';
-    html += '<div class="member-card">' + btns + '<div class="member-avatar">' + esc(m.initial) + '</div>';
+  for (var i = 0; i < list.length; i++) {
+    var m = list[i];
+    var btns = isAdmin ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit(' + m.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember(' + m.id + ')">🗑 삭제</button></div>' : '';
+    var genBadge = (m.gen != null) ? '<div class="member-gen-badge">' + m.gen + '기</div>' : '';
+    html += '<div class="member-card">' + btns + genBadge + '<div class="member-avatar">' + esc(m.initial) + '</div>';
     html += '<h4>' + esc(m.name) + '</h4><div class="member-role">' + esc(m.role) + '</div><p>' + esc(m.dept) + '</p></div>';
   }
+  if (!html) html = '<div class="members-empty">이 기수에 등록된 멤버가 없습니다.</div>';
   document.getElementById('membersGrid').innerHTML = html;
   var btn = document.getElementById('memberAddBtn');
   if (isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
@@ -750,9 +709,7 @@ function renderNews() {
   for (var i = 0; i < newsItems.length; i++) {
     var n = newsItems[i];
     var lbl = TYPE_LABELS[n.typeClass] || '공지';
-    var btns = isAdmin
-      ? '<div class="news-admin-btns visible"><button class="card-edit-btn" onclick="openNewsEdit(' + n.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteNews(' + n.id + ')">🗑 삭제</button></div>'
-      : '';
+    var btns = isAdmin ? '<div class="news-admin-btns visible"><button class="card-edit-btn" onclick="openNewsEdit(' + n.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteNews(' + n.id + ')">🗑 삭제</button></div>' : '';
     html += '<div class="news-card">' + btns;
     html += '<div class="news-header"><span class="news-type ' + n.typeClass + '">' + lbl + '</span><span class="news-date">' + esc(n.date) + '</span></div>';
     html += '<div class="news-body"><h3>' + esc(n.title) + '</h3><p>' + esc(n.desc) + '</p>';
@@ -767,11 +724,7 @@ function renderNews() {
 
 /* ── 저장 ── */
 function saveReportsData() {
-  try {
-    localStorage.setItem('safe_reports', JSON.stringify(reports.map(function(r) {
-      return Object.assign({}, r, {file: (r.file && r.file.indexOf('blob:') === 0) ? '#' : r.file});
-    })));
-  } catch(e) {}
+  try { localStorage.setItem('safe_reports', JSON.stringify(reports.map(function(r) { return Object.assign({}, r, {file: (r.file && r.file.indexOf('blob:') === 0) ? '#' : r.file}); }))); } catch(e) {}
 }
 function saveMembersData() { try { localStorage.setItem('safe_members', JSON.stringify(members)); } catch(e) {} }
 function saveNewsData()    { try { localStorage.setItem('safe_news',    JSON.stringify(newsItems)); } catch(e) {} }
@@ -780,12 +733,8 @@ function saveNewsData()    { try { localStorage.setItem('safe_news',    JSON.str
 function deleteReport(id) {
   if (!confirm('이 보고서를 삭제할까요?')) return;
   reports = reports.filter(function(r) { return r.id !== id; });
-  saveReportsData();
-  renderYearDropdown();
-  renderReports(activeFilter);
-  resetFilterBtns();
+  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns();
 }
-
 function openReportEdit(id) {
   var r = null;
   for (var i = 0; i < reports.length; i++) { if (reports[i].id === id) { r = reports[i]; break; } }
@@ -800,46 +749,30 @@ function openReportEdit(id) {
   document.getElementById('eLink').value = (!f || f === '#' || f.indexOf('blob:') === 0) ? '' : f;
   document.getElementById('editReportModal').classList.add('open');
 }
-
 function saveReportEdit() {
   var idx = -1;
   for (var i = 0; i < reports.length; i++) { if (reports[i].id === editingReportId) { idx = i; break; } }
   if (idx === -1) return;
   var newLink = document.getElementById('eLink').value.trim();
-  reports[idx] = {
-    id:  reports[idx].id,
-    gen: reports[idx].gen,
-    category: document.getElementById('eCategory').value,
-    title:    document.getElementById('eTitle').value.trim(),
-    desc:     document.getElementById('eDesc').value.trim(),
-    author:   document.getElementById('eAuthor').value.trim(),
-    date:     document.getElementById('eDate').value.replace('-', '.'),
-    file:     newLink || reports[idx].file
-  };
-  saveReportsData();
-  renderYearDropdown();
-  renderReports(activeFilter);
-  resetFilterBtns();
-  closeModal('editReportModal');
+  reports[idx] = { id: reports[idx].id, gen: reports[idx].gen, category: document.getElementById('eCategory').value, title: document.getElementById('eTitle').value.trim(), desc: document.getElementById('eDesc').value.trim(), author: document.getElementById('eAuthor').value.trim(), date: document.getElementById('eDate').value.replace('-', '.'), file: newLink || reports[idx].file };
+  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns(); closeModal('editReportModal');
 }
 
 /* ── 멤버 CRUD ── */
 function deleteMember(id) {
   if (!confirm('이 멤버를 삭제할까요?')) return;
   members = members.filter(function(m) { return m.id !== id; });
-  saveMembersData();
-  renderMembers();
+  saveMembersData(); renderGenTabs(); renderMembers();
 }
-
 function openMemberModal() {
   editingMemberId = null;
   document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
   document.getElementById('mName').value = '';
   document.getElementById('mRole').value = '';
   document.getElementById('mDept').value = '';
+  document.getElementById('mGen').value  = (activeMemberGen !== 'all') ? activeMemberGen : '';
   document.getElementById('editMemberModal').classList.add('open');
 }
-
 function openMemberEdit(id) {
   var m = null;
   for (var i = 0; i < members.length; i++) { if (members[i].id === id) { m = members[i]; break; } }
@@ -849,33 +782,32 @@ function openMemberEdit(id) {
   document.getElementById('mName').value = m.name;
   document.getElementById('mRole').value = m.role;
   document.getElementById('mDept').value = m.dept;
+  document.getElementById('mGen').value  = (m.gen != null) ? m.gen : '';
   document.getElementById('editMemberModal').classList.add('open');
 }
-
 function saveMember() {
   var name = document.getElementById('mName').value.trim();
   var role = document.getElementById('mRole').value.trim();
   var dept = document.getElementById('mDept').value.trim();
+  var genV = document.getElementById('mGen').value.trim();
+  var gen  = genV ? parseInt(genV) : null;
   if (!name || !role || !dept) { alert('이름, 역할, 학과를 모두 입력해주세요.'); return; }
-  var item = {id: editingMemberId || Date.now(), name: name, role: role, dept: dept, initial: name.charAt(0)};
+  if (!gen) { alert('기수를 입력해주세요.'); return; }
+  var item = {id: editingMemberId || Date.now(), name: name, role: role, dept: dept, initial: name.charAt(0), gen: gen};
   if (editingMemberId) {
     for (var i = 0; i < members.length; i++) { if (members[i].id === editingMemberId) { members[i] = item; break; } }
   } else {
     members.push(item);
   }
-  saveMembersData();
-  renderMembers();
-  closeModal('editMemberModal');
+  saveMembersData(); renderGenTabs(); renderMembers(); closeModal('editMemberModal');
 }
 
 /* ── 공지 CRUD ── */
 function deleteNews(id) {
   if (!confirm('이 공지를 삭제할까요?')) return;
   newsItems = newsItems.filter(function(n) { return n.id !== id; });
-  saveNewsData();
-  renderNews();
+  saveNewsData(); renderNews();
 }
-
 function openNewsModal() {
   editingNewsId = null;
   document.getElementById('newsModalTitle').textContent = '📢 공지 작성';
@@ -886,7 +818,6 @@ function openNewsModal() {
   document.getElementById('nLink').value  = '';
   document.getElementById('editNewsModal').classList.add('open');
 }
-
 function openNewsEdit(id) {
   var n = null;
   for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === id) { n = newsItems[i]; break; } }
@@ -900,26 +831,16 @@ function openNewsEdit(id) {
   document.getElementById('nLink').value  = n.link || '';
   document.getElementById('editNewsModal').classList.add('open');
 }
-
 function saveNewsItem() {
   var title = document.getElementById('nTitle').value.trim();
   var desc  = document.getElementById('nDesc').value.trim();
   var date  = document.getElementById('nDate').value.trim();
   if (!title || !desc || !date) { alert('제목, 내용, 날짜를 모두 입력해주세요.'); return; }
-  var item = {
-    id: editingNewsId || Date.now(),
-    typeClass: document.getElementById('nType').value,
-    title: title, desc: desc, date: date,
-    link: document.getElementById('nLink').value.trim() || null
-  };
+  var item = { id: editingNewsId || Date.now(), typeClass: document.getElementById('nType').value, title: title, desc: desc, date: date, link: document.getElementById('nLink').value.trim() || null };
   if (editingNewsId) {
     for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === editingNewsId) { newsItems[i] = item; break; } }
-  } else {
-    newsItems.unshift(item);
-  }
-  saveNewsData();
-  renderNews();
-  closeModal('editNewsModal');
+  } else { newsItems.unshift(item); }
+  saveNewsData(); renderNews(); closeModal('editNewsModal');
 }
 
 /* ── 공통 모달 ── */
@@ -931,16 +852,12 @@ for (var oi = 0; oi < overlays.length; oi++) {
 
 /* ── 관리자 인증 ── */
 function openAuthModal() {
-  if (isAdmin) {
-    document.getElementById('adminPanel').classList.toggle('open');
-    return;
-  }
+  if (isAdmin) { document.getElementById('adminPanel').classList.toggle('open'); return; }
   document.getElementById('adminPw').value = '';
   document.getElementById('authError').textContent = '';
   document.getElementById('authModal').classList.add('open');
   setTimeout(function() { document.getElementById('adminPw').focus(); }, 100);
 }
-
 function confirmAuth() {
   if (document.getElementById('adminPw').value === ADMIN_PASSWORD) {
     isAdmin = true;
@@ -952,16 +869,13 @@ function confirmAuth() {
     document.getElementById('adminBar').classList.add('visible');
     document.body.classList.add('admin-mode');
     enableEditMode();
-    renderReports(activeFilter);
-    renderMembers();
-    renderNews();
+    renderReports(activeFilter); renderGenTabs(); renderMembers(); renderNews();
   } else {
     document.getElementById('authError').textContent = '비밀번호가 올바르지 않습니다.';
     document.getElementById('adminPw').value = '';
     document.getElementById('adminPw').focus();
   }
 }
-
 function logout() {
   isAdmin = false;
   document.getElementById('adminPanel').classList.remove('open');
@@ -971,71 +885,29 @@ function logout() {
   document.getElementById('adminBar').classList.remove('visible');
   document.body.classList.remove('admin-mode');
   disableEditMode();
-  renderReports(activeFilter);
-  renderMembers();
-  renderNews();
+  renderReports(activeFilter); renderGenTabs(); renderMembers(); renderNews();
 }
 
-/* ── 업로드 탭 ── */
-function switchTab(tab, btn) {
-  var tabs = document.querySelectorAll('.upload-tab');
-  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
-  btn.classList.add('active');
-  document.getElementById('tabFile').style.display = (tab === 'file') ? 'block' : 'none';
-  document.getElementById('tabLink').style.display = (tab === 'link') ? 'block' : 'none';
-}
-
-var selectedFile = null;
-
-function handleFileSelect(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
-function setFile(file) {
-  selectedFile = file;
-  document.getElementById('uploadZone').style.display = 'none';
-  document.getElementById('fileName').textContent = file.name;
-  document.getElementById('filePreview').style.display = 'flex';
-}
-function clearFile() {
-  selectedFile = null;
-  document.getElementById('pdfInput').value = '';
-  document.getElementById('uploadZone').style.display = 'block';
-  document.getElementById('filePreview').style.display = 'none';
-}
-function onDragOver(e)  { e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
-function onDragLeave()  { document.getElementById('uploadZone').classList.remove('dragover'); }
-function onDrop(e) {
-  e.preventDefault();
-  onDragLeave();
-  var f = e.dataTransfer.files[0];
-  if (f && f.type === 'application/pdf') setFile(f);
-  else showFeedback('reportFeedback', '❌ PDF 파일만 업로드 가능합니다.', '#c62828');
-}
-
+/* ── 보고서 등록 ── */
 function submitReport() {
   var title  = document.getElementById('rTitle').value.trim();
   var cat    = document.getElementById('rCategory').value;
   var author = document.getElementById('rAuthor').value.trim();
   var dateV  = document.getElementById('rDate').value;
   var desc   = document.getElementById('rDesc').value.trim();
-  var link = document.getElementById('rLink').value.trim();
+  var link   = document.getElementById('rLink').value.trim();
   if (!title || !author || !dateV || !desc) { showFeedback('reportFeedback', '❌ 모든 항목을 입력해주세요.', '#c62828'); return; }
-  if (!link) { showFeedback('reportFeedback', '❌ 다운로드 링크를 입력해주세요.', '#c62828'); return; }
-  var fileUrl = link;
+  if (!link) { showFeedback('reportFeedback', '❌ Google Drive 링크를 입력해주세요.', '#c62828'); return; }
   var genVal = document.getElementById('rGen').value.trim();
   var genNum = genVal ? parseInt(genVal) : null;
-  reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), gen: genNum, file: fileUrl});
-  saveReportsData();
-  renderYearDropdown();
-  renderReports(activeFilter);
-  resetFilterBtns();
+  reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), gen: genNum, file: link});
+  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns();
   ['rTitle','rAuthor','rDate','rGen','rDesc','rLink'].forEach(function(id) { document.getElementById(id).value = ''; });
-  clearFile();
   showFeedback('reportFeedback', '✅ 보고서가 등록되었습니다!', '#2e7d32');
 }
-
 function showFeedback(elId, msg, color) {
   var el = document.getElementById(elId);
-  el.textContent = msg;
-  el.style.color = color;
+  el.textContent = msg; el.style.color = color;
   setTimeout(function() { el.textContent = ''; }, 4000);
 }
 
@@ -1057,9 +929,11 @@ window.addEventListener('scroll', function() {
 applyTextData();
 renderYearDropdown();
 renderReports();
+renderGenTabs();
 renderMembers();
 renderNews();
 </script>
 </body>
+</html>
 </html>
 </html>
