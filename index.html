@@ -156,11 +156,32 @@
     /* ── MEMBERS ── */
     #members { background: var(--white); }
 
-    /* 기수 탭 필터 */
+    /* 기수 탭 + 드롭다운 */
     .gen-tabs-wrap { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
     .gen-tab-btn { padding: 9px 22px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 600; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
     .gen-tab-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
     .gen-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .gen-dropdown-wrap { position: relative; display: inline-block; }
+    .gen-dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 9px 22px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-sub); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+    .gen-dropdown-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .gen-dropdown-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+    .gen-dropdown-btn .arrow { font-size: 10px; transition: transform 0.2s; }
+    .gen-dropdown-btn.open .arrow { transform: rotate(180deg); }
+    .gen-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; min-width: 110px; display: none; overflow: hidden; }
+    .gen-dropdown-menu.open { display: block; }
+    .gen-dropdown-item { padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: background 0.15s; }
+    .gen-dropdown-item:hover { background: var(--accent-soft); color: var(--primary); }
+    .gen-dropdown-item.active { background: var(--primary); color: white; }
+    /* 일괄 등록 테이블 */
+    .bulk-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .bulk-table th { padding: 8px 8px; text-align: left; font-weight: 700; color: var(--text-sub); font-size: 11px; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); background: var(--bg); }
+    .bulk-table td { padding: 5px 4px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .bulk-table input { width: 100%; padding: 7px 9px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; background: white; }
+    .bulk-table input:focus { border-color: var(--accent); }
+    .bulk-table .del-row { background: none; border: none; cursor: pointer; font-size: 16px; color: var(--text-sub); padding: 4px 6px; border-radius: 6px; }
+    .bulk-table .del-row:hover { color: #c62828; background: #fce8e6; }
+    .bulk-add-row { margin-top: 10px; padding: 8px; border-radius: 8px; border: 1.5px dashed var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; font-family: inherit; width: 100%; transition: all 0.2s; }
+    .bulk-add-row:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
     .members-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .members-scroll-wrap::-webkit-scrollbar { height: 6px; }
@@ -345,7 +366,10 @@
     </div>
     <div class="form-group"><label>요약 설명</label><textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea></div>
     <div class="form-group"><label>Google Drive 링크</label><input type="text" id="rLink" placeholder="https://drive.google.com/file/d/..."/></div>
-    <button class="submit-btn" onclick="submitReport()">보고서 등록하기</button>
+    <div style="display:flex;gap:10px;margin-top:6px;">
+      <button class="submit-btn" onclick="submitReport()" style="flex:1;">보고서 등록하기</button>
+      <button class="submit-btn" onclick="openBulkReportModal()" style="flex:1;background:var(--accent);">📋 여러 개 한번에 등록</button>
+    </div>
     <div class="submit-feedback" id="reportFeedback"></div>
   </div>
 </section>
@@ -393,16 +417,72 @@
 
 <!-- 멤버 추가/수정 모달 -->
 <div class="modal-overlay" id="editMemberModal">
-  <div class="modal">
+  <div class="modal wide" style="max-width:700px;">
     <h3 id="memberModalTitle">👤 멤버 추가</h3>
-    <div class="form-group"><label>이름</label><input type="text" id="mName" placeholder="예: 홍길동"/></div>
-    <div class="form-group"><label>역할 / 직책</label><input type="text" id="mRole" placeholder="예: 회장 / 리서치 파트"/></div>
-    <div class="form-group"><label>학과 &amp; 학번</label><input type="text" id="mDept" placeholder="예: 경영학과 25"/></div>
-    <div class="form-group"><label>기수</label><input type="number" id="mGen" placeholder="예: 1" min="1"/></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('editMemberModal')">취소</button>
-      <button class="btn-confirm" onclick="saveMember()">저장</button>
+
+    <!-- 일괄 추가 영역 -->
+    <div id="memberBulkArea">
+      <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:14px;">행을 추가하며 여러 명을 한 번에 등록할 수 있습니다.</p>
+      <div style="overflow-x:auto;">
+        <table class="bulk-table">
+          <thead><tr>
+            <th style="width:90px;">이름</th>
+            <th style="width:160px;">역할 / 직책</th>
+            <th style="width:140px;">학과 &amp; 학번</th>
+            <th style="width:60px;">기수</th>
+            <th style="width:32px;"></th>
+          </tr></thead>
+          <tbody id="memberBulkBody"></tbody>
+        </table>
+      </div>
+      <button class="bulk-add-row" onclick="addMemberRow()">+ 행 추가</button>
+      <div class="modal-btns" style="margin-top:16px;">
+        <button class="btn-cancel" onclick="closeModal('editMemberModal')">취소</button>
+        <button class="btn-confirm" onclick="saveBulkMembers()">전체 저장</button>
+      </div>
+      <div id="bulkMemberFeedback" style="text-align:center;font-size:13px;margin-top:8px;min-height:18px;color:#c62828;"></div>
     </div>
+
+    <!-- 단일 수정 영역 (수정 모드) -->
+    <div id="memberEditArea" style="display:none;">
+      <div class="form-group"><label>이름</label><input type="text" id="mName" placeholder="예: 홍길동"/></div>
+      <div class="form-group"><label>역할 / 직책</label><input type="text" id="mRole" placeholder="예: 회장 / 리서치 파트"/></div>
+      <div class="form-group"><label>학과 &amp; 학번</label><input type="text" id="mDept" placeholder="예: 경영학과 25"/></div>
+      <div class="form-group"><label>기수 <span style="color:#c62828">*</span></label><input type="number" id="mGen" placeholder="예: 1" min="1"/></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('editMemberModal')">취소</button>
+        <button class="btn-confirm" onclick="saveMember()">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 보고서 일괄 등록 모달 -->
+<div class="modal-overlay" id="bulkReportModal">
+  <div class="modal wide" style="max-width:860px;">
+    <h3>📋 보고서 일괄 등록</h3>
+    <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:14px;">행을 추가하며 여러 보고서를 한 번에 등록할 수 있습니다. 카테고리: macro / industry / equity</p>
+    <div style="overflow-x:auto;">
+      <table class="bulk-table">
+        <thead><tr>
+          <th style="width:140px;">제목</th>
+          <th style="width:80px;">카테고리</th>
+          <th style="width:80px;">작성자</th>
+          <th style="width:100px;">연월 (YYYY-MM)</th>
+          <th style="width:40px;">기수</th>
+          <th style="width:180px;">설명</th>
+          <th style="width:180px;">Drive 링크</th>
+          <th style="width:32px;"></th>
+        </tr></thead>
+        <tbody id="reportBulkBody"></tbody>
+      </table>
+    </div>
+    <button class="bulk-add-row" onclick="addReportRow()">+ 행 추가</button>
+    <div class="modal-btns" style="margin-top:16px;">
+      <button class="btn-cancel" onclick="closeModal('bulkReportModal')">취소</button>
+      <button class="btn-confirm" onclick="saveBulkReports()">전체 저장</button>
+    </div>
+    <div id="bulkReportFeedback" style="text-align:center;font-size:13px;margin-top:8px;min-height:18px;color:#c62828;"></div>
   </div>
 </div>
 
@@ -434,7 +514,15 @@
     <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
   </div>
   <!-- 기수 탭 -->
-  <div class="gen-tabs-wrap" id="genTabsWrap"></div>
+  <div class="gen-tabs-wrap" id="genTabsWrap">
+    <button class="gen-tab-btn" id="tabFounder" onclick="selectMemberGen('founder')">설립</button>
+    <div class="gen-dropdown-wrap" id="genDropdownWrap">
+      <button class="gen-dropdown-btn" id="genDropdownBtn" onclick="toggleGenDropdown()">
+        기수 <span class="arrow">▾</span>
+      </button>
+      <div class="gen-dropdown-menu" id="genDropdownMenu"></div>
+    </div>
+  </div>
   <!-- 관리자 멤버 추가 버튼 -->
   <div style="text-align:center; margin:-12px 0 32px;">
     <button class="member-add-btn" id="memberAddBtn" onclick="openMemberModal()">+ 멤버 추가</button>
@@ -503,7 +591,7 @@ var editingNewsId = null;
 var activeYear = null;
 var activeReportGen = 'all';
 var activeFilter = 'all';
-var activeMemberGen = 'all'; // 멤버 기수 필터
+var activeMemberGen = 'founder'; // 멤버 기수 필터 (초기: 설립 탭)
 
 var CATEGORY_MAP = {
   macro:    {tag:'거시경제', cls:'tag-macro'},
@@ -656,49 +744,93 @@ function resetFilterBtns() {
   for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('active', i === 0);
 }
 
-/* ── 멤버 기수 탭 ── */
+/* ── 멤버 기수 탭 + 드롭다운 ── */
 function getMemberGens() {
   var set = {};
   for (var i = 0; i < members.length; i++) {
-    if (members[i].gen != null) set[members[i].gen] = true;
+    var g = members[i].gen;
+    if (g != null && g !== 'founder') set[g] = true;
   }
   return Object.keys(set).map(Number).sort(function(a,b){ return a - b; });
 }
 
 function renderGenTabs() {
+  var founderBtn = document.getElementById('tabFounder');
+  if (founderBtn) founderBtn.classList.toggle('active', activeMemberGen === 'founder');
   var gens = getMemberGens();
-  var wrap = document.getElementById('genTabsWrap');
-  if (!gens.length) { wrap.innerHTML = ''; return; }
-  var html = '<button class="gen-tab-btn ' + (activeMemberGen === 'all' ? 'active' : '') + '" onclick="selectMemberGen(\'all\', this)">전체</button>';
+  var menu = document.getElementById('genDropdownMenu');
+  var btn  = document.getElementById('genDropdownBtn');
+  if (!menu || !btn) return;
+  var html = '';
   for (var i = 0; i < gens.length; i++) {
     var g = gens[i];
-    html += '<button class="gen-tab-btn ' + (activeMemberGen == g ? 'active' : '') + '" onclick="selectMemberGen(' + g + ', this)">' + g + '기</button>';
+    html += '<div class="gen-dropdown-item ' + (activeMemberGen == g ? 'active' : '') + '" onclick="selectMemberGen(' + g + ')">' + g + '기</div>';
   }
-  wrap.innerHTML = html;
+  menu.innerHTML = html || '<div class="gen-dropdown-item" style="color:var(--text-sub);cursor:default;font-size:12px;">등록된 기수 없음</div>';
+  var isGenSel = (activeMemberGen !== 'founder' && typeof activeMemberGen === 'number');
+  btn.classList.toggle('selected', isGenSel);
+  btn.innerHTML = isGenSel ? (activeMemberGen + '기 <span class="arrow">▾</span>') : '기수 <span class="arrow">▾</span>';
 }
 
-function selectMemberGen(g, btn) {
+function toggleGenDropdown() {
+  var btn  = document.getElementById('genDropdownBtn');
+  var menu = document.getElementById('genDropdownMenu');
+  if (!menu) return;
+  var isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+document.addEventListener('click', function(e) {
+  var wrap = document.getElementById('genDropdownWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    var menu = document.getElementById('genDropdownMenu');
+    var btn  = document.getElementById('genDropdownBtn');
+    if (menu) menu.classList.remove('open');
+    if (btn)  btn.classList.remove('open');
+  }
+});
+
+function selectMemberGen(g) {
   activeMemberGen = g;
+  var menu = document.getElementById('genDropdownMenu');
+  var btn  = document.getElementById('genDropdownBtn');
+  if (menu) menu.classList.remove('open');
+  if (btn)  btn.classList.remove('open');
   renderGenTabs();
   renderMembers();
 }
 
 /* ── 멤버 렌더 ── */
 function renderMembers() {
-  var list = (activeMemberGen === 'all')
-    ? members
-    : members.filter(function(m) { return m.gen == activeMemberGen; });
+  var showAll = false;
+  var list;
+  if (activeMemberGen === 'founder') {
+    list = members.filter(function(m) { return m.gen === 'founder'; });
+  } else if (typeof activeMemberGen === 'number') {
+    list = members.filter(function(m) { return m.gen == activeMemberGen; });
+  } else {
+    showAll = true;
+    list = members;
+  }
 
   var html = '';
   for (var i = 0; i < list.length; i++) {
     var m = list[i];
-    var btns = isAdmin ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit(' + m.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember(' + m.id + ')">🗑 삭제</button></div>' : '';
-    var genBadge = (m.gen != null) ? '<div class="member-gen-badge">' + m.gen + '기</div>' : '';
-    html += '<div class="member-card">' + btns + genBadge + '<div class="member-avatar">' + esc(m.initial) + '</div>';
-    html += '<h4>' + esc(m.name) + '</h4><div class="member-role">' + esc(m.role) + '</div><p>' + esc(m.dept) + '</p></div>';
+    var btns = isAdmin
+      ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit(' + m.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember(' + m.id + ')">🗑 삭제</button></div>'
+      : '';
+    var badgeLabel = (m.gen === 'founder') ? '설립' : (m.gen != null ? m.gen + '기' : null);
+    var badge = (badgeLabel && showAll) ? '<div class="member-gen-badge">' + badgeLabel + '</div>' : '';
+    html += '<div class="member-card">' + btns + badge;
+    html += '<div class="member-avatar">' + esc(m.initial) + '</div>';
+    html += '<h4>' + esc(m.name) + '</h4>';
+    html += '<div class="member-role">' + esc(m.role) + '</div>';
+    html += '<p>' + esc(m.dept) + '</p></div>';
   }
   if (!html) html = '<div class="members-empty">이 기수에 등록된 멤버가 없습니다.</div>';
   document.getElementById('membersGrid').innerHTML = html;
+
   var btn = document.getElementById('memberAddBtn');
   if (isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
 }
@@ -767,11 +899,51 @@ function deleteMember(id) {
 function openMemberModal() {
   editingMemberId = null;
   document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
-  document.getElementById('mName').value = '';
-  document.getElementById('mRole').value = '';
-  document.getElementById('mDept').value = '';
-  document.getElementById('mGen').value  = (activeMemberGen !== 'all') ? activeMemberGen : '';
+  document.getElementById('memberBulkArea').style.display = 'block';
+  document.getElementById('memberEditArea').style.display = 'none';
+  var defaultGen = (typeof activeMemberGen === 'number') ? activeMemberGen : (activeMemberGen === 'founder' ? '설립' : '');
+  initMemberBulkRows(defaultGen);
   document.getElementById('editMemberModal').classList.add('open');
+}
+
+function initMemberBulkRows(defaultGen) {
+  document.getElementById('memberBulkBody').innerHTML = '';
+  for (var i = 0; i < 3; i++) addMemberRow(defaultGen);
+}
+
+function addMemberRow(defaultGen) {
+  if (defaultGen === undefined) defaultGen = '';
+  var tbody = document.getElementById('memberBulkBody');
+  var tr = document.createElement('tr');
+  var s = 'width:100%;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;';
+  var s2 = 'width:70px;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;';
+  tr.innerHTML = '<td><input type="text" placeholder="이름" class="mr-name" style="' + s + '"></td>'
+    + '<td><input type="text" placeholder="회장/직책" class="mr-role" style="' + s + '"></td>'
+    + '<td><input type="text" placeholder="경영학과 25" class="mr-dept" style="' + s + '"></td>'
+    + '<td><input type="text" placeholder="1 또는 설립" class="mr-gen" value="' + defaultGen + '" style="' + s2 + '"></td>'
+    + '<td><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:16px;color:#999;padding:4px;">✕</button></td>';
+  tbody.appendChild(tr);
+}
+
+function saveBulkMembers() {
+  var rows = document.querySelectorAll('#memberBulkBody tr');
+  var added = 0; var errors = [];
+  for (var i = 0; i < rows.length; i++) {
+    var name   = rows[i].querySelector('.mr-name').value.trim();
+    var role   = rows[i].querySelector('.mr-role').value.trim();
+    var dept   = rows[i].querySelector('.mr-dept').value.trim();
+    var genRaw = rows[i].querySelector('.mr-gen').value.trim();
+    if (!name && !role && !dept && !genRaw) continue;
+    if (!name || !role || !dept || !genRaw) { errors.push((i+1) + '행: 빈 칸을 모두 채워주세요.'); continue; }
+    var gen = (genRaw === '설립' || genRaw.toLowerCase() === 'founder') ? 'founder' : parseInt(genRaw);
+    if (typeof gen === 'number' && isNaN(gen)) { errors.push((i+1) + '행: 기수는 숫자 또는 "설립"'); continue; }
+    members.push({ id: Date.now() + i + Math.random(), name: name, role: role, dept: dept, initial: name.charAt(0), gen: gen });
+    added++;
+  }
+  if (errors.length) { document.getElementById('bulkMemberFeedback').textContent = errors[0]; return; }
+  if (!added) { document.getElementById('bulkMemberFeedback').textContent = '추가할 멤버 정보를 입력해주세요.'; return; }
+  saveMembersData(); renderGenTabs(); renderMembers();
+  closeModal('editMemberModal');
 }
 function openMemberEdit(id) {
   var m = null;
@@ -779,10 +951,12 @@ function openMemberEdit(id) {
   if (!m) return;
   editingMemberId = id;
   document.getElementById('memberModalTitle').textContent = '✏️ 멤버 수정';
+  document.getElementById('memberBulkArea').style.display = 'none';
+  document.getElementById('memberEditArea').style.display = 'block';
   document.getElementById('mName').value = m.name;
   document.getElementById('mRole').value = m.role;
   document.getElementById('mDept').value = m.dept;
-  document.getElementById('mGen').value  = (m.gen != null) ? m.gen : '';
+  document.getElementById('mGen').value  = (m.gen != null) ? (m.gen === 'founder' ? '설립' : m.gen) : '';
   document.getElementById('editMemberModal').classList.add('open');
 }
 function saveMember() {
@@ -790,9 +964,10 @@ function saveMember() {
   var role = document.getElementById('mRole').value.trim();
   var dept = document.getElementById('mDept').value.trim();
   var genV = document.getElementById('mGen').value.trim();
-  var gen  = genV ? parseInt(genV) : null;
   if (!name || !role || !dept) { alert('이름, 역할, 학과를 모두 입력해주세요.'); return; }
-  if (!gen) { alert('기수를 입력해주세요.'); return; }
+  if (!genV) { alert('기수를 입력해주세요.'); return; }
+  var gen = (genV === '설립' || genV.toLowerCase() === 'founder') ? 'founder' : parseInt(genV);
+  if (typeof gen === 'number' && isNaN(gen)) { alert('기수는 숫자 또는 "설립"'); return; }
   var item = {id: editingMemberId || Date.now(), name: name, role: role, dept: dept, initial: name.charAt(0), gen: gen};
   if (editingMemberId) {
     for (var i = 0; i < members.length; i++) { if (members[i].id === editingMemberId) { members[i] = item; break; } }
@@ -841,6 +1016,52 @@ function saveNewsItem() {
     for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === editingNewsId) { newsItems[i] = item; break; } }
   } else { newsItems.unshift(item); }
   saveNewsData(); renderNews(); closeModal('editNewsModal');
+}
+
+
+/* ── 보고서 일괄 등록 ── */
+function openBulkReportModal() {
+  document.getElementById('reportBulkBody').innerHTML = '';
+  for (var i = 0; i < 3; i++) addReportRow();
+  document.getElementById('bulkReportModal').classList.add('open');
+}
+
+function addReportRow() {
+  var tbody = document.getElementById('reportBulkBody');
+  var tr = document.createElement('tr');
+  var s = 'padding:6px 7px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;outline:none;width:100%;';
+  tr.innerHTML = '<td><input type="text" placeholder="제목" class="br-title" style="' + s + '"></td>'
+    + '<td><select class="br-cat" style="' + s + '"><option value="macro">macro</option><option value="industry">industry</option><option value="equity">equity</option></select></td>'
+    + '<td><input type="text" placeholder="작성자" class="br-author" style="' + s + '"></td>'
+    + '<td><input type="month" class="br-date" style="' + s + '"></td>'
+    + '<td><input type="text" placeholder="1" class="br-gen" style="width:50px;padding:6px 4px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;outline:none;"></td>'
+    + '<td><input type="text" placeholder="요약 설명" class="br-desc" style="' + s + '"></td>'
+    + '<td><input type="text" placeholder="https://drive.google.com/..." class="br-link" style="' + s + '"></td>'
+    + '<td><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:15px;color:#999;padding:4px;">✕</button></td>';
+  tbody.appendChild(tr);
+}
+
+function saveBulkReports() {
+  var rows = document.querySelectorAll('#reportBulkBody tr');
+  var added = 0; var errors = [];
+  for (var i = 0; i < rows.length; i++) {
+    var title  = rows[i].querySelector('.br-title').value.trim();
+    var cat    = rows[i].querySelector('.br-cat').value;
+    var author = rows[i].querySelector('.br-author').value.trim();
+    var date   = rows[i].querySelector('.br-date').value;
+    var genRaw = rows[i].querySelector('.br-gen').value.trim();
+    var desc   = rows[i].querySelector('.br-desc').value.trim();
+    var link   = rows[i].querySelector('.br-link').value.trim();
+    if (!title && !author && !date && !link) continue;
+    if (!title || !author || !date || !desc || !link) { errors.push((i+1) + '행: 빈 칸을 채워주세요 (기수 선택사항)'); continue; }
+    var genNum = genRaw ? parseInt(genRaw) : null;
+    reports.unshift({ id: Date.now() + i + Math.random(), category: cat, title: title, desc: desc, author: author, date: date.replace('-', '.'), gen: genNum, file: link });
+    added++;
+  }
+  if (errors.length) { document.getElementById('bulkReportFeedback').textContent = errors[0]; return; }
+  if (!added) { document.getElementById('bulkReportFeedback').textContent = '등록할 보고서 정보를 입력해주세요.'; return; }
+  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns();
+  closeModal('bulkReportModal');
 }
 
 /* ── 공통 모달 ── */
@@ -905,6 +1126,33 @@ function submitReport() {
   ['rTitle','rAuthor','rDate','rGen','rDesc','rLink'].forEach(function(id) { document.getElementById(id).value = ''; });
   showFeedback('reportFeedback', '✅ 보고서가 등록되었습니다!', '#2e7d32');
 }
+function showFeedback(elId, msg, color) {
+  var el = document.getElementById(elId);
+  el.textContent = msg; el.style.color = color;
+  setTimeout(function() { el.textContent = ''; }, 4000);
+}
+
+/* ── 네비 스크롤 ── */
+window.addEventListener('scroll', function() {
+  var cur = 'home';
+  var ids = ['home', 'about', 'reports', 'members', 'news'];
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el && window.scrollY >= el.offsetTop - 100) cur = ids[i];
+  }
+  var links = document.querySelectorAll('.nav-center a');
+  for (var j = 0; j < links.length; j++) {
+    links[j].classList.toggle('active', links[j].getAttribute('href') === '#' + cur);
+  }
+});
+
+/* ── 초기 실행 ── */
+applyTextData();
+renderYearDropdown();
+renderReports();
+renderGenTabs();
+renderMembers();
+renderNews();
 function showFeedback(elId, msg, color) {
   var el = document.getElementById(elId);
   el.textContent = msg; el.style.color = color;
