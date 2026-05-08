@@ -68,6 +68,20 @@
     .nav-links a:hover { color: var(--primary); background: var(--accent-soft); }
     .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
+    /* ── TICKER TAPE ── */
+    .ticker-tape-wrap {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 4px 0;
+    }
+
+    /* push everything down to make room for ticker tape */
+    body { padding-top: 46px; }
+
     /* ── HERO ── */
     #home {
       min-height: 100vh;
@@ -174,8 +188,87 @@
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
 
+    /* ── MARKETS SECTION ── */
+    #markets { background: var(--bg); }
+
+    .markets-tabs {
+      display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 36px;
+      background: var(--white);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      max-width: 540px; margin-left: auto; margin-right: auto;
+      margin-bottom: 36px;
+    }
+    .markets-tab {
+      flex: 1;
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.2s;
+      font-family: inherit;
+      min-width: 130px;
+    }
+    .markets-tab:hover { color: var(--primary); }
+    .markets-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .markets-panel { display: none; max-width: 1200px; margin: 0 auto; }
+    .markets-panel.active { display: block; }
+
+    .panel-grid {
+      display: grid;
+      gap: 24px;
+    }
+    .panel-grid.two-col {
+      grid-template-columns: 1.4fr 1fr;
+    }
+    .panel-grid.three-col {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .widget-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(44, 62, 107, 0.04);
+    }
+    .widget-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .widget-card .widget-frame {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    .widget-card.tall .widget-frame { height: 550px; }
+    .widget-card.medium .widget-frame { height: 450px; }
+    .widget-card.chart .widget-frame { height: 600px; }
+
+    @media (max-width: 900px) {
+      .panel-grid.two-col, .panel-grid.three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* ── REPORTS ── */
-    #reports { background: var(--bg); }
+    #reports { background: var(--white); }
 
     .reports-filter {
       display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
@@ -238,7 +331,7 @@
     .upload-area strong { color: var(--primary); }
 
     /* ── MEMBERS ── */
-    #members { background: var(--white); }
+    #members { background: var(--bg); }
 
     .members-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -246,7 +339,7 @@
     }
 
     .member-card {
-      background: var(--bg); border: 1px solid var(--border);
+      background: var(--white); border: 1px solid var(--border);
       border-radius: 14px; padding: 28px 20px; text-align: center;
       transition: all 0.25s;
     }
@@ -268,7 +361,7 @@
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
 
     /* ── NEWS ── */
-    #news { background: var(--bg); }
+    #news { background: var(--white); }
 
     .news-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -276,7 +369,7 @@
     }
 
     .news-card {
-      background: var(--white); border: 1px solid var(--border);
+      background: var(--bg); border: 1px solid var(--border);
       border-radius: 14px; overflow: hidden; transition: all 0.25s;
     }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
@@ -349,11 +442,46 @@
   </a>
   <div class="nav-links">
     <a href="#about" class="active">About</a>
+    <a href="#markets">Markets</a>
     <a href="#reports">Reports</a>
     <a href="#members">Members</a>
     <a href="#news">News</a>
   </div>
 </nav>
+
+<!-- TICKER TAPE -->
+<div class="ticker-tape-wrap">
+  <!-- TradingView Widget BEGIN -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        { "description": "NASDAQ", "proName": "NASDAQ:NDX" },
+        { "description": "S&P 500", "proName": "SP:SPX" },
+        { "description": "IWM", "proName": "AMEX:IWM" },
+        { "description": "BTC", "proName": "BINANCE:BTCUSDT" },
+        { "description": "ETH", "proName": "BINANCE:ETHUSDT" },
+        { "description": "SOXX", "proName": "NASDAQ:SOXX" },
+        { "description": "IONQ", "proName": "NYSE:IONQ" },
+        { "description": "RGTI", "proName": "NASDAQ:RGTI" },
+        { "description": "ARKF", "proName": "AMEX:ARKF" },
+        { "description": "URA", "proName": "AMEX:URA" },
+        { "description": "IBB", "proName": "NASDAQ:IBB" },
+        { "description": "WTI", "proName": "BLACKBULL:WTI" },
+        { "description": "GOLD", "proName": "TVC:GOLD" },
+        { "description": "SILVER", "proName": "TVC:SILVER" }
+      ],
+      "showSymbolLogo": true,
+      "isTransparent": true,
+      "displayMode": "adaptive",
+      "colorTheme": "light",
+      "locale": "en"
+    }
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+</div>
 
 <!-- HERO -->
 <section id="home">
@@ -408,6 +536,231 @@
         <div>
           <h4>Career-Oriented</h4>
           <p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section id="markets">
+  <div class="section-header">
+    <div class="section-tag">Markets</div>
+    <h2>실시간 마켓 데이터</h2>
+    <p>주요 자산의 현황과 경제 캘린더, 글로벌 마켓 뉴스를 한눈에 확인하세요.</p>
+  </div>
+
+  <div class="markets-tabs">
+    <button class="markets-tab active" onclick="switchMarketsTab('overview', this)">📊 Overview</button>
+    <button class="markets-tab" onclick="switchMarketsTab('chart', this)">📈 Chart</button>
+    <button class="markets-tab" onclick="switchMarketsTab('calendar', this)">🗓 Calendar & News</button>
+  </div>
+
+  <!-- PANEL 1: OVERVIEW -->
+  <div class="markets-panel active" id="panel-overview">
+    <div class="panel-grid two-col">
+      <div class="widget-card tall">
+        <h3>🌐 Market Overview</h3>
+        <div class="widget-frame">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            {
+              "symbols": [
+                ["NASDAQ", "NASDAQ:NDX|1D"],
+                ["S&P 500", "SP:SPX|1D"],
+                ["IWM", "AMEX:IWM|1D"],
+                ["BTC", "BINANCE:BTCUSDT|1D"],
+                ["ETH", "BINANCE:ETHUSDT|1D"],
+                ["SOXX", "NASDAQ:SOXX|1D"],
+                ["IONQ", "NYSE:IONQ|1D"],
+                ["RGTI", "NASDAQ:RGTI|1D"],
+                ["ARKF", "AMEX:ARKF|1D"],
+                ["URA", "AMEX:URA|1D"],
+                ["IBB", "NASDAQ:IBB|1D"],
+                ["WTI", "BLACKBULL:WTI|1D"],
+                ["GOLD", "TVC:GOLD|1D"],
+                ["SILVER", "TVC:SILVER|1D"]
+              ],
+              "chartOnly": false,
+              "width": "100%",
+              "height": "100%",
+              "locale": "en",
+              "colorTheme": "light",
+              "autosize": true,
+              "showVolume": false,
+              "showMA": false,
+              "hideDateRanges": false,
+              "hideMarketStatus": false,
+              "hideSymbolLogo": false,
+              "scalePosition": "right",
+              "scaleMode": "Normal",
+              "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+              "fontSize": "10",
+              "noTimeScale": false,
+              "valuesTracking": "1",
+              "changeMode": "price-and-percent",
+              "chartType": "area",
+              "lineWidth": 2,
+              "lineType": 0,
+              "dateRanges": [
+                "1d|1",
+                "1m|30",
+                "3m|60",
+                "12m|1D",
+                "60m|1W",
+                "all|1M"
+              ]
+            }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </div>
+
+      <div class="widget-card medium">
+        <h3>💱 Forex Heatmap</h3>
+        <div class="widget-frame">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
+            {
+              "colorTheme": "light",
+              "isTransparent": true,
+              "locale": "en",
+              "currencies": [
+                "EUR",
+                "USD",
+                "JPY",
+                "GBP",
+                "CHF",
+                "CNY",
+                "KRW",
+                "AUD"
+              ],
+              "width": "100%",
+              "height": "100%"
+            }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: CHART -->
+  <div class="markets-panel" id="panel-chart">
+    <div class="widget-card chart">
+      <h3>📈 Advanced Chart</h3>
+      <p style="font-size:0.83rem;color:var(--text-sub);margin-bottom:14px;margin-top:-8px;">
+        차트 좌측 상단에서 심볼을 변경할 수 있습니다 · 추천 티커: NASDAQ:NDX, SP:SPX, AMEX:IWM, BINANCE:BTCUSDT, BINANCE:ETHUSDT, NASDAQ:SOXX, NYSE:IONQ, NASDAQ:RGTI, AMEX:ARKF, AMEX:URA, NASDAQ:IBB, BLACKBULL:WTI, TVC:GOLD, TVC:SILVER
+      </p>
+      <div class="widget-frame">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container" style="height:100%;width:100%">
+          <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+          {
+            "allow_symbol_change": true,
+            "calendar": false,
+            "details": false,
+            "hide_side_toolbar": false,
+            "hide_top_toolbar": false,
+            "hide_legend": true,
+            "hide_volume": true,
+            "hotlist": false,
+            "interval": "D",
+            "locale": "en",
+            "save_image": true,
+            "style": "1",
+            "symbol": "NASDAQ:NDX",
+            "theme": "light",
+            "timezone": "Etc/UTC",
+            "backgroundColor": "#ffffff",
+            "gridColor": "rgba(226, 230, 240, 0.6)",
+            "watchlist": [
+              "NASDAQ:NDX",
+              "SP:SPX",
+              "AMEX:IWM",
+              "BINANCE:BTCUSDT",
+              "BINANCE:ETHUSDT",
+              "NASDAQ:SOXX",
+              "NYSE:IONQ",
+              "NASDAQ:RGTI",
+              "AMEX:ARKF",
+              "AMEX:URA",
+              "NASDAQ:IBB",
+              "BLACKBULL:WTI",
+              "TVC:GOLD",
+              "TVC:SILVER"
+            ],
+            "withdateranges": true,
+            "compareSymbols": [],
+            "studies": [],
+            "autosize": true
+          }
+          </script>
+        </div>
+        <!-- TradingView Widget END -->
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: CALENDAR & NEWS -->
+  <div class="markets-panel" id="panel-calendar">
+    <div class="panel-grid three-col">
+      <div class="widget-card tall">
+        <h3>🗓 Economic Calendar</h3>
+        <div class="widget-frame">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+            {
+              "colorTheme": "light",
+              "isTransparent": true,
+              "locale": "en",
+              "countryFilter": "us,kr",
+              "importanceFilter": "-1,0,1",
+              "width": "100%",
+              "height": "100%"
+            }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </div>
+
+      <div class="widget-card tall">
+        <h3>🌍 Economic World Map</h3>
+        <div class="widget-frame">
+          <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-economic-map.js"></script>
+          <tv-economic-map color-theme="light" style="width:100%;height:100%;display:block;"></tv-economic-map>
+        </div>
+      </div>
+
+      <div class="widget-card tall">
+        <h3>📰 Top Stories</h3>
+        <div class="widget-frame">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+            {
+              "displayMode": "regular",
+              "feedMode": "all_symbols",
+              "colorTheme": "light",
+              "isTransparent": true,
+              "locale": "en",
+              "width": "100%",
+              "height": "100%"
+            }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
         </div>
       </div>
     </div>
@@ -479,9 +832,9 @@
       </div>
       <div class="footer-col">
         <h5>리서치</h5>
+        <a href="#markets">마켓 데이터</a>
         <a href="#reports">전체 보고서</a>
         <a href="#reports">거시경제</a>
-        <a href="#reports">주식 분석</a>
       </div>
       <div class="footer-col">
         <h5>연락처</h5>
@@ -574,6 +927,13 @@
     renderReports(cat);
   }
 
+  function switchMarketsTab(panelId, btn) {
+    document.querySelectorAll('.markets-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.markets-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + panelId).classList.add('active');
+  }
+
   function handleUpload(e) {
     const file = e.target.files[0];
     if (file) {
@@ -582,7 +942,7 @@
   }
 
   // nav active highlight on scroll
-  const sections = ['home','about','reports','members','news'];
+  const sections = ['home','about','markets','reports','members','news'];
   window.addEventListener('scroll', () => {
     let current = 'home';
     sections.forEach(id => {
