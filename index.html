@@ -62,7 +62,7 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── 🌟 TOP PARALLAX CONTAINER (히어로 + About 헤더를 감싸는 영역) ── */
+    /* ── 🌟 TOP PARALLAX CONTAINER (히어로 + About 전체를 감싸는 영역) ── */
     .top-parallax-container {
       position: relative;
       overflow: hidden; 
@@ -74,19 +74,19 @@
       top: 0; left: 0; width: 100%; height: 100%;
       background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000');
       background-repeat: no-repeat;
-      background-position: center center;
+      background-position: center top;
       background-size: cover;
       z-index: 0;
       will-change: transform, opacity;
       transform-origin: center center;
     }
 
-    /* 그림자 없이 텍스트가 잘 보이도록 배경을 살짝 눌러주는 오버레이 */
+    /* 오버레이 (가독성을 위한 반투명 막) */
     .top-bg::after {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(248, 249, 251, 0.75); 
+      background: rgba(248, 249, 251, 0.85); 
     }
 
     /* ── SECTIONS COMMON ── */
@@ -103,13 +103,11 @@
       min-height: calc(100vh - 156px); 
       display: flex; align-items: center; justify-content: center;
       padding: 40px 5% 80px; text-align: center;
-      /* 🌟 이거 지워서 배경 덮였던 겁니다! 투명하게 뚫어줍니다. */
       background: transparent !important; 
     }
     
     .hero-inner { max-width: 760px; }
     
-    /* 깔끔한 느낌의 뱃지 (그림자 제거) */
     .hero-badge {
       display: inline-block; 
       background: rgba(44, 62, 107, 0.08); 
@@ -118,14 +116,11 @@
       padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
     }
     
-    /* 텍스트 글로잉 효과 완전 삭제, 깔끔한 솔리드 컬러 */
     .hero-inner h1 { 
       font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); 
       line-height: 1.2; margin-bottom: 20px;
     }
-    .hero-inner h1 span { 
-      color: var(--primary-light);
-    }
+    .hero-inner h1 span { color: var(--primary-light); }
     .hero-inner p { 
       font-size: 1.1rem; color: #1a1f36; font-weight: 600; 
       max-width: 540px; margin: 0 auto 40px; 
@@ -141,35 +136,34 @@
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; }
 
-    /* ── 🌟 ABOUT HEADER (사진 위에 떠있는 영역) ── */
+    /* ── 🌟 ABOUT SECTION (전체 투명화) ── */
+    #about {
+      background: transparent !important;
+      padding: 60px 5% 120px;
+    }
+
     .about-header-wrapper {
-      position: relative;
-      z-index: 1; 
-      padding: 100px 5% 60px;
       text-align: center;
-      /* 여기도 투명하게 유지 */
-      background: transparent; 
+      margin-bottom: 60px;
     }
     .about-header-wrapper h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .about-header-wrapper p { color: var(--text-sub); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; }
-
-    /* ── 하얀색 본문 시작 영역 (여기부터 배경 끊어지고 하얀색 시작) ── */
-    .main-content-wrapper {
-      position: relative;
-      z-index: 2;
-      background: var(--bg);
-    }
-
-    .about-content-wrapper {
-      background: var(--white);
-      padding: 60px 5% 100px; 
-    }
 
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
     .about-values { display: flex; flex-direction: column; gap: 18px; }
-    .value-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
+    
+    /* 🌟 특징 카드: 사진 위에서 깔끔하게 보이도록 반투명 유리 질감 적용 */
+    .value-item { 
+      display: flex; gap: 16px; align-items: flex-start; 
+      padding: 20px; 
+      border-radius: 12px; 
+      border: 1px solid rgba(255, 255, 255, 0.6); 
+      background: rgba(255, 255, 255, 0.65); /* 반투명 화이트 */
+      backdrop-filter: blur(10px); /* 뒤에 비치는 사진을 부드럽게 뭉갬 */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
     .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; color: white; }
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
@@ -188,8 +182,15 @@
     }
     .gen-select:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05); }
 
+    /* ── 하얀색 본문 시작 영역 (여기부터 완전히 배경 가려짐) ── */
+    .main-content-wrapper {
+      position: relative;
+      z-index: 2;
+      background: var(--bg);
+    }
+
     /* ── MARKET OVERVIEW ── */
-    #market { background: var(--bg); padding: 100px 5%; }
+    #market { background: var(--bg); padding: 100px 5%; border-top: 1px solid var(--border); }
     .market-widget-container {
       max-width: 1100px; margin: 0 auto; height: 500px; 
       background: white; border: 1px solid var(--border); border-radius: 14px; 
@@ -302,7 +303,7 @@
 </head>
 <body>
 
-<!-- 🌟 사진이 늘어나는 영역 (히어로 ~ About 헤더까지 묶음) -->
+<!-- 🌟 사진이 늘어나는 영역 (히어로 ~ About 전체를 묶음) -->
 <div class="top-parallax-container" id="topParallax">
   
   <!-- 배경 사진 -->
@@ -326,16 +327,32 @@
     </div>
   </section>
 
-  <!-- 🌟 ABOUT HEADER (사진 위에 있음) -->
-  <div class="about-header-wrapper" id="about">
-    <div class="section-tag">About SAFE</div>
-    <h2>우리는 왜 SAFE인가</h2>
-    <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
-  </div>
+  <!-- 🌟 ABOUT SECTION (전체 투명화로 사진 위에 올라감) -->
+  <section id="about">
+    <div class="about-header-wrapper">
+      <div class="section-tag">About SAFE</div>
+      <h2>우리는 왜 SAFE인가</h2>
+      <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
+    </div>
 
-</div>
+    <div class="about-grid">
+      <div class="about-text-container">
+        <div id="dynamicAboutContent">
+          <!-- Rendered by JS -->
+        </div>
+        <button class="admin-only edit-about-btn" onclick="openAboutModal()">✏️ 소개글 수정</button>
+      </div>
+      <div class="about-values">
+        <div class="value-item"><div class="value-icon">📊</div><div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
+        <div class="value-item"><div class="value-icon">🤝</div><div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
+        <div class="value-item"><div class="value-icon">🎯</div><div><h4>Career-Oriented</h4><p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p></div></div>
+      </div>
+    </div>
+  </section>
 
-<!-- 여기서부터 하얀색/회색 솔리드 배경 시작 (사진 가려짐) -->
+</div> <!-- top-parallax-container 끝 -->
+
+<!-- 여기서부터 하얀색/회색 솔리드 배경 시작 (Market부터) -->
 <div class="main-content-wrapper">
 
   <div class="ticker-tape-wrap">
@@ -475,23 +492,6 @@
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('newsModal')">취소</button>
         <button class="btn-confirm" onclick="submitNewsData()">저장</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 하얀색 본문 (About 내용) -->
-  <div class="about-content-wrapper">
-    <div class="about-grid">
-      <div class="about-text-container">
-        <div id="dynamicAboutContent">
-          <!-- Rendered by JS -->
-        </div>
-        <button class="admin-only edit-about-btn" onclick="openAboutModal()">✏️ 소개글 수정</button>
-      </div>
-      <div class="about-values">
-        <div class="value-item"><div class="value-icon">📊</div><div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
-        <div class="value-item"><div class="value-icon">🤝</div><div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
-        <div class="value-item"><div class="value-icon">🎯</div><div><h4>Career-Oriented</h4><p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p></div></div>
       </div>
     </div>
   </div>
