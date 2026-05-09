@@ -7,1181 +7,597 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #f8f9fb; --white: #ffffff; --primary: #2c3e6b; --primary-light: #3d52a0;
-      --accent: #6b8cda; --accent-soft: #e8edf8; --text: #1a1f36; --text-sub: #5a6278;
-      --border: #e2e6f0; --nav-h: 68px;
+      --bg: #f8f9fb;
+      --white: #ffffff;
+      --primary: #2c3e6b;
+      --primary-light: #3d52a0;
+      --accent: #6b8cda;
+      --accent-soft: #e8edf8;
+      --text: #1a1f36;
+      --text-sub: #5a6278;
+      --border: #e2e6f0;
+      --nav-h: 68px;
     }
+
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 
-    /* ── ADMIN BAR ── */
-    .admin-bar { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: var(--primary); color: white; padding: 9px 5%; font-size: 13px; font-weight: 500; z-index: 99; align-items: center; gap: 12px; }
-    .admin-bar.visible { display: flex; }
-    .admin-bar-badge { background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-    .admin-bar span.hint { opacity: 0.75; font-size: 12px; }
-    .admin-bar-logout { margin-left: auto; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
-    .admin-bar-logout:hover { background: rgba(255,255,255,0.28); }
-
-    /* ── EDITABLE ── */
-    body.admin-mode [data-editable] { outline: 2px dashed rgba(107,140,218,0.55); outline-offset: 3px; border-radius: 4px; cursor: text; }
-    body.admin-mode [data-editable]:hover { outline-color: var(--accent); background: rgba(107,140,218,0.06); }
-    body.admin-mode [data-editable]:focus { outline: 2px solid var(--primary); background: rgba(107,140,218,0.1); }
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
     /* ── NAV ── */
-    nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; z-index: 100; }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-mark { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: white; letter-spacing: 0.5px;
+    }
+
     .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
     .logo-text .brand { font-weight: 700; font-size: 17px; color: var(--primary); }
-    .logo-text .sub { font-size: 10px; color: var(--text-sub); }
-    .nav-center { display: flex; gap: 8px; }
-    .nav-center a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-sub); padding: 7px 14px; border-radius: 8px; transition: all 0.2s; }
-    .nav-center a:hover, .nav-center a.active { color: var(--primary); background: var(--accent-soft); }
-    .nav-admin-btn { display: flex; align-items: center; gap: 6px; background: none; border: 1.5px solid var(--border); color: var(--text-sub); font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
-    .nav-admin-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .nav-admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
+    .logo-text .sub { font-size: 10px; color: var(--text-sub); letter-spacing: 0.3px; }
+
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      color: var(--text-sub); padding: 7px 14px; border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); background: var(--accent-soft); }
+    .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
     /* ── HERO ── */
-    #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%); padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center; }
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%);
+      padding: calc(var(--nav-h) + 40px) 5% 80px;
+      text-align: center;
+    }
+
     .hero-inner { max-width: 760px; }
-    .hero-badge { display: inline-block; background: var(--accent-soft); color: var(--primary-light); font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
-    .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
-    .hero-inner h1 span { background: linear-gradient(90deg, var(--primary-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-desc { font-size: 1rem; color: var(--text-sub); max-width: 580px; margin: 0 auto 40px; }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--primary-light);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero-inner h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .hero-inner h1 span {
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-inner p {
+      font-size: 1.1rem; color: var(--text-sub);
+      max-width: 540px; margin: 0 auto 40px;
+    }
+
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; display: inline-block; font-family: inherit; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white; font-size: 15px; font-weight: 600;
+      padding: 13px 28px; border-radius: 10px;
+      text-decoration: none; transition: all 0.2s;
+      border: none; cursor: pointer;
+    }
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-    .btn-outline { background: transparent; color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: 1.5px solid var(--border); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary); font-size: 15px; font-weight: 600;
+      padding: 13px 28px; border-radius: 10px;
+      text-decoration: none; transition: all 0.2s;
+      border: 1.5px solid var(--border);
+    }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: flex; gap: 40px; justify-content: center;
+      margin-top: 60px; flex-wrap: wrap;
+    }
     .stat { text-align: center; }
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
 
-    /* ── SECTIONS ── */
+    /* ── SECTIONS COMMON ── */
     section { padding: 100px 5%; }
     .section-header { text-align: center; margin-bottom: 60px; }
-    .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .section-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
     /* ── ABOUT ── */
     #about { background: var(--white); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
+
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto;
+    }
+
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; }
+
     .about-values { display: flex; flex-direction: column; gap: 18px; }
-    .value-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
-    .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .value-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px; background: var(--bg); border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .value-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
 
     /* ── REPORTS ── */
     #reports { background: var(--bg); }
-    .year-selector-wrap { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
-    .year-selector-label { font-size: 13px; font-weight: 600; color: var(--text-sub); }
-    .year-dropdown-wrap { position: relative; display: inline-block; }
-    .year-dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 15px; font-weight: 700; color: var(--primary); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; min-width: 140px; justify-content: space-between; }
-    .year-dropdown-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
-    .year-dropdown-btn .arrow { font-size: 11px; color: var(--text-sub); transition: transform 0.2s; }
-    .year-dropdown-btn.open .arrow { transform: rotate(180deg); }
-    .year-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; max-height: 240px; overflow-y: auto; display: none; min-width: 160px; }
-    .year-dropdown-menu.open { display: block; }
-    .year-option { padding: 11px 16px; font-size: 14px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.15s; margin: 3px; border-radius: 8px; }
-    .gen-option { padding-left: 28px; font-size: 13px; font-weight: 500; }
-    .year-option:hover { background: var(--accent-soft); color: var(--primary); }
-    .year-option.active { background: var(--primary); color: white; }
-    .reports-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
-    .reports-scroll-wrap::-webkit-scrollbar { height: 6px; }
-    .reports-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
-    .reports-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-    .reports-filter { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
-    .filter-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
-    .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-    .reports-grid { display: flex; gap: 24px; width: max-content; padding: 4px 2px; }
-    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; position: relative; width: 300px; flex-shrink: 0; display: flex; flex-direction: column; }
+
+    .reports-filter {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      background: white; color: var(--text-sub); transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary); color: white; border-color: var(--primary);
+    }
+
+    .reports-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .report-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      transition: all 0.25s; cursor: pointer;
+    }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
-    .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
+
+    .report-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 6px; margin-bottom: 14px;
+    }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
     .tag-equity { background: #e6f4ea; color: #2e7d32; }
-    .tag-industry { background: #fff3e0; color: #e65100; }
+    .tag-fixed { background: #fce8e6; color: #c62828; }
+    .tag-quant { background: #f3e5f5; color: #6a1b9a; }
+
     .report-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .report-card .card-desc { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 28px; flex: 1; }
-    .report-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-sub); border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto; }
-    .report-dl { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
-    .reports-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; background: white; border-radius: 14px; border: 1px solid var(--border); min-width: 300px; }
-    .admin-card-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; }
-    .admin-card-btns.visible { display: flex; }
-    .card-edit-btn, .card-del-btn { border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
-    .card-edit-btn { background: var(--accent-soft); color: var(--primary); }
-    .card-edit-btn:hover { background: var(--accent); color: white; }
-    .card-del-btn { background: #fce8e6; color: #c62828; }
-    .card-del-btn:hover { background: #c62828; color: white; }
+    .report-card p { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 16px; }
 
-    /* ADMIN PANEL */
-    .admin-panel { display: none; max-width: 700px; margin: 40px auto 0; background: white; border: 1.5px solid var(--accent); border-radius: 16px; padding: 32px; }
-    .admin-panel.open { display: block; }
-    .admin-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .admin-panel-header h4 { font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-    .admin-badge { font-size: 11px; background: var(--accent-soft); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
-    .submit-btn { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 6px; font-family: inherit; }
-    .submit-btn:hover { background: var(--primary-light); }
-    .submit-feedback { text-align: center; font-size: 13px; margin-top: 10px; min-height: 20px; }
+    .report-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--text-sub);
+      border-top: 1px solid var(--border); padding-top: 14px;
+    }
+    .report-dl {
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+    }
 
-    /* FORM */
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-    .form-group label { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
-    .form-group input, .form-group select, .form-group textarea { padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: white; }
-    .form-group textarea { min-height: 70px; resize: vertical; }
-
-    /* MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: white; border-radius: 20px; padding: 36px; width: 100%; max-width: 420px; margin: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-    .modal.wide { max-width: 560px; }
-    .modal h3 { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
-    .modal > p { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 20px; }
-    .modal input[type="password"] { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; transition: border-color 0.2s; }
-    .modal input[type="password"]:focus { border-color: var(--accent); }
-    .auth-error { font-size: 13px; color: #c62828; margin-top: 8px; min-height: 18px; }
-    .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-    .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: inherit; }
-    .btn-cancel { background: var(--bg); border: 1.5px solid var(--border) !important; color: var(--text-sub); }
-    .btn-confirm { background: var(--primary); color: white; }
-    .btn-confirm:hover { background: var(--primary-light); }
+    /* upload area */
+    .upload-area {
+      max-width: 500px; margin: 40px auto 0;
+      border: 2px dashed var(--border); border-radius: 14px;
+      padding: 36px; text-align: center; cursor: pointer;
+      transition: all 0.2s; background: white;
+    }
+    .upload-area:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .upload-area .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .upload-area p { color: var(--text-sub); font-size: 0.9rem; }
+    .upload-area strong { color: var(--primary); }
 
     /* ── MEMBERS ── */
     #members { background: var(--white); }
 
-    /* 기수 탭 + 드롭다운 */
-    .gen-tabs-wrap { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
-    .gen-tab-btn { padding: 9px 22px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 600; cursor: pointer; background: white; color: var(--text-sub); transition: all 0.2s; font-family: inherit; }
-    .gen-tab-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .gen-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-    .gen-dropdown-wrap { position: relative; display: inline-block; }
-    .gen-dropdown-btn { display: flex; align-items: center; gap: 8px; padding: 9px 22px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-sub); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; }
-    .gen-dropdown-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .gen-dropdown-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
-    .gen-dropdown-btn .arrow { font-size: 10px; transition: transform 0.2s; }
-    .gen-dropdown-btn.open .arrow { transform: rotate(180deg); }
-    .gen-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1.5px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(44,62,107,0.12); z-index: 50; min-width: 110px; display: none; overflow: hidden; }
-    .gen-dropdown-menu.open { display: block; }
-    .gen-dropdown-item { padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: background 0.15s; }
-    .gen-dropdown-item:hover { background: var(--accent-soft); color: var(--primary); }
-    .gen-dropdown-item.active { background: var(--primary); color: white; }
-    /* 일괄 등록 테이블 */
-    .bulk-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .bulk-table th { padding: 8px 8px; text-align: left; font-weight: 700; color: var(--text-sub); font-size: 11px; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); background: var(--bg); }
-    .bulk-table td { padding: 5px 4px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .bulk-table input { width: 100%; padding: 7px 9px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; background: white; }
-    .bulk-table input:focus { border-color: var(--accent); }
-    .bulk-table .del-row { background: none; border: none; cursor: pointer; font-size: 16px; color: var(--text-sub); padding: 4px 6px; border-radius: 6px; }
-    .bulk-table .del-row:hover { color: #c62828; background: #fce8e6; }
-    .bulk-add-row { margin-top: 10px; padding: 8px; border-radius: 8px; border: 1.5px dashed var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; font-family: inherit; width: 100%; transition: all 0.2s; }
-    .bulk-add-row:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .members-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
 
-    .members-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
-    .members-scroll-wrap::-webkit-scrollbar { height: 6px; }
-    .members-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
-    .members-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-    .members-grid { display: flex; gap: 20px; width: max-content; padding: 4px 2px; }
-    .member-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; width: 200px; flex-shrink: 0; position: relative; }
+    .member-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px 20px; text-align: center;
+      transition: all 0.25s;
+    }
     .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
-    .member-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: white; margin: 0 auto 16px; }
-    .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-    .member-role { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-    .member-card p { font-size: 0.83rem; color: var(--text-sub); }
-    .member-gen-badge { display: inline-block; font-size: 10px; font-weight: 700; color: var(--primary-light); background: var(--accent-soft); padding: 2px 8px; border-radius: 10px; margin-bottom: 10px; letter-spacing: 0.3px; }
-    .member-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; margin: 0 auto 32px; }
-    .member-add-btn.visible { display: block; }
-    .member-add-btn:hover { background: var(--primary-light); }
-    .members-empty { text-align: center; padding: 48px 20px; color: var(--text-sub); font-size: 0.95rem; min-width: 300px; }
 
-    /* ── NEWS — 가로 스크롤 ── */
+    .member-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; color: white;
+      margin: 0 auto 16px;
+    }
+
+    .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .member-role {
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+    }
+    .member-card p { font-size: 0.83rem; color: var(--text-sub); }
+
+    /* ── NEWS ── */
     #news { background: var(--bg); }
-    .news-add-btn { display: none; background: var(--primary); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; margin: 0 auto 32px; }
-    .news-add-btn.visible { display: block; }
-    .news-add-btn:hover { background: var(--primary-light); }
-    .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
-    .news-scroll-wrap::-webkit-scrollbar { height: 6px; }
-    .news-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
-    .news-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-    .news-grid { display: flex; gap: 20px; width: max-content; padding: 4px 2px; }
-    .news-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; display: flex; flex-direction: column; width: 320px; flex-shrink: 0; position: relative; }
+
+    .news-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .news-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; transition: all 0.25s;
+    }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
-    .news-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-    .news-type { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
+
+    .news-header {
+      padding: 20px 24px 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .news-type {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 6px;
+    }
     .type-notice { background: #fff8e1; color: #f57f17; }
     .type-recruit { background: #e8f5e9; color: #2e7d32; }
     .type-event { background: #e3f2fd; color: #1565c0; }
-    .news-date { font-size: 12px; color: var(--text-sub); text-align: right; }
-    .news-card .news-body { padding: 14px 24px 24px; flex: 1; }
-    .news-card h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 8px; word-break: keep-all; }
-    .news-card p { font-size: 0.86rem; color: var(--text-sub); word-break: break-all; overflow-wrap: break-word; }
-    .news-dl-btn { display: inline-block; margin-top: 12px; background: var(--primary); color: white; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
-    .news-dl-btn:hover { background: var(--primary-light); }
-    .news-admin-btns { display: none; position: absolute; top: 14px; right: 14px; gap: 6px; z-index: 1; }
-    .news-admin-btns.visible { display: flex; }
+
+    .news-date { font-size: 12px; color: var(--text-sub); }
+
+    .news-card .news-body { padding: 14px 24px 24px; }
+    .news-card h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .news-card p { font-size: 0.86rem; color: var(--text-sub); }
 
     /* ── FOOTER ── */
-    footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; }
-    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.7);
+      padding: 48px 5% 32px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 32px;
+      padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
     .footer-brand .brand-name { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
     .footer-brand p { font-size: 0.85rem; max-width: 280px; }
     .footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
-    .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 14px; }
-    .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; margin-bottom: 8px; transition: color 0.2s; word-break: break-all; }
+    .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 14px; letter-spacing: 0.5px; }
+    .footer-col a {
+      display: block; color: rgba(255,255,255,0.6); font-size: 13px;
+      text-decoration: none; margin-bottom: 8px; transition: color 0.2s;
+    }
     .footer-col a:hover { color: white; }
-    .footer-bottom { max-width: 1100px; margin: 24px auto 0; display: flex; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px; }
+    .footer-bottom {
+      max-width: 1100px; margin: 24px auto 0;
+      display: flex; justify-content: space-between; font-size: 12px;
+      flex-wrap: wrap; gap: 8px;
+    }
 
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .about-grid, .form-row { grid-template-columns: 1fr; }
-      .nav-center { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
       .hero-stats { gap: 24px; }
-      .footer-inner, .footer-links { flex-direction: column; gap: 20px; }
+      .footer-inner { flex-direction: column; }
+      .footer-links { flex-direction: column; gap: 20px; }
     }
   </style>
 </head>
 <body>
 
-<div class="admin-bar" id="adminBar">
-  <span class="admin-bar-badge">ADMIN MODE</span>
-  <span class="hint">파란 점선 텍스트를 클릭해서 바로 수정하세요 — 자동 저장됩니다.</span>
-  <button class="admin-bar-logout" onclick="logout()">로그아웃</button>
-</div>
-
+<!-- NAV -->
 <nav>
   <a href="#home" class="nav-logo">
     <div class="logo-mark">SF</div>
-    <div class="logo-text"><span class="brand">SAFE</span><span class="sub">Sogang Analysis of Finance &amp; Economics</span></div>
+    <div class="logo-text">
+      <span class="brand">SAFE</span>
+      <span class="sub">Sogang Analysis of Finance & Economics</span>
+    </div>
   </a>
-  <div class="nav-center">
-    <a href="#about">소개</a>
-    <a href="#reports">보고서</a>
-    <a href="#members">멤버</a>
-    <a href="#news">공지</a>
+  <div class="nav-links">
+    <a href="#about" class="active">About</a>
+    <a href="#reports">Reports</a>
+    <a href="#members">Members</a>
+    <a href="#news">News</a>
   </div>
-  <button class="nav-admin-btn" id="navAdminBtn" onclick="openAuthModal()">
-    <span id="navLockIcon">🔒</span><span id="navAdminLabel">관리자</span>
-  </button>
 </nav>
 
-<!-- ── HOME ── -->
+<!-- HERO -->
 <section id="home">
   <div class="hero-inner">
-    <div class="hero-badge" data-editable data-key="hero_badge">Sogang University · Finance &amp; Economics</div>
-    <h1>
-      <span data-editable data-key="hero_title1">Analyze.</span><br/>
-      <span data-editable data-key="hero_title2">Understand. Invest.</span>
-    </h1>
-    <p class="hero-desc" data-editable data-key="hero_desc">서강대학교 경제·금융 분석 학회 SAFE는 거시경제, 통화 정책, 산업·기업 분석을 중심으로 깊이 있는 연구와 리서치 라이팅을 통해 금융 문해력을 키웁니다.</p>
+    <div class="hero-badge">Sogang University · Finance & Economics</div>
+    <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
+    <p>서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.</p>
     <div class="hero-btns">
-      <a href="#reports" class="btn-primary" data-editable data-key="hero_btn1">리서치 보기 →</a>
-      <a href="#about" class="btn-outline" data-editable data-key="hero_btn2">학회 소개</a>
+      <a href="#reports" class="btn-primary">리서치 보기 →</a>
+      <a href="#about" class="btn-outline">학회 소개</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num" data-editable data-key="stat_members">10+</div><div class="stat-label" data-editable data-key="stat_members_lbl">활동 멤버</div></div>
-      <div class="stat"><div class="stat-num" data-editable data-key="stat_reports">10+</div><div class="stat-label" data-editable data-key="stat_reports_lbl">발간 리포트</div></div>
-      <div class="stat"><div class="stat-num" data-editable data-key="stat_gen">2기</div><div class="stat-label" data-editable data-key="stat_gen_lbl">활동 기수</div></div>
+      <div class="stat"><div class="stat-num">48+</div><div class="stat-label">활동 멤버</div></div>
+      <div class="stat"><div class="stat-num">120+</div><div class="stat-label">발간 리포트</div></div>
+      <div class="stat"><div class="stat-num">6기</div><div class="stat-label">활동 기수</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">연구 분과</div></div>
     </div>
   </div>
 </section>
 
-<!-- ── ABOUT ── -->
+<!-- ABOUT -->
 <section id="about">
   <div class="section-header">
-    <div class="section-tag">소개</div>
-    <h2 data-editable data-key="about_h2">우리는 왜 SAFE인가</h2>
-    <p data-editable data-key="about_sub">건설적이고 'SAFE'한 투자를 지양하는 학회로서 금융 시장을 분석하고 경제 현상을 탐구하며, 함께 성장하는 학술 공동체</p>
+    <div class="section-tag">About SAFE</div>
+    <h2>우리는 왜 SAFE인가</h2>
+    <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
   </div>
   <div class="about-grid">
     <div class="about-text">
-      <h3 data-editable data-key="about_text_h3">서강대 경제·금융 분석 학회</h3>
-      <p data-editable data-key="about_p1">SAFE(Sogang Analysis of Finance &amp; Economics)는 2025년 3월에 설립된 서강대학교 경영·경제 기반의 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석 등 다양한 분야에서 체계적인 리서치 활동을 하고 있습니다.</p>
-      <p data-editable data-key="about_p2">매 학기 포트폴리오 프로젝트, 정기 발표, 토론, 경제·산업 분석 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.</p>
-      <a href="#news" class="btn-primary" style="margin-top:8px;">모집 공고 보기 →</a>
+      <h3>서강대 경제·금융 분석 학회</h3>
+      <p>SAFE(Sogang Analysis of Finance & Economics)는 2018년 설립된 서강대학교 경제학과 기반의 학술 학회입니다. 거시경제, 주식 밸류에이션, 채권·금리, 퀀트 투자 등 다양한 분야에서 체계적인 리서치 활동을 이어오고 있습니다.</p>
+      <p>매 학기 정기 발표, 세미나, 외부 연사 초청 프로그램을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.</p>
+      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
     </div>
     <div class="about-values">
-      <div class="value-item"><div class="value-icon">📊</div><div><h4 data-editable data-key="val1_h">Data-Driven Research</h4><p data-editable data-key="val1_p">데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
-      <div class="value-item"><div class="value-icon">🤝</div><div><h4 data-editable data-key="val2_h">Collaborative Learning</h4><p data-editable data-key="val2_p">팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
-      <div class="value-item"><div class="value-icon">🎯</div><div><h4 data-editable data-key="val3_h">Career-Oriented</h4><p data-editable data-key="val3_p">금융권·리서치 진학을 위한 실질적인 역량을 기르고자 합니다.</p></div></div>
+      <div class="value-item">
+        <div class="value-icon">📊</div>
+        <div>
+          <h4>Data-Driven Research</h4>
+          <p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🤝</div>
+        <div>
+          <h4>Collaborative Learning</h4>
+          <p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🎯</div>
+        <div>
+          <h4>Career-Oriented</h4>
+          <p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── REPORTS ── -->
+<!-- REPORTS -->
 <section id="reports">
   <div class="section-header">
-    <div class="section-tag">보고서</div>
-    <h2>리서치 &amp; 보고서</h2>
+    <div class="section-tag">Research</div>
+    <h2>리서치 & 보고서</h2>
     <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
   </div>
-  <div class="year-selector-wrap">
-    <span class="year-selector-label">연도</span>
-    <div class="year-dropdown-wrap" id="yearDropdownWrap">
-      <button class="year-dropdown-btn" id="yearDropdownBtn" onclick="toggleYearDropdown()">
-        <span id="yearDropdownLabel">연도 선택</span>
-        <span class="arrow">▾</span>
-      </button>
-      <div class="year-dropdown-menu" id="yearDropdownMenu"></div>
-    </div>
-  </div>
+
   <div class="reports-filter">
     <button class="filter-btn active" onclick="filterReports('all', this)">전체</button>
     <button class="filter-btn" onclick="filterReports('macro', this)">거시경제</button>
-    <button class="filter-btn" onclick="filterReports('industry', this)">산업분석</button>
-    <button class="filter-btn" onclick="filterReports('equity', this)">기업분석</button>
+    <button class="filter-btn" onclick="filterReports('equity', this)">주식</button>
+    <button class="filter-btn" onclick="filterReports('fixed', this)">채권·금리</button>
+    <button class="filter-btn" onclick="filterReports('quant', this)">퀀트</button>
   </div>
-  <div class="reports-scroll-wrap">
-    <div class="reports-grid" id="reportsGrid"></div>
+
+  <div class="reports-grid" id="reportsGrid">
+    <!-- Cards injected by JS -->
   </div>
-  <div class="admin-panel" id="adminPanel">
-    <div class="admin-panel-header">
-      <h4>📋 보고서 업로드 <span class="admin-badge">ADMIN</span></h4>
-    </div>
-    <div style="margin-bottom:16px; padding:14px 16px; background:#e8f5e9; border-radius:10px; border-left:3px solid #2e7d32; font-size:13px; color:#1b5e20; line-height:1.8;">
-      🔗 <strong>Google Drive 링크로 등록하세요.</strong><br/>
-      ① Drive에서 PDF 파일 우클릭 &nbsp;② <strong>공유</strong> → <strong>"링크가 있는 모든 사용자"</strong> 설정 &nbsp;③ <strong>링크 복사</strong> 후 아래 입력란에 붙여넣기
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>보고서 제목</label><input type="text" id="rTitle" placeholder="예: 2025 하반기 금리 전망"/></div>
-      <div class="form-group"><label>카테고리</label>
-        <select id="rCategory">
-          <option value="macro">거시경제</option>
-          <option value="industry">산업분석</option>
-          <option value="equity">기업분석</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>작성자</label><input type="text" id="rAuthor" placeholder="예: 김도현"/></div>
-      <div class="form-group"><label>작성 연월</label><input type="month" id="rDate"/></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>기수</label><input type="number" id="rGen" placeholder="예: 1" min="1"/></div>
-      <div class="form-group"></div>
-    </div>
-    <div class="form-group"><label>요약 설명</label><textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요."></textarea></div>
-    <div class="form-group"><label>Google Drive 링크</label><input type="text" id="rLink" placeholder="https://drive.google.com/file/d/..."/></div>
-    <div style="display:flex;gap:10px;margin-top:6px;">
-      <button class="submit-btn" onclick="submitReport()" style="flex:1;">보고서 등록하기</button>
-      <button class="submit-btn" onclick="openBulkReportModal()" style="flex:1;background:var(--accent);">📋 여러 개 한번에 등록</button>
-    </div>
-    <div class="submit-feedback" id="reportFeedback"></div>
+
+  <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📄</div>
+    <p><strong>보고서 업로드</strong></p>
+    <p>클릭하거나 파일을 드래그하여 PDF를 업로드하세요</p>
+    <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleUpload(event)"/>
   </div>
+  <div id="uploadFeedback" style="text-align:center;margin-top:16px;font-size:0.9rem;color:var(--accent);"></div>
 </section>
 
-<!-- 관리자 인증 모달 -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal">
-    <h3>🔐 관리자 인증</h3>
-    <p>로그인하면 페이지의 모든 텍스트를 직접 클릭해서 수정할 수 있습니다.</p>
-    <input type="password" id="adminPw" placeholder="관리자 비밀번호 입력" onkeydown="if(event.key==='Enter') confirmAuth()"/>
-    <div class="auth-error" id="authError"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('authModal')">취소</button>
-      <button class="btn-confirm" onclick="confirmAuth()">확인</button>
-    </div>
-  </div>
-</div>
-
-<!-- 보고서 수정 모달 -->
-<div class="modal-overlay" id="editReportModal">
-  <div class="modal wide">
-    <h3>✏️ 보고서 수정</h3>
-    <div class="form-row">
-      <div class="form-group"><label>제목</label><input type="text" id="eTitle"/></div>
-      <div class="form-group"><label>카테고리</label>
-        <select id="eCategory">
-          <option value="macro">거시경제</option>
-          <option value="industry">산업분석</option>
-          <option value="equity">기업분석</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>작성자</label><input type="text" id="eAuthor"/></div>
-      <div class="form-group"><label>작성 연월</label><input type="month" id="eDate"/></div>
-    </div>
-    <div class="form-group"><label>요약 설명</label><textarea id="eDesc"></textarea></div>
-    <div class="form-group"><label>링크 변경 (비우면 기존 유지)</label><input type="text" id="eLink" placeholder="변경할 링크 (선택사항)"/></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('editReportModal')">취소</button>
-      <button class="btn-confirm" onclick="saveReportEdit()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- 멤버 추가/수정 모달 -->
-<div class="modal-overlay" id="editMemberModal">
-  <div class="modal wide" style="max-width:700px;">
-    <h3 id="memberModalTitle">👤 멤버 추가</h3>
-
-    <!-- 일괄 추가 영역 -->
-    <div id="memberBulkArea">
-      <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:14px;">행을 추가하며 여러 명을 한 번에 등록할 수 있습니다.</p>
-      <div style="overflow-x:auto;">
-        <table class="bulk-table">
-          <thead><tr>
-            <th style="width:90px;">이름</th>
-            <th style="width:160px;">역할 / 직책</th>
-            <th style="width:140px;">학과 &amp; 학번</th>
-            <th style="width:60px;">기수</th>
-            <th style="width:32px;"></th>
-          </tr></thead>
-          <tbody id="memberBulkBody"></tbody>
-        </table>
-      </div>
-      <button class="bulk-add-row" onclick="addMemberRow()">+ 행 추가</button>
-      <div class="modal-btns" style="margin-top:16px;">
-        <button class="btn-cancel" onclick="closeModal('editMemberModal')">취소</button>
-        <button class="btn-confirm" onclick="saveBulkMembers()">전체 저장</button>
-      </div>
-      <div id="bulkMemberFeedback" style="text-align:center;font-size:13px;margin-top:8px;min-height:18px;color:#c62828;"></div>
-    </div>
-
-    <!-- 단일 수정 영역 (수정 모드) -->
-    <div id="memberEditArea" style="display:none;">
-      <div class="form-group"><label>이름</label><input type="text" id="mName" placeholder="예: 홍길동"/></div>
-      <div class="form-group"><label>역할 / 직책</label><input type="text" id="mRole" placeholder="예: 회장 / 리서치 파트"/></div>
-      <div class="form-group"><label>학과 &amp; 학번</label><input type="text" id="mDept" placeholder="예: 경영학과 25"/></div>
-      <div class="form-group"><label>기수 <span style="color:#c62828">*</span></label><input type="number" id="mGen" placeholder="예: 1" min="1"/></div>
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('editMemberModal')">취소</button>
-        <button class="btn-confirm" onclick="saveMember()">저장</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 보고서 일괄 등록 모달 -->
-<div class="modal-overlay" id="bulkReportModal">
-  <div class="modal wide" style="max-width:860px;">
-    <h3>📋 보고서 일괄 등록</h3>
-    <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:14px;">행을 추가하며 여러 보고서를 한 번에 등록할 수 있습니다. 카테고리: macro / industry / equity</p>
-    <div style="overflow-x:auto;">
-      <table class="bulk-table">
-        <thead><tr>
-          <th style="width:140px;">제목</th>
-          <th style="width:80px;">카테고리</th>
-          <th style="width:80px;">작성자</th>
-          <th style="width:100px;">연월 (YYYY-MM)</th>
-          <th style="width:40px;">기수</th>
-          <th style="width:180px;">설명</th>
-          <th style="width:180px;">Drive 링크</th>
-          <th style="width:32px;"></th>
-        </tr></thead>
-        <tbody id="reportBulkBody"></tbody>
-      </table>
-    </div>
-    <button class="bulk-add-row" onclick="addReportRow()">+ 행 추가</button>
-    <div class="modal-btns" style="margin-top:16px;">
-      <button class="btn-cancel" onclick="closeModal('bulkReportModal')">취소</button>
-      <button class="btn-confirm" onclick="saveBulkReports()">전체 저장</button>
-    </div>
-    <div id="bulkReportFeedback" style="text-align:center;font-size:13px;margin-top:8px;min-height:18px;color:#c62828;"></div>
-  </div>
-</div>
-
-<!-- 공지 작성/수정 모달 -->
-<div class="modal-overlay" id="editNewsModal">
-  <div class="modal wide">
-    <h3 id="newsModalTitle">📢 공지 작성</h3>
-    <div class="form-row">
-      <div class="form-group"><label>유형</label>
-        <select id="nType"><option value="type-notice">공지</option><option value="type-recruit">모집</option><option value="type-event">이벤트</option></select>
-      </div>
-      <div class="form-group"><label>날짜 / 마감</label><input type="text" id="nDate" placeholder="예: 2026.03.05, 11:59까지"/></div>
-    </div>
-    <div class="form-group"><label>제목</label><input type="text" id="nTitle" placeholder="공지 제목"/></div>
-    <div class="form-group"><label>내용</label><textarea id="nDesc" placeholder="공지 내용을 입력하세요."></textarea></div>
-    <div class="form-group"><label>다운로드 링크 (선택사항)</label><input type="text" id="nLink" placeholder="https://..."/></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('editNewsModal')">취소</button>
-      <button class="btn-confirm" onclick="saveNewsItem()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── MEMBERS ── -->
-<section id="members" style="padding-bottom:80px;">
+<!-- MEMBERS -->
+<section id="members">
   <div class="section-header">
-    <div class="section-tag">멤버</div>
-    <h2>임원 소개</h2>
+    <div class="section-tag">Team</div>
+    <h2>멤버 소개</h2>
     <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
   </div>
-  <!-- 기수 탭 -->
-  <div class="gen-tabs-wrap" id="genTabsWrap">
-    <button class="gen-tab-btn" id="tabFounder" onclick="selectMemberGen('founder')">설립</button>
-    <div class="gen-dropdown-wrap" id="genDropdownWrap">
-      <button class="gen-dropdown-btn" id="genDropdownBtn" onclick="toggleGenDropdown()">
-        기수 <span class="arrow">▾</span>
-      </button>
-      <div class="gen-dropdown-menu" id="genDropdownMenu"></div>
-    </div>
-  </div>
-  <!-- 관리자 멤버 추가 버튼 -->
-  <div style="text-align:center; margin:-12px 0 32px;">
-    <button class="member-add-btn" id="memberAddBtn" onclick="openMemberModal()">+ 멤버 추가</button>
-  </div>
-  <div class="members-scroll-wrap">
-    <div class="members-grid" id="membersGrid"></div>
-  </div>
+  <div class="members-grid" id="membersGrid"></div>
 </section>
 
-<!-- ── NEWS ── -->
-<section id="news" style="padding-bottom:80px;">
+<!-- NEWS -->
+<section id="news">
   <div class="section-header">
-    <div class="section-tag">공지</div>
-    <h2>공지사항 &amp; 뉴스</h2>
+    <div class="section-tag">Notice</div>
+    <h2>공지사항 & 뉴스</h2>
     <p>학회의 최신 소식과 공지를 확인하세요.</p>
   </div>
-  <div style="text-align:center; margin:-20px 0 32px;">
-    <button class="news-add-btn" id="newsAddBtn" onclick="openNewsModal()">+ 공지 작성</button>
-  </div>
-  <div class="news-scroll-wrap">
-    <div class="news-grid" id="newsGrid"></div>
-  </div>
+  <div class="news-grid" id="newsGrid"></div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="brand-name">SAFE</div>
-      <p>Sogang Analysis of Finance &amp; Economics<br/>서강대학교 경제·금융 분석 학회</p>
+      <p>Sogang Analysis of Finance & Economics<br/>서강대학교 경제·금융 학술 학회</p>
     </div>
     <div class="footer-links">
-      <div class="footer-col"><h5>학회</h5><a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a></div>
-      <div class="footer-col"><h5>리서치</h5><a href="#reports">전체 보고서</a><a href="#reports">거시경제</a><a href="#reports">기업 분석</a></div>
-      <div class="footer-col"><h5>연락처</h5>
-        <a href="mailto:safe.official.sogang&#64;gmail.com">safe.official.sogang&#64;gmail.com</a>
-        <a href="https://instagram.com/safe._.official" target="_blank">Instagram: @safe._.official</a>
+      <div class="footer-col">
+        <h5>학회</h5>
+        <a href="#about">학회 소개</a>
+        <a href="#members">멤버</a>
+        <a href="#news">공지사항</a>
+      </div>
+      <div class="footer-col">
+        <h5>리서치</h5>
+        <a href="#reports">전체 보고서</a>
+        <a href="#reports">거시경제</a>
+        <a href="#reports">주식 분석</a>
+      </div>
+      <div class="footer-col">
+        <h5>연락처</h5>
+        <a href="#">safe@sogang.ac.kr</a>
+        <a href="#">Instagram</a>
+        <a href="#">Notion</a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 SAFE — Sogang Analysis of Finance &amp; Economics</span>
+    <span>© 2025 SAFE — Sogang Analysis of Finance & Economics</span>
     <span>Sogang University, Seoul, Korea</span>
   </div>
 </footer>
 
 <script>
-var ADMIN_PASSWORD = 'safesogang20250318';
-var TYPE_LABELS = {'type-notice':'공지','type-recruit':'모집','type-event':'이벤트'};
+  // ── DATA ──
+  const reports = [
+    { id:1, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'2025년 하반기 글로벌 경기 전망', desc:'미국 연준의 금리 경로와 중국 경기 회복세를 중심으로 한 글로벌 매크로 분석', author:'김지수', date:'2025.05', file:'#' },
+    { id:2, category:'equity', tag:'주식', tagClass:'tag-equity', title:'2차전지 섹터 밸류에이션 리포트', desc:'LG에너지솔루션, 삼성SDI 등 국내 주요 2차전지 기업의 DCF 및 상대 가치 평가', author:'박현우', date:'2025.04', file:'#' },
+    { id:3, category:'fixed', tag:'채권·금리', tagClass:'tag-fixed', title:'한국 기준금리 인하 경로 분석', desc:'소비자물가 추이와 성장률을 바탕으로 한 한국은행 통화정책 시나리오 분석', author:'이서연', date:'2025.03', file:'#' },
+    { id:4, category:'quant', tag:'퀀트', tagClass:'tag-quant', title:'팩터 투자 전략 백테스트', desc:'가치·모멘텀·퀄리티 팩터 조합의 코스피 적용 성과 분석 (2015–2024)', author:'최민준', date:'2025.02', file:'#' },
+    { id:5, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'달러 강세와 신흥국 자본 유출', desc:'DXY 지수 상승 국면에서의 한국·인도·브라질 자본 흐름 비교 분석', author:'정다은', date:'2025.01', file:'#' },
+    { id:6, category:'equity', tag:'주식', tagClass:'tag-equity', title:'AI 인프라 투자 테마 분석', desc:'엔비디아·TSMC 중심의 AI 반도체 공급망과 국내 수혜 기업 탐색', author:'윤성호', date:'2024.12', file:'#' },
+  ];
 
-var reports = JSON.parse(localStorage.getItem('safe_reports') || '[]');
-var members = JSON.parse(localStorage.getItem('safe_members') || 'null');
-if (!members) {
-  members = [{id:1, name:'조영진', role:'설립자, 1·2기 회장', dept:'경영학과 21', initial:'조', gen:1}];
-}
-var storedNews = localStorage.getItem('safe_news');
-var newsItems = storedNews ? JSON.parse(storedNews) : [
-  {id:1, typeClass:'type-recruit', title:'SAFE 2기 정기 모집 공고', desc:'2026년 1학기(2기) 신입 부원을 모집합니다. 금융·경제에 관심 있는 분이라면 누구든 환영합니다.', date:'2026.03.05, 11:59까지', link:null},
-  {id:2, typeClass:'type-recruit', title:'지원서 다운로드', desc:'아래 버튼을 눌러 지원서를 다운로드하세요.', date:'2026.03.05, 11:59까지', link:'https://docs.google.com/uc?export=download&id=1Uav14M7Dd2ZPqhMUhwfAAumGcbQ-Ob--'}
-];
-var textData = JSON.parse(localStorage.getItem('safe_texts') || '{}');
+  const members = [
+    { name:'김도현', role:'회장', dept:'경제학과 24', initial:'김' },
+    { name:'이지원', role:'부회장', dept:'경제학과 24', initial:'이' },
+    { name:'박서준', role:'리서치 팀장', dept:'경영학과 23', initial:'박' },
+    { name:'최수민', role:'기획 팀장', dept:'경제학과 24', initial:'최' },
+    { name:'정유진', role:'리서치 파트', dept:'수학과 25', initial:'정' },
+    { name:'한민재', role:'리서치 파트', dept:'경제학과 25', initial:'한' },
+    { name:'오채은', role:'기획 파트', dept:'경영학과 24', initial:'오' },
+    { name:'송지훈', role:'리서치 파트', dept:'경제학과 23', initial:'송' },
+  ];
 
-var isAdmin = false;
-var editingReportId = null;
-var editingMemberId = null;
-var editingNewsId = null;
-var activeYear = null;
-var activeReportGen = 'all';
-var activeFilter = 'all';
-var activeMemberGen = 'founder'; // 멤버 기수 필터 (초기: 설립 탭)
+  const news = [
+    { type:'recruit', typeLabel:'모집', typeClass:'type-recruit', title:'SAFE 7기 정기 모집 공고', desc:'2025년 2학기 신입 부원을 모집합니다. 금융·경제에 열정 있는 분이라면 누구든 환영합니다.', date:'2025.08.20' },
+    { type:'event', typeLabel:'이벤트', typeClass:'type-event', title:'하반기 리서치 발표회 개최', desc:'SAFE 멤버들이 한 학기 동안 연구한 보고서를 발표하는 정기 발표회가 개최됩니다.', date:'2025.06.10' },
+    { type:'notice', typeLabel:'공지', typeClass:'type-notice', title:'[공지] 외부 연사 초청 세미나', desc:'전 Goldman Sachs 애널리스트를 초청하여 글로벌 채권 시장 전망에 대한 특강을 진행합니다.', date:'2025.05.22' },
+  ];
 
-var CATEGORY_MAP = {
-  macro:    {tag:'거시경제', cls:'tag-macro'},
-  industry: {tag:'산업분석', cls:'tag-industry'},
-  equity:   {tag:'기업분석', cls:'tag-equity'}
-};
-
-function toDownloadUrl(url) {
-  if (!url || url === '#') return '#';
-  var driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if (driveMatch) return 'https://drive.google.com/uc?export=download&id=' + driveMatch[1];
-  if (url.indexOf('drive.google.com/uc?export=download') !== -1) return url;
-  var docsMatch = url.match(/docs\.google\.com.*\/d\/([^/]+)/);
-  if (docsMatch) return 'https://drive.google.com/uc?export=download&id=' + docsMatch[1];
-  return url;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── 텍스트 편집 ── */
-function applyTextData() {
-  var els = document.querySelectorAll('[data-editable]');
-  for (var i = 0; i < els.length; i++) {
-    var key = els[i].getAttribute('data-key');
-    if (textData[key] !== undefined) els[i].textContent = textData[key];
+  // ── RENDER ──
+  function renderReports(filter = 'all') {
+    const grid = document.getElementById('reportsGrid');
+    const filtered = filter === 'all' ? reports : reports.filter(r => r.category === filter);
+    grid.innerHTML = filtered.map(r => `
+      <div class="report-card">
+        <span class="report-tag ${r.tagClass}">${r.tag}</span>
+        <h3>${r.title}</h3>
+        <p>${r.desc}</p>
+        <div class="report-meta">
+          <span>✍️ ${r.author} · ${r.date}</span>
+          <a href="${r.file}" class="report-dl">PDF ↓</a>
+        </div>
+      </div>
+    `).join('');
   }
-}
-function enableEditMode() {
-  var els = document.querySelectorAll('[data-editable]');
-  for (var i = 0; i < els.length; i++) {
-    els[i].setAttribute('contenteditable', 'true');
-    (function(el) {
-      el.addEventListener('blur', function() {
-        textData[el.getAttribute('data-key')] = el.textContent;
-        try { localStorage.setItem('safe_texts', JSON.stringify(textData)); } catch(e) {}
-      });
-    })(els[i]);
-  }
-}
-function disableEditMode() {
-  var els = document.querySelectorAll('[data-editable]');
-  for (var i = 0; i < els.length; i++) els[i].removeAttribute('contenteditable');
-}
 
-/* ── 보고서 연도 드롭다운 ── */
-function getYears() {
-  var set = {};
-  for (var i = 0; i < reports.length; i++) {
-    var y = reports[i].date ? reports[i].date.split('.')[0] : null;
-    if (y) set[y] = true;
+  function renderMembers() {
+    document.getElementById('membersGrid').innerHTML = members.map(m => `
+      <div class="member-card">
+        <div class="member-avatar">${m.initial}</div>
+        <h4>${m.name}</h4>
+        <div class="member-role">${m.role}</div>
+        <p>${m.dept}</p>
+      </div>
+    `).join('');
   }
-  return Object.keys(set).sort(function(a,b){ return b - a; });
-}
-function getReportGensForYear(y) {
-  var set = {};
-  for (var i = 0; i < reports.length; i++) {
-    var r = reports[i];
-    var ry = r.date ? r.date.split('.')[0] : null;
-    if (ry === y && r.gen != null) set[r.gen] = true;
+
+  function renderNews() {
+    document.getElementById('newsGrid').innerHTML = news.map(n => `
+      <div class="news-card">
+        <div class="news-header">
+          <span class="news-type ${n.typeClass}">${n.typeLabel}</span>
+          <span class="news-date">${n.date}</span>
+        </div>
+        <div class="news-body">
+          <h3>${n.title}</h3>
+          <p>${n.desc}</p>
+        </div>
+      </div>
+    `).join('');
   }
-  return Object.keys(set).map(Number).sort(function(a,b){ return b - a; });
-}
-function renderYearDropdown() {
-  var years = getYears();
-  var menu = document.getElementById('yearDropdownMenu');
-  var html = '';
-  for (var i = 0; i < years.length; i++) {
-    var y = years[i];
-    var isYearActive = (activeYear === y && activeReportGen === 'all');
-    html += '<div class="year-option ' + (isYearActive ? 'active' : '') + '" onclick="selectYear(\'' + y + '\')">' + y + '년 전체</div>';
-    var gens = getReportGensForYear(y);
-    for (var j = 0; j < gens.length; j++) {
-      var g = gens[j];
-      var isGenActive = (activeYear === y && activeReportGen == g);
-      html += '<div class="year-option gen-option ' + (isGenActive ? 'active' : '') + '" onclick="selectYearGen(\'' + y + '\', ' + g + ')">' + y + '년 · ' + g + '기</div>';
+
+  function filterReports(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderReports(cat);
+  }
+
+  function handleUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      document.getElementById('uploadFeedback').textContent = `✅ "${file.name}" 업로드 완료! (실제 서버 연동 시 저장됩니다)`;
     }
   }
-  menu.innerHTML = html;
-  var lbl = '연도 선택';
-  if (activeYear !== null) {
-    lbl = activeYear + '년';
-    if (activeReportGen !== 'all') lbl += ' · ' + activeReportGen + '기';
-  }
-  document.getElementById('yearDropdownLabel').textContent = lbl;
-}
-function toggleYearDropdown() {
-  var btn = document.getElementById('yearDropdownBtn');
-  var menu = document.getElementById('yearDropdownMenu');
-  var isOpen = menu.classList.contains('open');
-  menu.classList.toggle('open', !isOpen);
-  btn.classList.toggle('open', !isOpen);
-}
-function selectYear(y) {
-  activeYear = y; activeReportGen = 'all';
-  document.getElementById('yearDropdownMenu').classList.remove('open');
-  document.getElementById('yearDropdownBtn').classList.remove('open');
-  renderYearDropdown(); renderReports(activeFilter);
-}
-function selectYearGen(y, g) {
-  activeYear = y; activeReportGen = g;
-  document.getElementById('yearDropdownMenu').classList.remove('open');
-  document.getElementById('yearDropdownBtn').classList.remove('open');
-  renderYearDropdown(); renderReports(activeFilter);
-}
-document.addEventListener('click', function(e) {
-  var wrap = document.getElementById('yearDropdownWrap');
-  if (wrap && !wrap.contains(e.target)) {
-    document.getElementById('yearDropdownMenu').classList.remove('open');
-    document.getElementById('yearDropdownBtn').classList.remove('open');
-  }
-});
 
-/* ── 보고서 렌더 ── */
-function renderReports(filter) {
-  if (filter !== undefined) activeFilter = filter;
-  var grid = document.getElementById('reportsGrid');
-  if (activeYear === null) {
-    grid.innerHTML = '<div class="reports-empty">연도를 선택하면 보고서가 표시됩니다.</div>';
-    return;
-  }
-  var list = reports.filter(function(r) {
-    var yearMatch = (r.date && r.date.startsWith(activeYear));
-    var genMatch  = (activeReportGen === 'all') || (r.gen == activeReportGen);
-    var catMatch  = (activeFilter === 'all') || (r.category === activeFilter);
-    return yearMatch && genMatch && catMatch;
+  // nav active highlight on scroll
+  const sections = ['home','about','reports','members','news'];
+  window.addEventListener('scroll', () => {
+    let current = 'home';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 100) current = id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
   });
-  if (!list.length) { grid.innerHTML = '<div class="reports-empty">등록된 보고서가 없습니다.</div>'; return; }
-  var html = '';
-  for (var i = 0; i < list.length; i++) {
-    var r = list[i];
-    var c = CATEGORY_MAP[r.category] || {tag: r.category, cls: 'tag-macro'};
-    var btns = isAdmin ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openReportEdit(' + r.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteReport(' + r.id + ')">🗑 삭제</button></div>' : '';
-    html += '<div class="report-card">' + btns + '<span class="report-tag ' + c.cls + '">' + esc(c.tag) + '</span>';
-    html += '<h3>' + esc(r.title) + '</h3><p class="card-desc">' + esc(r.desc) + '</p>';
-    var genLabel = (r.gen != null) ? ' · ' + r.gen + '기' : '';
-    html += '<div class="report-meta"><span>✍️ ' + esc(r.author) + ' · ' + esc(r.date) + genLabel + '</span><a href="' + esc(toDownloadUrl(r.file)) + '" class="report-dl" target="_blank" download>PDF ↓</a></div></div>';
-  }
-  grid.innerHTML = html;
-}
-function filterReports(cat, btn) {
-  var btns = document.querySelectorAll('.filter-btn');
-  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
-  btn.classList.add('active');
-  renderReports(cat);
-}
-function resetFilterBtns() {
-  var btns = document.querySelectorAll('.filter-btn');
-  for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('active', i === 0);
-}
 
-/* ── 멤버 기수 탭 + 드롭다운 ── */
-function getMemberGens() {
-  var set = {};
-  for (var i = 0; i < members.length; i++) {
-    var g = members[i].gen;
-    if (g != null && g !== 'founder') set[g] = true;
-  }
-  return Object.keys(set).map(Number).sort(function(a,b){ return a - b; });
-}
-
-function renderGenTabs() {
-  var founderBtn = document.getElementById('tabFounder');
-  if (founderBtn) founderBtn.classList.toggle('active', activeMemberGen === 'founder');
-  var gens = getMemberGens();
-  var menu = document.getElementById('genDropdownMenu');
-  var btn  = document.getElementById('genDropdownBtn');
-  if (!menu || !btn) return;
-  var html = '';
-  for (var i = 0; i < gens.length; i++) {
-    var g = gens[i];
-    html += '<div class="gen-dropdown-item ' + (activeMemberGen == g ? 'active' : '') + '" onclick="selectMemberGen(' + g + ')">' + g + '기</div>';
-  }
-  menu.innerHTML = html || '<div class="gen-dropdown-item" style="color:var(--text-sub);cursor:default;font-size:12px;">등록된 기수 없음</div>';
-  var isGenSel = (activeMemberGen !== 'founder' && typeof activeMemberGen === 'number');
-  btn.classList.toggle('selected', isGenSel);
-  btn.innerHTML = isGenSel ? (activeMemberGen + '기 <span class="arrow">▾</span>') : '기수 <span class="arrow">▾</span>';
-}
-
-function toggleGenDropdown() {
-  var btn  = document.getElementById('genDropdownBtn');
-  var menu = document.getElementById('genDropdownMenu');
-  if (!menu) return;
-  var isOpen = menu.classList.contains('open');
-  menu.classList.toggle('open', !isOpen);
-  btn.classList.toggle('open', !isOpen);
-}
-
-document.addEventListener('click', function(e) {
-  var wrap = document.getElementById('genDropdownWrap');
-  if (wrap && !wrap.contains(e.target)) {
-    var menu = document.getElementById('genDropdownMenu');
-    var btn  = document.getElementById('genDropdownBtn');
-    if (menu) menu.classList.remove('open');
-    if (btn)  btn.classList.remove('open');
-  }
-});
-
-function selectMemberGen(g) {
-  activeMemberGen = g;
-  var menu = document.getElementById('genDropdownMenu');
-  var btn  = document.getElementById('genDropdownBtn');
-  if (menu) menu.classList.remove('open');
-  if (btn)  btn.classList.remove('open');
-  renderGenTabs();
+  // init
+  renderReports();
   renderMembers();
-}
-
-/* ── 멤버 렌더 ── */
-function renderMembers() {
-  var showAll = false;
-  var list;
-  if (activeMemberGen === 'founder') {
-    list = members.filter(function(m) { return m.gen === 'founder'; });
-  } else if (typeof activeMemberGen === 'number') {
-    list = members.filter(function(m) { return m.gen == activeMemberGen; });
-  } else {
-    showAll = true;
-    list = members;
-  }
-
-  var html = '';
-  for (var i = 0; i < list.length; i++) {
-    var m = list[i];
-    var btns = isAdmin
-      ? '<div class="admin-card-btns visible"><button class="card-edit-btn" onclick="openMemberEdit(' + m.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteMember(' + m.id + ')">🗑 삭제</button></div>'
-      : '';
-    var badgeLabel = (m.gen === 'founder') ? '설립' : (m.gen != null ? m.gen + '기' : null);
-    var badge = (badgeLabel && showAll) ? '<div class="member-gen-badge">' + badgeLabel + '</div>' : '';
-    html += '<div class="member-card">' + btns + badge;
-    html += '<div class="member-avatar">' + esc(m.initial) + '</div>';
-    html += '<h4>' + esc(m.name) + '</h4>';
-    html += '<div class="member-role">' + esc(m.role) + '</div>';
-    html += '<p>' + esc(m.dept) + '</p></div>';
-  }
-  if (!html) html = '<div class="members-empty">이 기수에 등록된 멤버가 없습니다.</div>';
-  document.getElementById('membersGrid').innerHTML = html;
-
-  var btn = document.getElementById('memberAddBtn');
-  if (isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
-}
-
-/* ── 공지 렌더 ── */
-function renderNews() {
-  var html = '';
-  for (var i = 0; i < newsItems.length; i++) {
-    var n = newsItems[i];
-    var lbl = TYPE_LABELS[n.typeClass] || '공지';
-    var btns = isAdmin ? '<div class="news-admin-btns visible"><button class="card-edit-btn" onclick="openNewsEdit(' + n.id + ')">✏️ 수정</button><button class="card-del-btn" onclick="deleteNews(' + n.id + ')">🗑 삭제</button></div>' : '';
-    html += '<div class="news-card">' + btns;
-    html += '<div class="news-header"><span class="news-type ' + n.typeClass + '">' + lbl + '</span><span class="news-date">' + esc(n.date) + '</span></div>';
-    html += '<div class="news-body"><h3>' + esc(n.title) + '</h3><p>' + esc(n.desc) + '</p>';
-    if (n.link) html += '<a href="' + esc(n.link) + '" class="news-dl-btn" target="_blank">📎 다운로드</a>';
-    html += '</div></div>';
-  }
-  if (!html) html = '<div style="padding:40px;color:var(--text-sub);font-size:14px;">등록된 공지가 없습니다.</div>';
-  document.getElementById('newsGrid').innerHTML = html;
-  var btn = document.getElementById('newsAddBtn');
-  if (isAdmin) btn.classList.add('visible'); else btn.classList.remove('visible');
-}
-
-/* ── 저장 ── */
-function saveReportsData() {
-  try { localStorage.setItem('safe_reports', JSON.stringify(reports.map(function(r) { return Object.assign({}, r, {file: (r.file && r.file.indexOf('blob:') === 0) ? '#' : r.file}); }))); } catch(e) {}
-}
-function saveMembersData() { try { localStorage.setItem('safe_members', JSON.stringify(members)); } catch(e) {} }
-function saveNewsData()    { try { localStorage.setItem('safe_news',    JSON.stringify(newsItems)); } catch(e) {} }
-
-/* ── 보고서 CRUD ── */
-function deleteReport(id) {
-  if (!confirm('이 보고서를 삭제할까요?')) return;
-  reports = reports.filter(function(r) { return r.id !== id; });
-  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns();
-}
-function openReportEdit(id) {
-  var r = null;
-  for (var i = 0; i < reports.length; i++) { if (reports[i].id === id) { r = reports[i]; break; } }
-  if (!r) return;
-  editingReportId = id;
-  document.getElementById('eTitle').value    = r.title;
-  document.getElementById('eCategory').value = r.category;
-  document.getElementById('eAuthor').value   = r.author;
-  document.getElementById('eDate').value     = r.date.replace('.', '-');
-  document.getElementById('eDesc').value     = r.desc;
-  var f = r.file;
-  document.getElementById('eLink').value = (!f || f === '#' || f.indexOf('blob:') === 0) ? '' : f;
-  document.getElementById('editReportModal').classList.add('open');
-}
-function saveReportEdit() {
-  var idx = -1;
-  for (var i = 0; i < reports.length; i++) { if (reports[i].id === editingReportId) { idx = i; break; } }
-  if (idx === -1) return;
-  var newLink = document.getElementById('eLink').value.trim();
-  reports[idx] = { id: reports[idx].id, gen: reports[idx].gen, category: document.getElementById('eCategory').value, title: document.getElementById('eTitle').value.trim(), desc: document.getElementById('eDesc').value.trim(), author: document.getElementById('eAuthor').value.trim(), date: document.getElementById('eDate').value.replace('-', '.'), file: newLink || reports[idx].file };
-  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns(); closeModal('editReportModal');
-}
-
-/* ── 멤버 CRUD ── */
-function deleteMember(id) {
-  if (!confirm('이 멤버를 삭제할까요?')) return;
-  members = members.filter(function(m) { return m.id !== id; });
-  saveMembersData(); renderGenTabs(); renderMembers();
-}
-function openMemberModal() {
-  editingMemberId = null;
-  document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
-  document.getElementById('memberBulkArea').style.display = 'block';
-  document.getElementById('memberEditArea').style.display = 'none';
-  var defaultGen = (typeof activeMemberGen === 'number') ? activeMemberGen : (activeMemberGen === 'founder' ? '설립' : '');
-  initMemberBulkRows(defaultGen);
-  document.getElementById('editMemberModal').classList.add('open');
-}
-
-function initMemberBulkRows(defaultGen) {
-  document.getElementById('memberBulkBody').innerHTML = '';
-  for (var i = 0; i < 3; i++) addMemberRow(defaultGen);
-}
-
-function addMemberRow(defaultGen) {
-  if (defaultGen === undefined) defaultGen = '';
-  var tbody = document.getElementById('memberBulkBody');
-  var tr = document.createElement('tr');
-  var s = 'width:100%;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;';
-  var s2 = 'width:70px;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;';
-  tr.innerHTML = '<td><input type="text" placeholder="이름" class="mr-name" style="' + s + '"></td>'
-    + '<td><input type="text" placeholder="회장/직책" class="mr-role" style="' + s + '"></td>'
-    + '<td><input type="text" placeholder="경영학과 25" class="mr-dept" style="' + s + '"></td>'
-    + '<td><input type="text" placeholder="1 또는 설립" class="mr-gen" value="' + defaultGen + '" style="' + s2 + '"></td>'
-    + '<td><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:16px;color:#999;padding:4px;">✕</button></td>';
-  tbody.appendChild(tr);
-}
-
-function saveBulkMembers() {
-  var rows = document.querySelectorAll('#memberBulkBody tr');
-  var added = 0; var errors = [];
-  for (var i = 0; i < rows.length; i++) {
-    var name   = rows[i].querySelector('.mr-name').value.trim();
-    var role   = rows[i].querySelector('.mr-role').value.trim();
-    var dept   = rows[i].querySelector('.mr-dept').value.trim();
-    var genRaw = rows[i].querySelector('.mr-gen').value.trim();
-    if (!name && !role && !dept && !genRaw) continue;
-    if (!name || !role || !dept || !genRaw) { errors.push((i+1) + '행: 빈 칸을 모두 채워주세요.'); continue; }
-    var gen = (genRaw === '설립' || genRaw.toLowerCase() === 'founder') ? 'founder' : parseInt(genRaw);
-    if (typeof gen === 'number' && isNaN(gen)) { errors.push((i+1) + '행: 기수는 숫자 또는 "설립"'); continue; }
-    members.push({ id: Date.now() + i + Math.random(), name: name, role: role, dept: dept, initial: name.charAt(0), gen: gen });
-    added++;
-  }
-  if (errors.length) { document.getElementById('bulkMemberFeedback').textContent = errors[0]; return; }
-  if (!added) { document.getElementById('bulkMemberFeedback').textContent = '추가할 멤버 정보를 입력해주세요.'; return; }
-  saveMembersData(); renderGenTabs(); renderMembers();
-  closeModal('editMemberModal');
-}
-function openMemberEdit(id) {
-  var m = null;
-  for (var i = 0; i < members.length; i++) { if (members[i].id === id) { m = members[i]; break; } }
-  if (!m) return;
-  editingMemberId = id;
-  document.getElementById('memberModalTitle').textContent = '✏️ 멤버 수정';
-  document.getElementById('memberBulkArea').style.display = 'none';
-  document.getElementById('memberEditArea').style.display = 'block';
-  document.getElementById('mName').value = m.name;
-  document.getElementById('mRole').value = m.role;
-  document.getElementById('mDept').value = m.dept;
-  document.getElementById('mGen').value  = (m.gen != null) ? (m.gen === 'founder' ? '설립' : m.gen) : '';
-  document.getElementById('editMemberModal').classList.add('open');
-}
-function saveMember() {
-  var name = document.getElementById('mName').value.trim();
-  var role = document.getElementById('mRole').value.trim();
-  var dept = document.getElementById('mDept').value.trim();
-  var genV = document.getElementById('mGen').value.trim();
-  if (!name || !role || !dept) { alert('이름, 역할, 학과를 모두 입력해주세요.'); return; }
-  if (!genV) { alert('기수를 입력해주세요.'); return; }
-  var gen = (genV === '설립' || genV.toLowerCase() === 'founder') ? 'founder' : parseInt(genV);
-  if (typeof gen === 'number' && isNaN(gen)) { alert('기수는 숫자 또는 "설립"'); return; }
-  var item = {id: editingMemberId || Date.now(), name: name, role: role, dept: dept, initial: name.charAt(0), gen: gen};
-  if (editingMemberId) {
-    for (var i = 0; i < members.length; i++) { if (members[i].id === editingMemberId) { members[i] = item; break; } }
-  } else {
-    members.push(item);
-  }
-  saveMembersData(); renderGenTabs(); renderMembers(); closeModal('editMemberModal');
-}
-
-/* ── 공지 CRUD ── */
-function deleteNews(id) {
-  if (!confirm('이 공지를 삭제할까요?')) return;
-  newsItems = newsItems.filter(function(n) { return n.id !== id; });
-  saveNewsData(); renderNews();
-}
-function openNewsModal() {
-  editingNewsId = null;
-  document.getElementById('newsModalTitle').textContent = '📢 공지 작성';
-  document.getElementById('nType').value  = 'type-notice';
-  document.getElementById('nDate').value  = '';
-  document.getElementById('nTitle').value = '';
-  document.getElementById('nDesc').value  = '';
-  document.getElementById('nLink').value  = '';
-  document.getElementById('editNewsModal').classList.add('open');
-}
-function openNewsEdit(id) {
-  var n = null;
-  for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === id) { n = newsItems[i]; break; } }
-  if (!n) return;
-  editingNewsId = id;
-  document.getElementById('newsModalTitle').textContent = '✏️ 공지 수정';
-  document.getElementById('nType').value  = n.typeClass;
-  document.getElementById('nDate').value  = n.date;
-  document.getElementById('nTitle').value = n.title;
-  document.getElementById('nDesc').value  = n.desc;
-  document.getElementById('nLink').value  = n.link || '';
-  document.getElementById('editNewsModal').classList.add('open');
-}
-function saveNewsItem() {
-  var title = document.getElementById('nTitle').value.trim();
-  var desc  = document.getElementById('nDesc').value.trim();
-  var date  = document.getElementById('nDate').value.trim();
-  if (!title || !desc || !date) { alert('제목, 내용, 날짜를 모두 입력해주세요.'); return; }
-  var item = { id: editingNewsId || Date.now(), typeClass: document.getElementById('nType').value, title: title, desc: desc, date: date, link: document.getElementById('nLink').value.trim() || null };
-  if (editingNewsId) {
-    for (var i = 0; i < newsItems.length; i++) { if (newsItems[i].id === editingNewsId) { newsItems[i] = item; break; } }
-  } else { newsItems.unshift(item); }
-  saveNewsData(); renderNews(); closeModal('editNewsModal');
-}
-
-
-/* ── 보고서 일괄 등록 ── */
-function openBulkReportModal() {
-  document.getElementById('reportBulkBody').innerHTML = '';
-  for (var i = 0; i < 3; i++) addReportRow();
-  document.getElementById('bulkReportModal').classList.add('open');
-}
-
-function addReportRow() {
-  var tbody = document.getElementById('reportBulkBody');
-  var tr = document.createElement('tr');
-  var s = 'padding:6px 7px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;outline:none;width:100%;';
-  tr.innerHTML = '<td><input type="text" placeholder="제목" class="br-title" style="' + s + '"></td>'
-    + '<td><select class="br-cat" style="' + s + '"><option value="macro">macro</option><option value="industry">industry</option><option value="equity">equity</option></select></td>'
-    + '<td><input type="text" placeholder="작성자" class="br-author" style="' + s + '"></td>'
-    + '<td><input type="month" class="br-date" style="' + s + '"></td>'
-    + '<td><input type="text" placeholder="1" class="br-gen" style="width:50px;padding:6px 4px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;outline:none;"></td>'
-    + '<td><input type="text" placeholder="요약 설명" class="br-desc" style="' + s + '"></td>'
-    + '<td><input type="text" placeholder="https://drive.google.com/..." class="br-link" style="' + s + '"></td>'
-    + '<td><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:15px;color:#999;padding:4px;">✕</button></td>';
-  tbody.appendChild(tr);
-}
-
-function saveBulkReports() {
-  var rows = document.querySelectorAll('#reportBulkBody tr');
-  var added = 0; var errors = [];
-  for (var i = 0; i < rows.length; i++) {
-    var title  = rows[i].querySelector('.br-title').value.trim();
-    var cat    = rows[i].querySelector('.br-cat').value;
-    var author = rows[i].querySelector('.br-author').value.trim();
-    var date   = rows[i].querySelector('.br-date').value;
-    var genRaw = rows[i].querySelector('.br-gen').value.trim();
-    var desc   = rows[i].querySelector('.br-desc').value.trim();
-    var link   = rows[i].querySelector('.br-link').value.trim();
-    if (!title && !author && !date && !link) continue;
-    if (!title || !author || !date || !desc || !link) { errors.push((i+1) + '행: 빈 칸을 채워주세요 (기수 선택사항)'); continue; }
-    var genNum = genRaw ? parseInt(genRaw) : null;
-    reports.unshift({ id: Date.now() + i + Math.random(), category: cat, title: title, desc: desc, author: author, date: date.replace('-', '.'), gen: genNum, file: link });
-    added++;
-  }
-  if (errors.length) { document.getElementById('bulkReportFeedback').textContent = errors[0]; return; }
-  if (!added) { document.getElementById('bulkReportFeedback').textContent = '등록할 보고서 정보를 입력해주세요.'; return; }
-  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns();
-  closeModal('bulkReportModal');
-}
-
-/* ── 공통 모달 ── */
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-var overlays = document.querySelectorAll('.modal-overlay');
-for (var oi = 0; oi < overlays.length; oi++) {
-  overlays[oi].addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
-}
-
-/* ── 관리자 인증 ── */
-function openAuthModal() {
-  if (isAdmin) { document.getElementById('adminPanel').classList.toggle('open'); return; }
-  document.getElementById('adminPw').value = '';
-  document.getElementById('authError').textContent = '';
-  document.getElementById('authModal').classList.add('open');
-  setTimeout(function() { document.getElementById('adminPw').focus(); }, 100);
-}
-function confirmAuth() {
-  if (document.getElementById('adminPw').value === ADMIN_PASSWORD) {
-    isAdmin = true;
-    closeModal('authModal');
-    document.getElementById('navLockIcon').textContent = '🔓';
-    document.getElementById('navAdminLabel').textContent = '관리자 패널';
-    document.getElementById('navAdminBtn').classList.add('logged-in');
-    document.getElementById('adminPanel').classList.add('open');
-    document.getElementById('adminBar').classList.add('visible');
-    document.body.classList.add('admin-mode');
-    enableEditMode();
-    renderReports(activeFilter); renderGenTabs(); renderMembers(); renderNews();
-  } else {
-    document.getElementById('authError').textContent = '비밀번호가 올바르지 않습니다.';
-    document.getElementById('adminPw').value = '';
-    document.getElementById('adminPw').focus();
-  }
-}
-function logout() {
-  isAdmin = false;
-  document.getElementById('adminPanel').classList.remove('open');
-  document.getElementById('navLockIcon').textContent = '🔒';
-  document.getElementById('navAdminLabel').textContent = '관리자';
-  document.getElementById('navAdminBtn').classList.remove('logged-in');
-  document.getElementById('adminBar').classList.remove('visible');
-  document.body.classList.remove('admin-mode');
-  disableEditMode();
-  renderReports(activeFilter); renderGenTabs(); renderMembers(); renderNews();
-}
-
-/* ── 보고서 등록 ── */
-function submitReport() {
-  var title  = document.getElementById('rTitle').value.trim();
-  var cat    = document.getElementById('rCategory').value;
-  var author = document.getElementById('rAuthor').value.trim();
-  var dateV  = document.getElementById('rDate').value;
-  var desc   = document.getElementById('rDesc').value.trim();
-  var link   = document.getElementById('rLink').value.trim();
-  if (!title || !author || !dateV || !desc) { showFeedback('reportFeedback', '❌ 모든 항목을 입력해주세요.', '#c62828'); return; }
-  if (!link) { showFeedback('reportFeedback', '❌ Google Drive 링크를 입력해주세요.', '#c62828'); return; }
-  var genVal = document.getElementById('rGen').value.trim();
-  var genNum = genVal ? parseInt(genVal) : null;
-  reports.unshift({id: Date.now(), category: cat, title: title, desc: desc, author: author, date: dateV.replace('-', '.'), gen: genNum, file: link});
-  saveReportsData(); renderYearDropdown(); renderReports(activeFilter); resetFilterBtns();
-  ['rTitle','rAuthor','rDate','rGen','rDesc','rLink'].forEach(function(id) { document.getElementById(id).value = ''; });
-  showFeedback('reportFeedback', '✅ 보고서가 등록되었습니다!', '#2e7d32');
-}
-function showFeedback(elId, msg, color) {
-  var el = document.getElementById(elId);
-  el.textContent = msg; el.style.color = color;
-  setTimeout(function() { el.textContent = ''; }, 4000);
-}
-
-/* ── 네비 스크롤 ── */
-window.addEventListener('scroll', function() {
-  var cur = 'home';
-  var ids = ['home', 'about', 'reports', 'members', 'news'];
-  for (var i = 0; i < ids.length; i++) {
-    var el = document.getElementById(ids[i]);
-    if (el && window.scrollY >= el.offsetTop - 100) cur = ids[i];
-  }
-  var links = document.querySelectorAll('.nav-center a');
-  for (var j = 0; j < links.length; j++) {
-    links[j].classList.toggle('active', links[j].getAttribute('href') === '#' + cur);
-  }
-});
-
-/* ── 초기 실행 ── */
-applyTextData();
-renderYearDropdown();
-renderReports();
-renderGenTabs();
-renderMembers();
-renderNews();
-function showFeedback(elId, msg, color) {
-  var el = document.getElementById(elId);
-  el.textContent = msg; el.style.color = color;
-  setTimeout(function() { el.textContent = ''; }, 4000);
-}
-
-/* ── 네비 스크롤 ── */
-window.addEventListener('scroll', function() {
-  var cur = 'home';
-  var ids = ['home', 'about', 'reports', 'members', 'news'];
-  for (var i = 0; i < ids.length; i++) {
-    var el = document.getElementById(ids[i]);
-    if (el && window.scrollY >= el.offsetTop - 100) cur = ids[i];
-  }
-  var links = document.querySelectorAll('.nav-center a');
-  for (var j = 0; j < links.length; j++) {
-    links[j].classList.toggle('active', links[j].getAttribute('href') === '#' + cur);
-  }
-});
-
-/* ── 초기 실행 ── */
-applyTextData();
-renderYearDropdown();
-renderReports();
-renderGenTabs();
-renderMembers();
-renderNews();
+  renderNews();
 </script>
 </body>
-</html>
-</html>
 </html>
