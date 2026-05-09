@@ -65,7 +65,7 @@
     /* ── TOP PARALLAX CONTAINER (히어로 + About 헤더를 감싸는 영역) ── */
     .top-parallax-container {
       position: relative;
-      overflow: hidden; /* 커지는 배경이 밖으로 삐져나가지 않도록 */
+      overflow: hidden; 
     }
 
     /* 🌟 스크롤 줌인 & 페이드아웃 되는 배경 */
@@ -78,12 +78,12 @@
       transform-origin: center center;
     }
 
-    /* 배경을 눌러주는 깔끔한 화이트 오버레이 (가독성 확보) */
+    /* 그림자 없이도 가독성을 챙길 수 있도록 오버레이 농도 조절 (0.85) */
     .top-bg::after {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(248, 249, 251, 0.75); 
+      background: rgba(248, 249, 251, 0.85); 
     }
 
     /* ── HERO ── */
@@ -97,7 +97,6 @@
     
     .hero-inner { max-width: 760px; }
     
-    /* 깔끔한 화이트톤 뱃지 */
     .hero-badge {
       display: inline-block; 
       background: rgba(255, 255, 255, 0.95); 
@@ -105,35 +104,31 @@
       font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
       padding: 8px 20px; border-radius: 20px; margin-bottom: 28px;
       border: 1px solid rgba(44, 62, 107, 0.1);
-      box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05);
     }
     
-    /* 과한 그림자 제거, 은은한 글로우만 남김 */
+    /* 깔끔하고 단정한 텍스트 스타일 (그림자 제거) */
     .hero-inner h1 { 
       font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); 
       line-height: 1.2; margin-bottom: 20px;
-      text-shadow: 0 0 24px rgba(255, 255, 255, 0.8);
     }
     .hero-inner h1 span { 
       background: linear-gradient(90deg, var(--primary-light), var(--accent)); 
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-      filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.7)); 
     }
     .hero-inner p { 
       font-size: 1.1rem; color: #1a1f36; font-weight: 600; 
       max-width: 540px; margin: 0 auto 40px; 
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
     }
     
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;}
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-    .btn-outline { background: var(--white); color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
-    .btn-outline:hover { border-color: var(--primary); background: var(--accent-soft); }
+    .btn-outline { background: transparent; color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--primary); transition: all 0.2s; }
+    .btn-outline:hover { background: var(--primary); color: var(--white); }
     
     .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
-    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);}
-    .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; text-shadow: 0 0 10px rgba(255, 255, 255, 1);}
+    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; }
 
     /* ── SECTIONS COMMON ── */
     section { position: relative; z-index: 2; background: var(--bg); }
@@ -145,13 +140,12 @@
     /* ── ABOUT HEADER (사진 위에 떠있는 영역) ── */
     .about-header-wrapper {
       position: relative;
-      z-index: 1; /* 배경 위로 올림 */
-      padding: 100px 5% 100px; 
+      z-index: 1; 
+      padding: 100px 5% 60px; /* 아래 여백을 60px로 줄여 배경이 텍스트 바로 밑에서 끊어지게 맞춤 */
       text-align: center;
     }
-    .about-header-wrapper .section-tag { text-shadow: 0 0 10px rgba(255,255,255,1); }
-    .about-header-wrapper h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.9); }
-    .about-header-wrapper p { color: var(--text); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); }
+    .about-header-wrapper h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+    .about-header-wrapper p { color: var(--text-sub); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
     /* ── 하얀색 본문 시작 영역 (여기부터 배경 가려짐) ── */
     .main-content-wrapper {
@@ -162,7 +156,7 @@
 
     .about-content-wrapper {
       background: var(--white);
-      padding: 60px 5% 100px;
+      padding: 60px 5% 100px; /* 위 여백 60px 주어 간격 밸런스 유지 */
     }
 
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
@@ -1027,7 +1021,7 @@
     }
   }
 
-  // ── 🌟 완벽하게 수정된 스크롤 줌인 & 페이드아웃 효과 ──
+  // ── 스크롤 효과 ──
   window.addEventListener('scroll', () => {
     const container = document.getElementById('topParallax');
     const bg = document.getElementById('topBg');
