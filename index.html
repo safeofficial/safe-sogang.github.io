@@ -21,24 +21,24 @@
       --nav-h: 68px;
     }
 
-    html { scroll-behavior: smooth; }
+    /* 네비게이션 점프 시 헤더가 가려지지 않도록 여백 설정 (티커88px + 메뉴68px) */
+    html { scroll-behavior: smooth; scroll-padding-top: 156px; }
 
     body {
       font-family: 'Inter', 'Noto Sans KR', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      /* 티커(88px) + 네비게이션(68px) 높이만큼 여백 확보 */
-      padding-top: calc(88px + var(--nav-h));
+      padding-top: 156px; 
     }
 
     /* ── TICKER TAPE ── */
     .ticker-tape-wrap {
       position: fixed; top: 0; left: 0; right: 0;
-      height: 88px; overflow: hidden; background: white; z-index: 99;
+      height: 88px; overflow: hidden; background: white; z-index: 100;
     }
 
-    /* ── NAV (티커 테이프와 안 겹치게 88px로 내림) ── */
+    /* ── NAV ── */
     nav {
       position: fixed; top: 88px; left: 0; right: 0; height: var(--nav-h);
       background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
@@ -63,40 +63,33 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── HERO ── */
-    #home {
-      position: relative;
-      /* 화면 전체 높이에서 티커+메뉴바 높이를 빼서, 스크롤 없이 하얀색 섹션 선에 딱 맞게 떨어지게 함 */
-      min-height: calc(100vh - 156px); 
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px 5% 80px; text-align: center;
-      overflow: hidden; 
-    }
-
-    /* 🌟 배경 사진 조금 더 선명하게 조절 */
-    .home-bg {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+    /* 🌟 추가된 글로벌 고정 배경 (True Parallax) */
+    .global-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100vh;
       background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
-      z-index: 0;
-      transition: transform 0.1s ease-out, opacity 0.1s ease-out; 
+      z-index: -1; /* 모든 콘텐츠의 가장 뒤로 보냄 */
+      will-change: transform, opacity;
     }
-
-    /* 투명도를 0.82 -> 0.55로 낮춰서 배경이 더 잘 보이게 함 */
-    .home-bg::after {
+    /* 배경 이미지 위에 반투명 흰색 막 */
+    .global-bg::after {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(248, 249, 251, 0.55); 
     }
 
-    .hero-inner { 
-      position: relative; 
-      z-index: 1; 
-      max-width: 760px; 
+    /* ── HERO ── */
+    #home {
+      position: relative;
+      /* 화면 전체 높이를 차지하되 배경은 투명하게 (뒤에 고정된 사진이 보임) */
+      min-height: calc(100vh - 156px); 
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 5% 80px; text-align: center;
+      background: transparent; 
     }
     
-    /* 텍스트 뒤에 화이트 섀도우(Glow)를 넣어서 배경이 진해져도 글씨가 묻히지 않게 함 */
+    .hero-inner { position: relative; z-index: 1; max-width: 760px; }
     .hero-badge {
       display: inline-block; background: var(--accent-soft); color: var(--primary-light);
       font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
@@ -106,39 +99,53 @@
     .hero-inner h1 { 
       font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); 
       line-height: 1.2; margin-bottom: 20px;
-      text-shadow: 0 4px 24px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.8);
+      /* 텍스트 섀도우 강화 */
+      text-shadow: 0 4px 24px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.9);
     }
     .hero-inner h1 span { 
       background: linear-gradient(90deg, var(--primary-light), var(--accent)); 
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-      text-shadow: none; /* 그라데이션 텍스트는 섀도우를 빼는게 예쁩니다 */
-      filter: drop-shadow(0px 4px 12px rgba(255, 255, 255, 0.9)); /* 필터로 외곽선 글로우 적용 */
+      filter: drop-shadow(0px 4px 12px rgba(255, 255, 255, 0.9)); 
     }
     .hero-inner p { 
       font-size: 1.1rem; color: #1a1f36; font-weight: 600; 
       max-width: 540px; margin: 0 auto 40px; 
       text-shadow: 0 2px 15px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 1);
     }
-    
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,255,255, 0.5);}
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
     .btn-outline { background: var(--white); color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--primary); transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,255,255, 0.5);}
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    
     .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); text-shadow: 0 2px 15px rgba(255,255,255, 0.9);}
     .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; text-shadow: 0 2px 10px rgba(255,255,255, 1);}
 
     /* ── SECTIONS COMMON ── */
-    section { padding: 100px 5%; position: relative; z-index: 2; background: var(--bg); }
+    section { position: relative; z-index: 2; background: var(--bg); }
     .section-header { text-align: center; margin-bottom: 60px; }
     .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
     /* ── ABOUT ── */
-    #about { background: var(--white); }
+    #about { background: transparent; /* 전체 배경은 투명하게 (사진이 비침) */ }
+    
+    .about-header-wrapper {
+      padding: 100px 5% 60px; 
+      text-align: center;
+    }
+    /* About 헤더 텍스트 섀도우 (사진 위에서도 잘 보이도록) */
+    .about-header-wrapper .section-tag { text-shadow: 0 2px 10px rgba(255,255,255,1); }
+    .about-header-wrapper h2 { text-shadow: 0 4px 20px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.8); }
+    .about-header-wrapper p { text-shadow: 0 2px 15px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 1); font-weight: 500; }
+
+    /* 여기서부터 다시 하얀색 배경 시작 (사진 덮어버림) */
+    .about-content-wrapper {
+      background: var(--white);
+      padding: 40px 5% 100px;
+    }
+
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
@@ -163,17 +170,15 @@
     .gen-select:hover { box-shadow: 0 4px 12px rgba(107, 140, 218, 0.2); }
 
     /* ── MARKET OVERVIEW ── */
-    #market { background: var(--bg); }
+    #market { background: var(--bg); padding: 100px 5%; }
     .market-widget-container {
-      max-width: 1100px; margin: 0 auto; min-height: 450px; 
+      max-width: 1100px; margin: 0 auto; height: 500px; 
       background: white; border: 1px solid var(--border); border-radius: 14px; 
       overflow: hidden; box-shadow: 0 12px 32px rgba(44,62,107,0.05);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-sub); font-size: 0.95rem;
     }
 
     /* ── REPORTS ── */
-    #reports { background: var(--white); }
+    #reports { background: var(--white); padding: 100px 5%; }
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
     .report-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; cursor: pointer; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); background: white;}
@@ -186,7 +191,7 @@
     .report-dl { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
 
     /* ── MEMBERS ── */
-    #members { background: var(--bg); }
+    #members { background: var(--bg); padding: 100px 5%; }
     .members-scroll-wrap { max-width: 1100px; margin: 0 auto; max-height: 700px; overflow-y: auto; padding: 4px 8px 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .leaders-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 40px; }
     .leaders-grid .member-card { flex: 0 1 280px; border-color: var(--accent); border-width: 2px; background: white; }
@@ -199,7 +204,7 @@
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
 
     /* ── NEWS ── */
-    #news { background: var(--white); }
+    #news { background: var(--white); padding: 100px 5%; }
     .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .news-row { display: flex; gap: 24px; padding: 4px; }
     .news-card { flex: 0 0 320px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; }
@@ -217,7 +222,6 @@
     /* ── ADMIN ELEMENTS ── */
     .admin-only { display: none !important; }
     body.is-admin .admin-only { display: block !important; }
-    body.is-admin .admin-only-flex { display: flex !important; }
 
     .add-btn, .edit-about-btn {
       padding: 10px 22px; border-radius: 10px; border: 1.5px dashed var(--accent); background: var(--accent-soft);
@@ -278,6 +282,9 @@
   </style>
 </head>
 <body>
+
+<!-- 🌟 글로벌 배경 (스크롤 시 고정 & 줌인/페이드아웃 효과) -->
+<div class="global-bg" id="globalBg"></div>
 
 <div class="ticker-tape-wrap">
   <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
@@ -422,9 +429,6 @@
 
 <!-- HERO -->
 <section id="home">
-  <!-- 🌟 추가된 스크롤 애니메이션용 배경 컨테이너 -->
-  <div class="home-bg" id="homeBg"></div>
-
   <div class="hero-inner">
     <div class="hero-badge">Sogang University · Finance & Economics</div>
     <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
@@ -443,27 +447,32 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="section-header">
+  <!-- 🌟 사진이 비쳐보이는 헤더 부분 (투명) -->
+  <div class="about-header-wrapper">
     <div class="section-tag">About SAFE</div>
     <h2>우리는 왜 SAFE인가</h2>
     <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
   </div>
-  <div class="about-grid">
-    <div class="about-text-container">
-      <div id="dynamicAboutContent">
-        <!-- Rendered by JS -->
+  
+  <!-- 🌟 여기서부터 하얀색 배경으로 덮임 -->
+  <div class="about-content-wrapper">
+    <div class="about-grid">
+      <div class="about-text-container">
+        <div id="dynamicAboutContent">
+          <!-- Rendered by JS -->
+        </div>
+        <button class="admin-only edit-about-btn" onclick="openAboutModal()">✏️ 소개글 수정</button>
       </div>
-      <button class="admin-only edit-about-btn" onclick="openAboutModal()">✏️ 소개글 수정</button>
-    </div>
-    <div class="about-values">
-      <div class="value-item"><div class="value-icon">📊</div><div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
-      <div class="value-item"><div class="value-icon">🤝</div><div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
-      <div class="value-item"><div class="value-icon">🎯</div><div><h4>Career-Oriented</h4><p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p></div></div>
+      <div class="about-values">
+        <div class="value-item"><div class="value-icon">📊</div><div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
+        <div class="value-item"><div class="value-icon">🤝</div><div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
+        <div class="value-item"><div class="value-icon">🎯</div><div><h4>Career-Oriented</h4><p>금융권·컨설팅·대학원 진학을 위한 실질적인 역량을 길러드립니다.</p></div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 🌟 NEW: MARKET OVERVIEW -->
+<!-- 🌟 MARKET OVERVIEW (트레이딩뷰 위젯 삽입 완료!) -->
 <section id="market">
   <div class="section-header">
     <div class="section-tag">Market Overview</div>
@@ -471,9 +480,30 @@
     <p>주요 지수와 시장 동향을 실시간으로 트래킹합니다.</p>
   </div>
   <div class="market-widget-container">
-    <!-- 👇 여기에 트레이딩뷰 위젯 코드를 붙여넣어주세요! 👇 -->
-    <p style="text-align: center;">이 영역에 트레이딩뷰 위젯 코드가 들어갑니다.</p>
-    <!-- 👆 ------------------------------------------- 👆 -->
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container" style="width: 100%; height: 100%;">
+      <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%;"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/tv-widget-advanced-chart.js" async>
+      {
+        "autosize": true,
+        "symbol": "FOREXCOM:SPXUSD",
+        "interval": "D",
+        "timezone": "Asia/Seoul",
+        "theme": "light",
+        "style": "1",
+        "locale": "kr",
+        "enable_publishing": false,
+        "backgroundColor": "rgba(255, 255, 255, 1)",
+        "gridColor": "rgba(240, 243, 250, 0)",
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "container_id": "tradingview_market",
+        "support_host": "https://www.tradingview.com"
+      }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
   </div>
 </section>
 
@@ -590,7 +620,6 @@
   function storeMembers() { localStorage.setItem(STORAGE.members, JSON.stringify(members)); }
   function storeNews()    { localStorage.setItem(STORAGE.news,    JSON.stringify(news)); }
 
-  // 🌟 초기 상태: 보고서는 선택 없음('none'), 멤버는 0기(설립멤버)로 세팅
   let activeReportGen = 'none'; 
   let activeMemberGen = 0; 
 
@@ -631,7 +660,7 @@
     closeModal('aboutModal');
   }
 
-  // ── SELECT DROPDOWN LOGIC (기수 선택) ──
+  // ── SELECT DROPDOWN LOGIC ──
   function getGens(list) {
     const set = {};
     list.forEach(item => { if (item.gen != null) set[item.gen] = true; });
@@ -930,7 +959,7 @@
   const sections = ['home','about','market','reports','members','news'];
   window.addEventListener('scroll', () => {
     let current = 'home';
-    sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 100) current = id; });
+    sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 156) current = id; });
     document.querySelectorAll('.nav-links a').forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
   });
 
@@ -972,24 +1001,27 @@
     }
   }
 
-  // ── 🌟 배경 스크롤 줌인 & 페이드아웃 효과 ──
+  // ── 🌟 개선된 스크롤 줌인 & 페이드아웃 효과 (True Parallax) ──
   window.addEventListener('scroll', () => {
-    const homeSection = document.getElementById('home');
-    const homeBg = document.getElementById('homeBg');
-    
-    if (!homeSection || !homeBg) return;
-
+    const bg = document.getElementById('globalBg');
+    if (!bg) return;
     const scrollY = window.scrollY;
-    const sectionHeight = homeSection.offsetHeight;
+    const windowH = window.innerHeight;
 
-    if (scrollY <= sectionHeight) {
-      const scrollRatio = scrollY / sectionHeight;
-      const scale = 1 + (scrollRatio * 0.15); 
-      const opacity = 1 - (scrollRatio * 1.5);
+    // About 섹션(흰색 배경 부분)을 넘어가면 굳이 계산할 필요 없으므로 리소스 절약
+    if (scrollY > windowH * 1.5) return; 
 
-      homeBg.style.transform = `scale(${scale})`;
-      homeBg.style.opacity = Math.max(0, opacity); 
-    }
+    // 화면 비율 계산
+    const scrollRatio = scrollY / windowH;
+    
+    // 서서히 줌인 (1배 -> 1.15배)
+    const scale = 1 + (scrollRatio * 0.15); 
+    
+    // 서서히 페이드 아웃 (About 헤더를 지날 때까지 배경이 은은하게 남아있도록 속도 조절)
+    const opacity = 1 - (scrollRatio * 0.85);
+
+    bg.style.transform = `scale(${scale})`;
+    bg.style.opacity = Math.max(0, opacity); 
   });
 
   // INIT
