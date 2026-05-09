@@ -472,7 +472,7 @@
         <h5>학회</h5><a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a>
       </div>
       <div class="footer-col">
-        <h5>리서치</h5><a href="#reports">전체 보고서</a><a href="#reports">거시경제</a><a href="#reports">주식 분석</a>
+        <h5>리서치</h5><a href="#reports">거시경제</a><a href="#reports">주식 분석</a>
       </div>
       <div class="footer-col">
         <h5>연락처</h5><a href="#">safe@sogang.ac.kr</a><a href="#">Instagram</a><a href="#">Notion</a>
@@ -505,7 +505,6 @@
     notice:  { label: '공지',   cls: 'type-notice' }
   };
 
-  // 기본 About 데이터
   const defaultAbout = {
     title: "서강대 경제·금융 분석 학회",
     desc1: "SAFE(Sogang Analysis of Finance & Economics)는 2018년 설립된 서강대학교 경제학과 기반의 학술 학회입니다. 거시경제, 주식 밸류에이션, 채권·금리, 퀀트 투자 등 다양한 분야에서 체계적인 리서치 활동을 이어오고 있습니다.",
@@ -522,8 +521,10 @@
   function storeMembers() { localStorage.setItem(STORAGE.members, JSON.stringify(members)); }
   function storeNews()    { localStorage.setItem(STORAGE.news,    JSON.stringify(news)); }
 
-  let activeReportGen = null; 
-  let activeMemberGen = null; 
+  // 초기 상태: 보고서는 선택 없음('none'), 멤버는 0기('0')로 세팅
+  let activeReportGen = 'none'; 
+  let activeMemberGen = 0; 
+
   let editingReportId = null;
   let editingMemberId = null;
   let editingNewsId   = null;
@@ -568,17 +569,17 @@
     return Object.keys(set).map(Number).sort((a, b) => a - b);
   }
 
+  // '전체 보기' 옵션을 완전히 없애고 '기수 선택'을 기본으로 변경했습니다.
   function renderSelectGens(selectId, gens, activeGen) {
     const select = document.getElementById(selectId);
     if (gens.length === 0) {
-      select.innerHTML = '<option value="">등록된 기수가 없습니다</option>';
+      select.innerHTML = '<option value="none">기수 선택</option>';
       select.disabled = true;
       return;
     }
     select.disabled = false;
-    let html = `<option value="all" ${activeGen === null ? 'selected' : ''}>기수 선택 (전체 보기)</option>`;
+    let html = `<option value="none" ${activeGen === 'none' ? 'selected' : ''}>기수 선택</option>`;
     gens.forEach(g => {
-      // 0기는 설립 멤버로 텍스트 치환
       const label = g === 0 ? '설립 멤버' : `${g}기`;
       html += `<option value="${g}" ${activeGen === g ? 'selected' : ''}>${label}</option>`;
     });
@@ -591,17 +592,25 @@
   }
 
   function selectReportGen(val) {
-    activeReportGen = (val === 'all' || val === '') ? null : Number(val);
+    activeReportGen = (val === 'none' || val === '') ? 'none' : Number(val);
     renderReports();
   }
 
   function renderReports() {
     const grid = document.getElementById('reportsGrid');
-    const list = (activeReportGen === null) ? reports : reports.filter(r => r.gen === activeReportGen);
-    if (list.length === 0) {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">아직 등록된 보고서가 없습니다.</div>';
+    
+    // 선택된 기수가 없으면 안내 메시지만 노출
+    if (activeReportGen === 'none') {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">기수를 선택하시면 해당 기수의 보고서를 확인할 수 있습니다.</div>';
       return;
     }
+
+    const list = reports.filter(r => r.gen === activeReportGen);
+    if (list.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">해당 기수에 등록된 보고서가 없습니다.</div>';
+      return;
+    }
+    
     grid.innerHTML = list.map(r => {
       const cat = CATEGORY_META[r.category] || { label: '기타', cls: 'tag-macro' };
       return `
@@ -627,7 +636,7 @@
   }
 
   function selectMemberGen(val) {
-    activeMemberGen = (val === 'all' || val === '') ? null : Number(val);
+    activeMemberGen = (val === 'none' || val === '') ? 'none' : Number(val);
     renderMembers();
   }
 
@@ -635,15 +644,21 @@
     const leadersGrid = document.getElementById('leadersGrid');
     const regularsGrid = document.getElementById('membersGrid');
     
-    const list = (activeMemberGen === null) ? members : members.filter(m => m.gen === activeMemberGen);
-    
-    if (list.length === 0) {
+    // 기수가 선택되지 않은 상태일 경우 안내 메시지만 노출
+    if (activeMemberGen === 'none') {
       leadersGrid.innerHTML = '';
-      regularsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">아직 등록된 멤버가 없습니다.</div>';
+      regularsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">기수를 선택하시면 해당 기수의 멤버를 확인할 수 있습니다.</div>';
       return;
     }
 
-    // 학회장, 부학회장을 찾아 분리
+    const list = members.filter(m => m.gen === activeMemberGen);
+    
+    if (list.length === 0) {
+      leadersGrid.innerHTML = '';
+      regularsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">해당 기수에 등록된 멤버가 없습니다.</div>';
+      return;
+    }
+
     const leaders = list.filter(m => m.role.includes('학회장') || m.role.includes('부학회장'));
     const regulars = list.filter(m => !m.role.includes('학회장') && !m.role.includes('부학회장'));
 
@@ -702,7 +717,7 @@
     editingReportId = null;
     document.getElementById('reportModalTitle').textContent = '📋 보고서 추가';
     document.getElementById('rTitle').value = '';
-    document.getElementById('rGen').value = activeReportGen != null ? activeReportGen : '';
+    document.getElementById('rGen').value = (activeReportGen !== 'none') ? activeReportGen : '';
     document.getElementById('rAuthor').value = '';
     document.getElementById('rDate').value = '';
     document.getElementById('rDesc').value = '';
@@ -757,7 +772,7 @@
     editingMemberId = null;
     document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
     document.getElementById('mName').value = '';
-    document.getElementById('mGen').value = activeMemberGen != null ? activeMemberGen : '';
+    document.getElementById('mGen').value = (activeMemberGen !== 'none') ? activeMemberGen : '';
     document.getElementById('mRole').value = '';
     document.getElementById('mDept').value = '';
     document.getElementById('mError').textContent = '';
@@ -799,7 +814,7 @@
     storeMembers(); renderMemberGenTabs(); renderMembers();
   }
 
-  // ── CRUD (NEWS) - 이름 충돌 해결 완료 ──
+  // ── CRUD (NEWS) ──
   function openNewsModal() {
     editingNewsId = null;
     document.getElementById('newsModalTitle').textContent = '📢 공지 추가';
@@ -823,7 +838,6 @@
     document.getElementById('newsModal').classList.add('open');
   }
 
-  // 함수 이름을 submitNewsData로 변경 (storeNews와의 충돌 방지)
   function submitNewsData() {
     const type = document.getElementById('nType').value;
     const date = document.getElementById('nDate').value;
