@@ -28,7 +28,8 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      padding-top: calc(70px + var(--nav-h));
+      /* 티커(88px) + 네비게이션(68px) 높이만큼 여백 확보 */
+      padding-top: calc(88px + var(--nav-h));
     }
 
     /* ── TICKER TAPE ── */
@@ -37,9 +38,9 @@
       height: 88px; overflow: hidden; background: white; z-index: 99;
     }
 
-    /* ── NAV ── */
+    /* ── NAV (티커 테이프와 안 겹치게 88px로 내림) ── */
     nav {
-      position: fixed; top: 70px; left: 0; right: 0; height: var(--nav-h);
+      position: fixed; top: 88px; left: 0; right: 0; height: var(--nav-h);
       background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
@@ -62,53 +63,72 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── HERO (배경 효과 추가) ── */
+    /* ── HERO ── */
     #home {
       position: relative;
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center;
-      overflow: hidden; /* 배경 이미지가 커질 때 영역 밖으로 나가는 것 방지 */
+      /* 화면 전체 높이에서 티커+메뉴바 높이를 빼서, 스크롤 없이 하얀색 섹션 선에 딱 맞게 떨어지게 함 */
+      min-height: calc(100vh - 156px); 
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 5% 80px; text-align: center;
+      overflow: hidden; 
     }
 
-    /* 🌟 스크롤 줌인 & 페이드아웃 배경 스타일 */
+    /* 🌟 배경 사진 조금 더 선명하게 조절 */
     .home-bg {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      /* 월스트리트/금융권 배경 고화질 이미지 */
       background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
       z-index: 0;
       transition: transform 0.1s ease-out, opacity 0.1s ease-out; 
     }
 
-    /* 배경 이미지 위에 반투명한 흰색 막 (글씨 가독성) */
+    /* 투명도를 0.82 -> 0.55로 낮춰서 배경이 더 잘 보이게 함 */
     .home-bg::after {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(248, 249, 251, 0.82); /* 투명도 조절: 숫자가 낮을수록 배경이 진해짐 */
+      background: rgba(248, 249, 251, 0.55); 
     }
 
     .hero-inner { 
       position: relative; 
-      z-index: 1; /* 글씨가 배경 위로 올라오도록 설정 */
+      z-index: 1; 
       max-width: 760px; 
     }
+    
+    /* 텍스트 뒤에 화이트 섀도우(Glow)를 넣어서 배경이 진해져도 글씨가 묻히지 않게 함 */
     .hero-badge {
       display: inline-block; background: var(--accent-soft); color: var(--primary-light);
-      font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
       padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
+      box-shadow: 0 4px 15px rgba(255,255,255, 0.8);
     }
-    .hero-inner h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 20px; }
-    .hero-inner h1 span { background: linear-gradient(90deg, var(--primary-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-inner p { font-size: 1.1rem; color: var(--text-sub); max-width: 540px; margin: 0 auto 40px; }
+    .hero-inner h1 { 
+      font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); 
+      line-height: 1.2; margin-bottom: 20px;
+      text-shadow: 0 4px 24px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+    .hero-inner h1 span { 
+      background: linear-gradient(90deg, var(--primary-light), var(--accent)); 
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+      text-shadow: none; /* 그라데이션 텍스트는 섀도우를 빼는게 예쁩니다 */
+      filter: drop-shadow(0px 4px 12px rgba(255, 255, 255, 0.9)); /* 필터로 외곽선 글로우 적용 */
+    }
+    .hero-inner p { 
+      font-size: 1.1rem; color: #1a1f36; font-weight: 600; 
+      max-width: 540px; margin: 0 auto 40px; 
+      text-shadow: 0 2px 15px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 1);
+    }
+    
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,255,255, 0.5);}
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-    .btn-outline { background: transparent; color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--border); transition: all 0.2s; }
+    .btn-outline { background: var(--white); color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--primary); transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,255,255, 0.5);}
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    
     .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
-    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
-    .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); text-shadow: 0 2px 15px rgba(255,255,255, 0.9);}
+    .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; text-shadow: 0 2px 10px rgba(255,255,255, 1);}
 
     /* ── SECTIONS COMMON ── */
     section { padding: 100px 5%; position: relative; z-index: 2; background: var(--bg); }
@@ -142,10 +162,21 @@
     }
     .gen-select:hover { box-shadow: 0 4px 12px rgba(107, 140, 218, 0.2); }
 
+    /* ── MARKET OVERVIEW ── */
+    #market { background: var(--bg); }
+    .market-widget-container {
+      max-width: 1100px; margin: 0 auto; min-height: 450px; 
+      background: white; border: 1px solid var(--border); border-radius: 14px; 
+      overflow: hidden; box-shadow: 0 12px 32px rgba(44,62,107,0.05);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-sub); font-size: 0.95rem;
+    }
+
     /* ── REPORTS ── */
+    #reports { background: var(--white); }
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
-    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; cursor: pointer; }
-    .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
+    .report-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; cursor: pointer; }
+    .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); background: white;}
     .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
     .tag-equity { background: #e6f4ea; color: #2e7d32; }
@@ -155,15 +186,12 @@
     .report-dl { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
 
     /* ── MEMBERS ── */
-    #members { background: var(--white); }
+    #members { background: var(--bg); }
     .members-scroll-wrap { max-width: 1100px; margin: 0 auto; max-height: 700px; overflow-y: auto; padding: 4px 8px 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
-    
-    /* 리더용 상단 레이아웃 */
     .leaders-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 40px; }
     .leaders-grid .member-card { flex: 0 1 280px; border-color: var(--accent); border-width: 2px; background: white; }
-    
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; }
-    .member-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; }
+    .member-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; }
     .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
     .member-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: white; margin: 0 auto 16px; }
     .member-card h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
@@ -171,10 +199,11 @@
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
 
     /* ── NEWS ── */
+    #news { background: var(--white); }
     .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .news-row { display: flex; gap: 24px; padding: 4px; }
-    .news-card { flex: 0 0 320px; background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; }
-    .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
+    .news-card { flex: 0 0 320px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; }
+    .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); background: white; }
     .news-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; }
     .news-type { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
     .type-notice { background: #fff8e1; color: #f57f17; }
@@ -265,6 +294,7 @@
   </a>
   <div class="nav-links">
     <a href="#about" class="active">About</a>
+    <a href="#market">Market</a>
     <a href="#reports">Reports</a>
     <a href="#members">Members</a>
     <a href="#news">News</a>
@@ -433,6 +463,20 @@
   </div>
 </section>
 
+<!-- 🌟 NEW: MARKET OVERVIEW -->
+<section id="market">
+  <div class="section-header">
+    <div class="section-tag">Market Overview</div>
+    <h2>실시간 글로벌 마켓</h2>
+    <p>주요 지수와 시장 동향을 실시간으로 트래킹합니다.</p>
+  </div>
+  <div class="market-widget-container">
+    <!-- 👇 여기에 트레이딩뷰 위젯 코드를 붙여넣어주세요! 👇 -->
+    <p style="text-align: center;">이 영역에 트레이딩뷰 위젯 코드가 들어갑니다.</p>
+    <!-- 👆 ------------------------------------------- 👆 -->
+  </div>
+</section>
+
 <!-- REPORTS -->
 <section id="reports">
   <div class="section-header">
@@ -567,7 +611,7 @@
       <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(aboutData.title)}</h3>
       <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc1)}</p>
       <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc2)}</p>
-      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
+      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px; box-shadow: 0 4px 15px rgba(44,62,107, 0.2);">모집 공고 보기 →</a>
     `;
   }
 
@@ -883,7 +927,7 @@
   }
 
   // nav highlight
-  const sections = ['home','about','reports','members','news'];
+  const sections = ['home','about','market','reports','members','news'];
   window.addEventListener('scroll', () => {
     let current = 'home';
     sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 100) current = id; });
