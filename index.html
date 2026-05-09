@@ -30,11 +30,24 @@
       line-height: 1.6;
     }
 
-    /* ── NAV ── */
+    /* ── TICKER TAPE (fixed at top of page) ── */
+    .ticker-tape-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 88px;          /* enough room for chart + price */
+      overflow: hidden;       /* hides "Ticker tape by TradingView" footer */
+      background: white;
+      z-index: 99;
+    }
+
+    /* push body content down so it isn't hidden under ticker tape + nav */
+    body { padding-top: calc(70px + var(--nav-h)); }
+
+    /* ── NAV (sits below ticker tape) ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0;
+      position: fixed; top: 70px; left: 0; right: 0;
       height: var(--nav-h);
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
@@ -326,6 +339,131 @@
       flex-wrap: wrap; gap: 8px;
     }
 
+    /* ── ADMIN LOGIN ── */
+    /* admin-only elements: hidden by default, shown when body has .is-admin */
+    .admin-only { display: none !important; }
+    body.is-admin .admin-only { display: block !important; }
+
+    .admin-btn {
+      margin-left: 12px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: white;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .admin-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .admin-btn.logged-in {
+      background: var(--accent-soft);
+      color: var(--primary);
+      border-color: var(--accent);
+    }
+
+    /* admin mode floating badge */
+    .admin-badge-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(44,62,107,0.25);
+      z-index: 99;
+      display: none;
+      animation: slideUp 0.3s ease;
+    }
+    .admin-badge-float.visible { display: block; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* login modal */
+    .login-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26, 31, 54, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    .login-modal-overlay.open { display: flex; }
+    .login-modal {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .login-modal h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .login-modal p.hint {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .login-modal input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+    .login-modal input:focus { border-color: var(--accent); }
+    .login-error {
+      font-size: 0.85rem;
+      color: #c62828;
+      text-align: center;
+      margin-bottom: 12px;
+      min-height: 18px;
+    }
+    .login-btns {
+      display: flex;
+      gap: 10px;
+    }
+    .login-btns button {
+      flex: 1;
+      padding: 11px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: all 0.2s;
+    }
+    .login-btn-cancel {
+      background: var(--bg);
+      color: var(--text-sub);
+    }
+    .login-btn-cancel:hover { background: var(--border); }
+    .login-btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+    .login-btn-submit:hover { background: var(--primary-light); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .about-grid { grid-template-columns: 1fr; }
@@ -333,10 +471,17 @@
       .hero-stats { gap: 24px; }
       .footer-inner { flex-direction: column; }
       .footer-links { flex-direction: column; gap: 20px; }
+      .admin-btn { margin-left: 0; }
     }
   </style>
 </head>
 <body>
+
+<!-- TICKER TAPE (fixed at top, behind nav so footer label is hidden) -->
+<div class="ticker-tape-wrap">
+  <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
+  <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,TVC:DXY,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -352,8 +497,26 @@
     <a href="#reports">Reports</a>
     <a href="#members">Members</a>
     <a href="#news">News</a>
+    <button class="admin-btn" id="adminBtn" onclick="handleAdminBtn()">🔒 관리자</button>
   </div>
 </nav>
+
+<!-- Login Modal -->
+<div class="login-modal-overlay" id="loginModal">
+  <div class="login-modal">
+    <h3>관리자 로그인</h3>
+    <p class="hint">SAFE 임원진 전용입니다.</p>
+    <input type="password" id="loginPassword" placeholder="비밀번호" onkeydown="if(event.key==='Enter')submitLogin()"/>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-btns">
+      <button class="login-btn-cancel" onclick="closeLoginModal()">취소</button>
+      <button class="login-btn-submit" onclick="submitLogin()">로그인</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin mode floating badge -->
+<div class="admin-badge-float" id="adminBadge">⚡ 관리자 모드</div>
 
 <!-- HERO -->
 <section id="home">
@@ -366,10 +529,9 @@
       <a href="#about" class="btn-outline">학회 소개</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">48+</div><div class="stat-label">활동 멤버</div></div>
-      <div class="stat"><div class="stat-num">120+</div><div class="stat-label">발간 리포트</div></div>
-      <div class="stat"><div class="stat-num">6기</div><div class="stat-label">활동 기수</div></div>
-      <div class="stat"><div class="stat-num">3</div><div class="stat-label">연구 분과</div></div>
+      <div class="stat"><div class="stat-num">20</div><div class="stat-label">활동 멤버</div></div>
+      <div class="stat"><div class="stat-num">10</div><div class="stat-label">발간 리포트</div></div>
+      <div class="stat"><div class="stat-num">2기</div><div class="stat-label">활동 기수</div></div>
     </div>
   </div>
 </section>
@@ -434,7 +596,7 @@
     <!-- Cards injected by JS -->
   </div>
 
-  <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+  <div class="upload-area admin-only" onclick="document.getElementById('fileInput').click()">
     <div class="upload-icon">📄</div>
     <p><strong>보고서 업로드</strong></p>
     <p>클릭하거나 파일을 드래그하여 PDF를 업로드하세요</p>
@@ -499,25 +661,9 @@
 
 <script>
   // ── DATA ──
-  const reports = [
-    { id:1, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'2025년 하반기 글로벌 경기 전망', desc:'미국 연준의 금리 경로와 중국 경기 회복세를 중심으로 한 글로벌 매크로 분석', author:'김지수', date:'2025.05', file:'#' },
-    { id:2, category:'equity', tag:'주식', tagClass:'tag-equity', title:'2차전지 섹터 밸류에이션 리포트', desc:'LG에너지솔루션, 삼성SDI 등 국내 주요 2차전지 기업의 DCF 및 상대 가치 평가', author:'박현우', date:'2025.04', file:'#' },
-    { id:3, category:'fixed', tag:'채권·금리', tagClass:'tag-fixed', title:'한국 기준금리 인하 경로 분석', desc:'소비자물가 추이와 성장률을 바탕으로 한 한국은행 통화정책 시나리오 분석', author:'이서연', date:'2025.03', file:'#' },
-    { id:4, category:'quant', tag:'퀀트', tagClass:'tag-quant', title:'팩터 투자 전략 백테스트', desc:'가치·모멘텀·퀄리티 팩터 조합의 코스피 적용 성과 분석 (2015–2024)', author:'최민준', date:'2025.02', file:'#' },
-    { id:5, category:'macro', tag:'거시경제', tagClass:'tag-macro', title:'달러 강세와 신흥국 자본 유출', desc:'DXY 지수 상승 국면에서의 한국·인도·브라질 자본 흐름 비교 분석', author:'정다은', date:'2025.01', file:'#' },
-    { id:6, category:'equity', tag:'주식', tagClass:'tag-equity', title:'AI 인프라 투자 테마 분석', desc:'엔비디아·TSMC 중심의 AI 반도체 공급망과 국내 수혜 기업 탐색', author:'윤성호', date:'2024.12', file:'#' },
-  ];
+  const reports = [];
 
-  const members = [
-    { name:'김도현', role:'회장', dept:'경제학과 24', initial:'김' },
-    { name:'이지원', role:'부회장', dept:'경제학과 24', initial:'이' },
-    { name:'박서준', role:'리서치 팀장', dept:'경영학과 23', initial:'박' },
-    { name:'최수민', role:'기획 팀장', dept:'경제학과 24', initial:'최' },
-    { name:'정유진', role:'리서치 파트', dept:'수학과 25', initial:'정' },
-    { name:'한민재', role:'리서치 파트', dept:'경제학과 25', initial:'한' },
-    { name:'오채은', role:'기획 파트', dept:'경영학과 24', initial:'오' },
-    { name:'송지훈', role:'리서치 파트', dept:'경제학과 23', initial:'송' },
-  ];
+  const members = [];
 
   const news = [
     { type:'recruit', typeLabel:'모집', typeClass:'type-recruit', title:'SAFE 7기 정기 모집 공고', desc:'2025년 2학기 신입 부원을 모집합니다. 금융·경제에 열정 있는 분이라면 누구든 환영합니다.', date:'2025.08.20' },
@@ -529,6 +675,10 @@
   function renderReports(filter = 'all') {
     const grid = document.getElementById('reportsGrid');
     const filtered = filter === 'all' ? reports : reports.filter(r => r.category === filter);
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);font-size:0.9rem;">아직 등록된 보고서가 없습니다.</div>';
+      return;
+    }
     grid.innerHTML = filtered.map(r => `
       <div class="report-card">
         <span class="report-tag ${r.tagClass}">${r.tag}</span>
@@ -543,7 +693,12 @@
   }
 
   function renderMembers() {
-    document.getElementById('membersGrid').innerHTML = members.map(m => `
+    const grid = document.getElementById('membersGrid');
+    if (members.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);font-size:0.9rem;">아직 등록된 멤버가 없습니다.</div>';
+      return;
+    }
+    grid.innerHTML = members.map(m => `
       <div class="member-card">
         <div class="member-avatar">${m.initial}</div>
         <h4>${m.name}</h4>
@@ -594,10 +749,74 @@
     });
   });
 
+  // ── ADMIN LOGIN ──
+  const ADMIN_PASSWORD = 'safe2025!';  // ← 비밀번호 변경하려면 여기를 수정
+  let isAdmin = localStorage.getItem('safe_isAdmin') === 'true';
+
+  function updateAdminUI() {
+    const btn = document.getElementById('adminBtn');
+    const badge = document.getElementById('adminBadge');
+    if (isAdmin) {
+      btn.textContent = '🔓 로그아웃';
+      btn.classList.add('logged-in');
+      badge.classList.add('visible');
+      document.body.classList.add('is-admin');
+    } else {
+      btn.textContent = '🔒 관리자';
+      btn.classList.remove('logged-in');
+      badge.classList.remove('visible');
+      document.body.classList.remove('is-admin');
+    }
+  }
+
+  function handleAdminBtn() {
+    if (isAdmin) {
+      // 로그아웃
+      if (confirm('로그아웃 하시겠습니까?')) {
+        isAdmin = false;
+        localStorage.removeItem('safe_isAdmin');
+        updateAdminUI();
+      }
+    } else {
+      // 로그인 모달 열기
+      document.getElementById('loginModal').classList.add('open');
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('loginError').textContent = '';
+      setTimeout(() => document.getElementById('loginPassword').focus(), 100);
+    }
+  }
+
+  function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('open');
+  }
+
+  function submitLogin() {
+    const pw = document.getElementById('loginPassword').value;
+    const errEl = document.getElementById('loginError');
+    if (!pw) {
+      errEl.textContent = '비밀번호를 입력해주세요.';
+      return;
+    }
+    if (pw === ADMIN_PASSWORD) {
+      isAdmin = true;
+      localStorage.setItem('safe_isAdmin', 'true');
+      updateAdminUI();
+      closeLoginModal();
+    } else {
+      errEl.textContent = '비밀번호가 올바르지 않습니다.';
+    }
+  }
+
+  // 로그인 모달 외부 클릭 시 닫기
+  document.getElementById('loginModal').addEventListener('click', (e) => {
+    if (e.target.id === 'loginModal') closeLoginModal();
+  });
+
   // init
   renderReports();
   renderMembers();
   renderNews();
+  updateAdminUI();
 </script>
 </body>
 </html>
