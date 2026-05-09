@@ -62,13 +62,37 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── HERO ── */
+    /* ── HERO (배경 효과 추가) ── */
     #home {
+      position: relative;
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(160deg, #eef1f9 0%, #f8f9fb 60%, #e8edf8 100%);
       padding: calc(var(--nav-h) + 40px) 5% 80px; text-align: center;
+      overflow: hidden; /* 배경 이미지가 커질 때 영역 밖으로 나가는 것 방지 */
     }
-    .hero-inner { max-width: 760px; }
+
+    /* 🌟 스크롤 줌인 & 페이드아웃 배경 스타일 */
+    .home-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      /* 월스트리트/금융권 배경 고화질 이미지 */
+      background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+      z-index: 0;
+      transition: transform 0.1s ease-out, opacity 0.1s ease-out; 
+    }
+
+    /* 배경 이미지 위에 반투명한 흰색 막 (글씨 가독성) */
+    .home-bg::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(248, 249, 251, 0.82); /* 투명도 조절: 숫자가 낮을수록 배경이 진해짐 */
+    }
+
+    .hero-inner { 
+      position: relative; 
+      z-index: 1; /* 글씨가 배경 위로 올라오도록 설정 */
+      max-width: 760px; 
+    }
     .hero-badge {
       display: inline-block; background: var(--accent-soft); color: var(--primary-light);
       font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
@@ -87,7 +111,7 @@
     .stat-label { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
 
     /* ── SECTIONS COMMON ── */
-    section { padding: 100px 5%; }
+    section { padding: 100px 5%; position: relative; z-index: 2; background: var(--bg); }
     .section-header { text-align: center; margin-bottom: 60px; }
     .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
@@ -119,7 +143,6 @@
     .gen-select:hover { box-shadow: 0 4px 12px rgba(107, 140, 218, 0.2); }
 
     /* ── REPORTS ── */
-    #reports { background: var(--bg); }
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
     .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; cursor: pointer; }
     .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); }
@@ -148,7 +171,6 @@
     .member-card p { font-size: 0.83rem; color: var(--text-sub); }
 
     /* ── NEWS ── */
-    #news { background: var(--bg); }
     .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .news-row { display: flex; gap: 24px; padding: 4px; }
     .news-card { flex: 0 0 320px; background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; }
@@ -209,7 +231,7 @@
     .admin-badge-float.visible { display: block; }
 
     /* ── FOOTER ── */
-    footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; }
+    footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; position: relative; z-index: 2;}
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .footer-brand .brand-name { font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
     .footer-brand p { font-size: 0.85rem; max-width: 280px; }
@@ -370,6 +392,9 @@
 
 <!-- HERO -->
 <section id="home">
+  <!-- 🌟 추가된 스크롤 애니메이션용 배경 컨테이너 -->
+  <div class="home-bg" id="homeBg"></div>
+
   <div class="hero-inner">
     <div class="hero-badge">Sogang University · Finance & Economics</div>
     <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
@@ -521,7 +546,7 @@
   function storeMembers() { localStorage.setItem(STORAGE.members, JSON.stringify(members)); }
   function storeNews()    { localStorage.setItem(STORAGE.news,    JSON.stringify(news)); }
 
-  // 초기 상태: 보고서는 선택 없음('none'), 멤버는 0기('0')로 세팅
+  // 🌟 초기 상태: 보고서는 선택 없음('none'), 멤버는 0기(설립멤버)로 세팅
   let activeReportGen = 'none'; 
   let activeMemberGen = 0; 
 
@@ -569,7 +594,6 @@
     return Object.keys(set).map(Number).sort((a, b) => a - b);
   }
 
-  // '전체 보기' 옵션을 완전히 없애고 '기수 선택'을 기본으로 변경했습니다.
   function renderSelectGens(selectId, gens, activeGen) {
     const select = document.getElementById(selectId);
     if (gens.length === 0) {
@@ -599,7 +623,6 @@
   function renderReports() {
     const grid = document.getElementById('reportsGrid');
     
-    // 선택된 기수가 없으면 안내 메시지만 노출
     if (activeReportGen === 'none') {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">기수를 선택하시면 해당 기수의 보고서를 확인할 수 있습니다.</div>';
       return;
@@ -644,7 +667,6 @@
     const leadersGrid = document.getElementById('leadersGrid');
     const regularsGrid = document.getElementById('membersGrid');
     
-    // 기수가 선택되지 않은 상태일 경우 안내 메시지만 노출
     if (activeMemberGen === 'none') {
       leadersGrid.innerHTML = '';
       regularsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">기수를 선택하시면 해당 기수의 멤버를 확인할 수 있습니다.</div>';
@@ -905,6 +927,26 @@
       document.getElementById('loginError').textContent = '비밀번호가 올바르지 않습니다.';
     }
   }
+
+  // ── 🌟 배경 스크롤 줌인 & 페이드아웃 효과 ──
+  window.addEventListener('scroll', () => {
+    const homeSection = document.getElementById('home');
+    const homeBg = document.getElementById('homeBg');
+    
+    if (!homeSection || !homeBg) return;
+
+    const scrollY = window.scrollY;
+    const sectionHeight = homeSection.offsetHeight;
+
+    if (scrollY <= sectionHeight) {
+      const scrollRatio = scrollY / sectionHeight;
+      const scale = 1 + (scrollRatio * 0.15); 
+      const opacity = 1 - (scrollRatio * 1.5);
+
+      homeBg.style.transform = `scale(${scale})`;
+      homeBg.style.opacity = Math.max(0, opacity); 
+    }
+  });
 
   // INIT
   renderAbout();
