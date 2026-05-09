@@ -62,7 +62,7 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── 🌟 TOP PARALLAX CONTAINER (히어로 + About 전체를 감싸는 영역) ── */
+    /* ── 🌟 TOP PARALLAX CONTAINER (마켓 이전까지의 전체를 묶음) ── */
     .top-parallax-container {
       position: relative;
       overflow: hidden; 
@@ -81,7 +81,7 @@
       transform-origin: center center;
     }
 
-    /* 오버레이 (가독성을 위한 반투명 막) */
+    /* 오버레이 (가독성을 위한 반투명 막, 그림자 없이 깔끔하게) */
     .top-bg::after {
       content: '';
       position: absolute;
@@ -154,15 +154,15 @@
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
     .about-values { display: flex; flex-direction: column; gap: 18px; }
     
-    /* 🌟 특징 카드: 사진 위에서 깔끔하게 보이도록 반투명 유리 질감 적용 */
+    /* 🌟 특징 카드: 사진 위에서 깔끔하게 보이도록 약간의 유리 질감 효과 */
     .value-item { 
       display: flex; gap: 16px; align-items: flex-start; 
       padding: 20px; 
       border-radius: 12px; 
-      border: 1px solid rgba(255, 255, 255, 0.6); 
-      background: rgba(255, 255, 255, 0.65); /* 반투명 화이트 */
-      backdrop-filter: blur(10px); /* 뒤에 비치는 사진을 부드럽게 뭉갬 */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.8); 
+      background: rgba(255, 255, 255, 0.6); /* 반투명 화이트 */
+      backdrop-filter: blur(12px); /* 배경 사진을 부드럽게 뭉갬 */
+      box-shadow: 0 4px 24px rgba(44, 62, 107, 0.05);
     }
     .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; color: white; }
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
@@ -182,7 +182,7 @@
     }
     .gen-select:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05); }
 
-    /* ── 하얀색 본문 시작 영역 (여기부터 완전히 배경 가려짐) ── */
+    /* ── 하얀색 본문 시작 영역 (마켓부터 배경 완전히 가려짐) ── */
     .main-content-wrapper {
       position: relative;
       z-index: 2;
@@ -352,7 +352,8 @@
 
 </div> <!-- top-parallax-container 끝 -->
 
-<!-- 여기서부터 하얀색/회색 솔리드 배경 시작 (Market부터) -->
+
+<!-- 여기서부터 하얀색/회색 솔리드 배경 시작 (마켓 섹션부터) -->
 <div class="main-content-wrapper">
 
   <div class="ticker-tape-wrap">
@@ -1039,7 +1040,7 @@
     if (scrollY <= containerHeight) {
       const scrollRatio = scrollY / containerHeight;
       const scale = 1 + (scrollRatio * 0.1); 
-      const opacity = 1 - (scrollRatio * 0.5);
+      const opacity = 1 - (scrollRatio * 0.8); // 부드럽게 페이드아웃 되도록 수치 조정
 
       bg.style.transform = `scale(${scale})`;
       bg.style.opacity = Math.max(0, opacity); 
