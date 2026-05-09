@@ -62,28 +62,31 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── TOP PARALLAX CONTAINER ── */
+    /* ── 🌟 TOP PARALLAX CONTAINER (히어로 + About 헤더를 감싸는 영역) ── */
     .top-parallax-container {
       position: relative;
       overflow: hidden; 
     }
 
-    /* 🌟 스크롤 배경 이미지 */
+    /* 배경 사진 */
     .top-bg {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+      background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
       z-index: 0;
       will-change: transform, opacity;
       transform-origin: center center;
     }
 
-    /* 배경 오버레이 (그림자 없이 가독성 확보) */
+    /* 그림자 없이 텍스트가 잘 보이도록 배경을 살짝 눌러주는 오버레이 */
     .top-bg::after {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(248, 249, 251, 0.85); 
+      background: rgba(248, 249, 251, 0.75); 
     }
 
     /* ── SECTIONS COMMON ── */
@@ -100,28 +103,28 @@
       min-height: calc(100vh - 156px); 
       display: flex; align-items: center; justify-content: center;
       padding: 40px 5% 80px; text-align: center;
-      /* 🌟 핵심 수정: 섹션의 기본 회색 배경을 투명하게 뚫어줌! */
+      /* 🌟 이거 지워서 배경 덮였던 겁니다! 투명하게 뚫어줍니다. */
       background: transparent !important; 
     }
     
     .hero-inner { max-width: 760px; }
     
+    /* 깔끔한 느낌의 뱃지 (그림자 제거) */
     .hero-badge {
       display: inline-block; 
-      background: rgba(255, 255, 255, 0.95); 
+      background: rgba(44, 62, 107, 0.08); 
       color: var(--primary);
-      font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      padding: 8px 20px; border-radius: 20px; margin-bottom: 28px;
-      border: 1px solid rgba(44, 62, 107, 0.1);
+      font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
     }
     
+    /* 텍스트 글로잉 효과 완전 삭제, 깔끔한 솔리드 컬러 */
     .hero-inner h1 { 
       font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); 
       line-height: 1.2; margin-bottom: 20px;
     }
     .hero-inner h1 span { 
-      background: linear-gradient(90deg, var(--primary-light), var(--accent)); 
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+      color: var(--primary-light);
     }
     .hero-inner p { 
       font-size: 1.1rem; color: #1a1f36; font-weight: 600; 
@@ -138,17 +141,19 @@
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; }
 
-    /* ── ABOUT HEADER (사진 위에 떠있는 영역) ── */
+    /* ── 🌟 ABOUT HEADER (사진 위에 떠있는 영역) ── */
     .about-header-wrapper {
       position: relative;
       z-index: 1; 
       padding: 100px 5% 60px;
       text-align: center;
+      /* 여기도 투명하게 유지 */
+      background: transparent; 
     }
     .about-header-wrapper h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .about-header-wrapper p { color: var(--text-sub); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
-    /* ── 하얀색 본문 시작 영역 (여기부터 배경 가려짐) ── */
+    /* ── 하얀색 본문 시작 영역 (여기부터 배경 끊어지고 하얀색 시작) ── */
     .main-content-wrapper {
       position: relative;
       z-index: 2;
