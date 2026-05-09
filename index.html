@@ -21,7 +21,6 @@
       --nav-h: 68px;
     }
 
-    /* 네비게이션 점프 시 헤더가 가려지지 않도록 여백 설정 (티커88px + 메뉴68px) */
     html { scroll-behavior: smooth; scroll-padding-top: 156px; }
 
     body {
@@ -29,7 +28,7 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      padding-top: 156px; 
+      padding-top: 156px; /* 티커(88px) + 네비게이션(68px) */
     }
 
     /* ── TICKER TAPE ── */
@@ -63,63 +62,78 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* 🌟 추가된 글로벌 고정 배경 (True Parallax) */
-    .global-bg {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100vh;
-      background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
-      z-index: -1; /* 모든 콘텐츠의 가장 뒤로 보냄 */
-      will-change: transform, opacity;
+    /* ── TOP PARALLAX CONTAINER (히어로 + About 헤더를 감싸는 영역) ── */
+    .top-parallax-container {
+      position: relative;
+      overflow: hidden; /* 커지는 배경이 밖으로 삐져나가지 않도록 */
     }
-    /* 배경 이미지 위에 반투명 흰색 막 */
-    .global-bg::after {
+
+    /* 🌟 스크롤 줌인 & 페이드아웃 되는 배경 */
+    .top-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+      z-index: 0;
+      will-change: transform, opacity;
+      transform-origin: center center;
+    }
+
+    /* 배경을 눌러주는 깔끔한 화이트 오버레이 (가독성 확보) */
+    .top-bg::after {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(248, 249, 251, 0.55); 
+      background: rgba(248, 249, 251, 0.75); 
     }
 
     /* ── HERO ── */
     #home {
       position: relative;
-      /* 화면 전체 높이를 차지하되 배경은 투명하게 (뒤에 고정된 사진이 보임) */
+      z-index: 1; /* 배경 위로 올림 */
       min-height: calc(100vh - 156px); 
       display: flex; align-items: center; justify-content: center;
       padding: 40px 5% 80px; text-align: center;
-      background: transparent; 
     }
     
-    .hero-inner { position: relative; z-index: 1; max-width: 760px; }
+    .hero-inner { max-width: 760px; }
+    
+    /* 깔끔한 화이트톤 뱃지 */
     .hero-badge {
-      display: inline-block; background: var(--accent-soft); color: var(--primary-light);
-      font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
-      box-shadow: 0 4px 15px rgba(255,255,255, 0.8);
+      display: inline-block; 
+      background: rgba(255, 255, 255, 0.95); 
+      color: var(--primary);
+      font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 8px 20px; border-radius: 20px; margin-bottom: 28px;
+      border: 1px solid rgba(44, 62, 107, 0.1);
+      box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05);
     }
+    
+    /* 과한 그림자 제거, 은은한 글로우만 남김 */
     .hero-inner h1 { 
       font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; color: var(--primary); 
       line-height: 1.2; margin-bottom: 20px;
-      /* 텍스트 섀도우 강화 */
-      text-shadow: 0 4px 24px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.9);
+      text-shadow: 0 0 24px rgba(255, 255, 255, 0.8);
     }
     .hero-inner h1 span { 
       background: linear-gradient(90deg, var(--primary-light), var(--accent)); 
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-      filter: drop-shadow(0px 4px 12px rgba(255, 255, 255, 0.9)); 
+      filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.7)); 
     }
     .hero-inner p { 
       font-size: 1.1rem; color: #1a1f36; font-weight: 600; 
       max-width: 540px; margin: 0 auto 40px; 
-      text-shadow: 0 2px 15px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 1);
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
     }
+    
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,255,255, 0.5);}
+    .btn-primary { background: var(--primary); color: white; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;}
     .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-    .btn-outline { background: var(--white); color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--primary); transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,255,255, 0.5);}
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .btn-outline { background: var(--white); color: var(--primary); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
+    .btn-outline:hover { border-color: var(--primary); background: var(--accent-soft); }
+    
     .hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
-    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); text-shadow: 0 2px 15px rgba(255,255,255, 0.9);}
-    .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; text-shadow: 0 2px 10px rgba(255,255,255, 1);}
+    .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);}
+    .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; text-shadow: 0 0 10px rgba(255, 255, 255, 1);}
 
     /* ── SECTIONS COMMON ── */
     section { position: relative; z-index: 2; background: var(--bg); }
@@ -128,22 +142,27 @@
     .section-header h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
     .section-header p { color: var(--text-sub); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
-    /* ── ABOUT ── */
-    #about { background: transparent; /* 전체 배경은 투명하게 (사진이 비침) */ }
-    
+    /* ── ABOUT HEADER (사진 위에 떠있는 영역) ── */
     .about-header-wrapper {
-      padding: 100px 5% 60px; 
+      position: relative;
+      z-index: 1; /* 배경 위로 올림 */
+      padding: 100px 5% 100px; 
       text-align: center;
     }
-    /* About 헤더 텍스트 섀도우 (사진 위에서도 잘 보이도록) */
-    .about-header-wrapper .section-tag { text-shadow: 0 2px 10px rgba(255,255,255,1); }
-    .about-header-wrapper h2 { text-shadow: 0 4px 20px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.8); }
-    .about-header-wrapper p { text-shadow: 0 2px 15px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 1); font-weight: 500; }
+    .about-header-wrapper .section-tag { text-shadow: 0 0 10px rgba(255,255,255,1); }
+    .about-header-wrapper h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.9); }
+    .about-header-wrapper p { color: var(--text); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); }
 
-    /* 여기서부터 다시 하얀색 배경 시작 (사진 덮어버림) */
+    /* ── 하얀색 본문 시작 영역 (여기부터 배경 가려짐) ── */
+    .main-content-wrapper {
+      position: relative;
+      z-index: 2;
+      background: var(--bg);
+    }
+
     .about-content-wrapper {
       background: var(--white);
-      padding: 40px 5% 100px;
+      padding: 60px 5% 100px;
     }
 
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
@@ -151,7 +170,7 @@
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
     .about-values { display: flex; flex-direction: column; gap: 18px; }
     .value-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
-    .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; color: white; }
     .value-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
     .value-item p { font-size: 0.87rem; color: var(--text-sub); }
 
@@ -160,14 +179,14 @@
     .gen-select {
       padding: 10px 36px 10px 18px;
       font-size: 14px; font-weight: 600; color: var(--primary);
-      background-color: white; border: 1.5px solid var(--accent);
+      background-color: white; border: 1px solid var(--border);
       border-radius: 20px; cursor: pointer; outline: none;
       appearance: none; -webkit-appearance: none;
       background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232c3e6b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
       background-repeat: no-repeat; background-position: right 14px top 50%; background-size: 10px auto;
       transition: all 0.2s;
     }
-    .gen-select:hover { box-shadow: 0 4px 12px rgba(107, 140, 218, 0.2); }
+    .gen-select:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05); }
 
     /* ── MARKET OVERVIEW ── */
     #market { background: var(--bg); padding: 100px 5%; }
@@ -181,7 +200,7 @@
     #reports { background: var(--white); padding: 100px 5%; }
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
     .report-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.25s; cursor: pointer; }
-    .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.1); background: white;}
+    .report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,62,107,0.08); background: white;}
     .report-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
     .tag-macro { background: #e8f0fe; color: #3d52a0; }
     .tag-equity { background: #e6f4ea; color: #2e7d32; }
@@ -224,11 +243,11 @@
     body.is-admin .admin-only { display: block !important; }
 
     .add-btn, .edit-about-btn {
-      padding: 10px 22px; border-radius: 10px; border: 1.5px dashed var(--accent); background: var(--accent-soft);
+      padding: 10px 22px; border-radius: 10px; border: 1px solid var(--accent); background: var(--white);
       color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit;
     }
-    .add-btn:hover, .edit-about-btn:hover { background: var(--accent); color: white; }
-    .edit-about-btn { margin-top: 16px; border-style: solid; }
+    .add-btn:hover, .edit-about-btn:hover { background: var(--accent-soft); }
+    .edit-about-btn { margin-top: 16px; }
 
     .card-admin-actions { display: none; gap: 6px; margin-bottom: 12px; }
     body.is-admin .card-admin-actions { display: flex; }
@@ -245,7 +264,7 @@
     .modal-box h3 { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
     .form-row { margin-bottom: 14px; }
     .form-row label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; }
-    .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; }
+    .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; }
     .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--accent); }
     .form-row textarea { resize: vertical; }
     .form-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -257,8 +276,8 @@
     .btn-confirm { background: var(--primary); color: white; }
     .btn-confirm:hover { background: var(--primary-light); }
 
-    .admin-btn { margin-left: 12px; padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--border); background: white; color: var(--text-sub); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .admin-btn:hover, .admin-btn.logged-in { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .admin-btn { margin-left: 12px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: white; color: var(--text-sub); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .admin-btn:hover, .admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
 
     .admin-badge-float { position: fixed; bottom: 24px; right: 24px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 10px 18px; border-radius: 24px; font-size: 12px; font-weight: 700; box-shadow: 0 6px 18px rgba(44,62,107,0.25); z-index: 99; display: none; }
     .admin-badge-float.visible { display: block; }
@@ -283,178 +302,184 @@
 </head>
 <body>
 
-<!-- 🌟 글로벌 배경 (스크롤 시 고정 & 줌인/페이드아웃 효과) -->
-<div class="global-bg" id="globalBg"></div>
+<!-- 🌟 사진이 늘어나는 영역 (히어로 ~ About 헤더까지 묶음) -->
+<div class="top-parallax-container" id="topParallax">
+  
+  <!-- 배경 사진 -->
+  <div class="top-bg" id="topBg"></div>
 
-<div class="ticker-tape-wrap">
-  <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
-  <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,TVC:DXY,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
-</div>
-
-<nav>
-  <a href="#home" class="nav-logo">
-    <div class="logo-mark">SF</div>
-    <div class="logo-text">
-      <span class="brand">SAFE</span>
-      <span class="sub">Sogang Analysis of Finance & Economics</span>
-    </div>
-  </a>
-  <div class="nav-links">
-    <a href="#about" class="active">About</a>
-    <a href="#market">Market</a>
-    <a href="#reports">Reports</a>
-    <a href="#members">Members</a>
-    <a href="#news">News</a>
-    <button class="admin-btn" id="adminBtn" onclick="handleAdminBtn()">🔒 관리자</button>
-  </div>
-</nav>
-
-<!-- Admin Login Modal -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal-box" style="max-width: 380px;">
-    <h3 style="text-align: center;">관리자 로그인</h3>
-    <p style="text-align: center; color: var(--text-sub); font-size:0.85rem; margin-bottom: 22px;">SAFE 임원진 전용입니다.</p>
-    <input type="password" id="loginPassword" placeholder="비밀번호" onkeydown="if(event.key==='Enter')submitLogin()" style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:10px; margin-bottom:14px; outline:none; font-family:inherit;"/>
-    <div class="modal-error" id="loginError"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('loginModal')">취소</button>
-      <button class="btn-confirm" onclick="submitLogin()">로그인</button>
-    </div>
-  </div>
-</div>
-
-<div class="admin-badge-float" id="adminBadge">⚡ 관리자 모드</div>
-
-<!-- About Section Edit Modal -->
-<div class="modal-overlay" id="aboutModal">
-  <div class="modal-box">
-    <h3>✏️ 학회 소개 수정</h3>
-    <div class="form-row">
-      <label>소제목</label>
-      <input type="text" id="aTitle" placeholder="예: 서강대 경제·금융 분석 학회"/>
-    </div>
-    <div class="form-row">
-      <label>소개 본문 1</label>
-      <textarea id="aDesc1" rows="4"></textarea>
-    </div>
-    <div class="form-row">
-      <label>소개 본문 2</label>
-      <textarea id="aDesc2" rows="4"></textarea>
-    </div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('aboutModal')">취소</button>
-      <button class="btn-confirm" onclick="submitAbout()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- Report Edit Modal -->
-<div class="modal-overlay" id="reportModal">
-  <div class="modal-box">
-    <h3 id="reportModalTitle">📋 보고서 추가</h3>
-    <div class="form-row">
-      <label>제목</label>
-      <input type="text" id="rTitle"/>
-    </div>
-    <div class="form-row-grid">
-      <div class="form-row"><label>기수</label><input type="number" id="rGen" min="1"/></div>
-      <div class="form-row"><label>카테고리</label><select id="rCategory"><option value="economy">경제 보고서</option><option value="industry">산업 분석 보고서</option></select></div>
-    </div>
-    <div class="form-row-grid">
-      <div class="form-row"><label>작성자</label><input type="text" id="rAuthor"/></div>
-      <div class="form-row"><label>작성 연월</label><input type="month" id="rDate"/></div>
-    </div>
-    <div class="form-row">
-      <label>요약 설명</label>
-      <textarea id="rDesc" rows="3"></textarea>
-    </div>
-    <div class="form-row">
-      <label>구글 드라이브 링크</label>
-      <input type="text" id="rLink"/>
-    </div>
-    <div class="modal-error" id="rError"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('reportModal')">취소</button>
-      <button class="btn-confirm" onclick="submitReport()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- Member Edit Modal -->
-<div class="modal-overlay" id="memberModal">
-  <div class="modal-box">
-    <h3 id="memberModalTitle">👤 멤버 추가</h3>
-    <div class="form-row-grid">
-      <div class="form-row"><label>이름</label><input type="text" id="mName"/></div>
-      <div class="form-row"><label>기수 (0 입력시 '설립멤버')</label><input type="number" id="mGen" min="0"/></div>
-    </div>
-    <div class="form-row">
-      <label>역할 / 직책 (학회장/부학회장 입력 시 상단 고정)</label>
-      <input type="text" id="mRole" placeholder="예: 학회장 / 리서치 파트"/>
-    </div>
-    <div class="form-row">
-      <label>학과 & 학번</label>
-      <input type="text" id="mDept"/>
-    </div>
-    <div class="modal-error" id="mError"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('memberModal')">취소</button>
-      <button class="btn-confirm" onclick="submitMember()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- News Edit Modal -->
-<div class="modal-overlay" id="newsModal">
-  <div class="modal-box">
-    <h3 id="newsModalTitle">📢 공지 추가</h3>
-    <div class="form-row-grid">
-      <div class="form-row">
-        <label>유형</label>
-        <select id="nType">
-          <option value="recruit">모집</option><option value="event">이벤트</option><option value="notice">공지</option>
-        </select>
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-inner">
+      <div class="hero-badge">Sogang University · Finance & Economics</div>
+      <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
+      <p>서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.</p>
+      <div class="hero-btns">
+        <a href="#reports" class="btn-primary">리서치 보기 →</a>
+        <a href="#about" class="btn-outline">학회 소개</a>
       </div>
-      <div class="form-row"><label>날짜</label><input type="date" id="nDate"/></div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">20</div><div class="stat-label">활동 멤버</div></div>
+        <div class="stat"><div class="stat-num">10</div><div class="stat-label">발간 리포트</div></div>
+        <div class="stat"><div class="stat-num">2기</div><div class="stat-label">활동 기수</div></div>
+      </div>
     </div>
-    <div class="form-row"><label>제목</label><input type="text" id="nTitle"/></div>
-    <div class="form-row"><label>내용</label><textarea id="nDesc" rows="4"></textarea></div>
-    <div class="modal-error" id="nError"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('newsModal')">취소</button>
-      <button class="btn-confirm" onclick="submitNewsData()">저장</button>
-    </div>
-  </div>
-</div>
+  </section>
 
-<!-- HERO -->
-<section id="home">
-  <div class="hero-inner">
-    <div class="hero-badge">Sogang University · Finance & Economics</div>
-    <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
-    <p>서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.</p>
-    <div class="hero-btns">
-      <a href="#reports" class="btn-primary">리서치 보기 →</a>
-      <a href="#about" class="btn-outline">학회 소개</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num">20</div><div class="stat-label">활동 멤버</div></div>
-      <div class="stat"><div class="stat-num">10</div><div class="stat-label">발간 리포트</div></div>
-      <div class="stat"><div class="stat-num">2기</div><div class="stat-label">활동 기수</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <!-- 🌟 사진이 비쳐보이는 헤더 부분 (투명) -->
-  <div class="about-header-wrapper">
+  <!-- 🌟 ABOUT HEADER (여전히 사진 위에 있음) -->
+  <div class="about-header-wrapper" id="about">
     <div class="section-tag">About SAFE</div>
     <h2>우리는 왜 SAFE인가</h2>
     <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
   </div>
-  
-  <!-- 🌟 여기서부터 하얀색 배경으로 덮임 -->
+
+</div>
+
+<!-- 여기서부터 하얀색/회색 솔리드 배경 시작 (사진 가려짐) -->
+<div class="main-content-wrapper">
+
+  <div class="ticker-tape-wrap">
+    <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
+    <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,TVC:DXY,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
+  </div>
+
+  <nav>
+    <a href="#home" class="nav-logo">
+      <div class="logo-mark">SF</div>
+      <div class="logo-text">
+        <span class="brand">SAFE</span>
+        <span class="sub">Sogang Analysis of Finance & Economics</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#about" class="active">About</a>
+      <a href="#market">Market</a>
+      <a href="#reports">Reports</a>
+      <a href="#members">Members</a>
+      <a href="#news">News</a>
+      <button class="admin-btn" id="adminBtn" onclick="handleAdminBtn()">🔒 관리자</button>
+    </div>
+  </nav>
+
+  <!-- Admin Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box" style="max-width: 380px;">
+      <h3 style="text-align: center;">관리자 로그인</h3>
+      <p style="text-align: center; color: var(--text-sub); font-size:0.85rem; margin-bottom: 22px;">SAFE 임원진 전용입니다.</p>
+      <input type="password" id="loginPassword" placeholder="비밀번호" onkeydown="if(event.key==='Enter')submitLogin()" style="width:100%; padding:12px; border:1px solid var(--border); border-radius:10px; margin-bottom:14px; outline:none; font-family:inherit;"/>
+      <div class="modal-error" id="loginError"></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('loginModal')">취소</button>
+        <button class="btn-confirm" onclick="submitLogin()">로그인</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-badge-float" id="adminBadge">⚡ 관리자 모드</div>
+
+  <!-- About Section Edit Modal -->
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-box">
+      <h3>✏️ 학회 소개 수정</h3>
+      <div class="form-row">
+        <label>소제목</label>
+        <input type="text" id="aTitle" placeholder="예: 서강대 경제·금융 분석 학회"/>
+      </div>
+      <div class="form-row">
+        <label>소개 본문 1</label>
+        <textarea id="aDesc1" rows="4"></textarea>
+      </div>
+      <div class="form-row">
+        <label>소개 본문 2</label>
+        <textarea id="aDesc2" rows="4"></textarea>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('aboutModal')">취소</button>
+        <button class="btn-confirm" onclick="submitAbout()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Edit Modal -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal-box">
+      <h3 id="reportModalTitle">📋 보고서 추가</h3>
+      <div class="form-row">
+        <label>제목</label>
+        <input type="text" id="rTitle"/>
+      </div>
+      <div class="form-row-grid">
+        <div class="form-row"><label>기수</label><input type="number" id="rGen" min="1"/></div>
+        <div class="form-row"><label>카테고리</label><select id="rCategory"><option value="economy">경제 보고서</option><option value="industry">산업 분석 보고서</option></select></div>
+      </div>
+      <div class="form-row-grid">
+        <div class="form-row"><label>작성자</label><input type="text" id="rAuthor"/></div>
+        <div class="form-row"><label>작성 연월</label><input type="month" id="rDate"/></div>
+      </div>
+      <div class="form-row">
+        <label>요약 설명</label>
+        <textarea id="rDesc" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <label>구글 드라이브 링크</label>
+        <input type="text" id="rLink"/>
+      </div>
+      <div class="modal-error" id="rError"></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('reportModal')">취소</button>
+        <button class="btn-confirm" onclick="submitReport()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Member Edit Modal -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal-box">
+      <h3 id="memberModalTitle">👤 멤버 추가</h3>
+      <div class="form-row-grid">
+        <div class="form-row"><label>이름</label><input type="text" id="mName"/></div>
+        <div class="form-row"><label>기수 (0 입력시 '설립멤버')</label><input type="number" id="mGen" min="0"/></div>
+      </div>
+      <div class="form-row">
+        <label>역할 / 직책 (학회장/부학회장 입력 시 상단 고정)</label>
+        <input type="text" id="mRole" placeholder="예: 학회장 / 리서치 파트"/>
+      </div>
+      <div class="form-row">
+        <label>학과 & 학번</label>
+        <input type="text" id="mDept"/>
+      </div>
+      <div class="modal-error" id="mError"></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('memberModal')">취소</button>
+        <button class="btn-confirm" onclick="submitMember()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Edit Modal -->
+  <div class="modal-overlay" id="newsModal">
+    <div class="modal-box">
+      <h3 id="newsModalTitle">📢 공지 추가</h3>
+      <div class="form-row-grid">
+        <div class="form-row">
+          <label>유형</label>
+          <select id="nType">
+            <option value="recruit">모집</option><option value="event">이벤트</option><option value="notice">공지</option>
+          </select>
+        </div>
+        <div class="form-row"><label>날짜</label><input type="date" id="nDate"/></div>
+      </div>
+      <div class="form-row"><label>제목</label><input type="text" id="nTitle"/></div>
+      <div class="form-row"><label>내용</label><textarea id="nDesc" rows="4"></textarea></div>
+      <div class="modal-error" id="nError"></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('newsModal')">취소</button>
+        <button class="btn-confirm" onclick="submitNewsData()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 하얀색 본문 (About 내용) -->
   <div class="about-content-wrapper">
     <div class="about-grid">
       <div class="about-text-container">
@@ -470,119 +495,120 @@
       </div>
     </div>
   </div>
-</section>
 
-<!-- 🌟 MARKET OVERVIEW (트레이딩뷰 위젯 삽입 완료!) -->
-<section id="market">
-  <div class="section-header">
-    <div class="section-tag">Market Overview</div>
-    <h2>실시간 글로벌 마켓</h2>
-    <p>주요 지수와 시장 동향을 실시간으로 트래킹합니다.</p>
-  </div>
-  <div class="market-widget-container">
-    <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container" style="width: 100%; height: 100%;">
-      <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%;"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/tv-widget-advanced-chart.js" async>
-      {
-        "autosize": true,
-        "symbol": "FOREXCOM:SPXUSD",
-        "interval": "D",
-        "timezone": "Asia/Seoul",
-        "theme": "light",
-        "style": "1",
-        "locale": "kr",
-        "enable_publishing": false,
-        "backgroundColor": "rgba(255, 255, 255, 1)",
-        "gridColor": "rgba(240, 243, 250, 0)",
-        "hide_top_toolbar": false,
-        "hide_legend": false,
-        "save_image": false,
-        "container_id": "tradingview_market",
-        "support_host": "https://www.tradingview.com"
-      }
-      </script>
+  <!-- MARKET OVERVIEW -->
+  <section id="market">
+    <div class="section-header">
+      <div class="section-tag">Market Overview</div>
+      <h2>실시간 글로벌 마켓</h2>
+      <p>주요 지수와 시장 동향을 실시간으로 트래킹합니다.</p>
     </div>
-    <!-- TradingView Widget END -->
-  </div>
-</section>
-
-<!-- REPORTS -->
-<section id="reports">
-  <div class="section-header">
-    <div class="section-tag">Research</div>
-    <h2>리서치 & 보고서</h2>
-    <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
-  </div>
-  <div class="gen-select-container">
-    <select id="reportGenSelect" class="gen-select" onchange="selectReportGen(this.value)"></select>
-  </div>
-  <div class="admin-only" style="text-align:center; margin-bottom: 32px;">
-    <button class="add-btn" onclick="openReportModal()">+ 보고서 추가</button>
-  </div>
-  <div class="reports-grid" id="reportsGrid"></div>
-</section>
-
-<!-- MEMBERS -->
-<section id="members">
-  <div class="section-header">
-    <div class="section-tag">Team</div>
-    <h2>멤버 소개</h2>
-    <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
-  </div>
-  <div class="gen-select-container">
-    <select id="memberGenSelect" class="gen-select" onchange="selectMemberGen(this.value)"></select>
-  </div>
-  <div class="admin-only" style="text-align:center; margin-bottom: 24px;">
-    <button class="add-btn" onclick="openMemberModal()">+ 멤버 추가</button>
-  </div>
-  <div class="members-scroll-wrap">
-    <!-- 임원진 (상단 고정 영역) -->
-    <div class="leaders-grid" id="leadersGrid"></div>
-    <!-- 일반 멤버 영역 -->
-    <div class="members-grid" id="membersGrid"></div>
-  </div>
-</section>
-
-<!-- NEWS -->
-<section id="news">
-  <div class="section-header">
-    <div class="section-tag">Notice</div>
-    <h2>공지사항 & 뉴스</h2>
-    <p>학회의 최신 소식과 공지를 확인하세요.</p>
-  </div>
-  <div class="admin-only" style="text-align:center; margin-bottom: 24px;">
-    <button class="add-btn" onclick="openNewsModal()">+ 공지 추가</button>
-  </div>
-  <div class="news-scroll-wrap">
-    <div class="news-row" id="newsGrid"></div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="brand-name">SAFE</div>
-      <p>Sogang Analysis of Finance & Economics<br/>서강대학교 경제·금융 학술 학회</p>
+    <div class="market-widget-container">
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container" style="width: 100%; height: 100%;">
+        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%;"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/tv-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "FOREXCOM:SPXUSD",
+          "interval": "D",
+          "timezone": "Asia/Seoul",
+          "theme": "light",
+          "style": "1",
+          "locale": "kr",
+          "enable_publishing": false,
+          "backgroundColor": "rgba(255, 255, 255, 1)",
+          "gridColor": "rgba(240, 243, 250, 0)",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "save_image": false,
+          "container_id": "tradingview_market",
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
+      </div>
+      <!-- TradingView Widget END -->
     </div>
-    <div class="footer-links">
-      <div class="footer-col">
-        <h5>학회</h5><a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a>
+  </section>
+
+  <!-- REPORTS -->
+  <section id="reports">
+    <div class="section-header">
+      <div class="section-tag">Research</div>
+      <h2>리서치 & 보고서</h2>
+      <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
+    </div>
+    <div class="gen-select-container">
+      <select id="reportGenSelect" class="gen-select" onchange="selectReportGen(this.value)"></select>
+    </div>
+    <div class="admin-only" style="text-align:center; margin-bottom: 32px;">
+      <button class="add-btn" onclick="openReportModal()">+ 보고서 추가</button>
+    </div>
+    <div class="reports-grid" id="reportsGrid"></div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section id="members">
+    <div class="section-header">
+      <div class="section-tag">Team</div>
+      <h2>멤버 소개</h2>
+      <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
+    </div>
+    <div class="gen-select-container">
+      <select id="memberGenSelect" class="gen-select" onchange="selectMemberGen(this.value)"></select>
+    </div>
+    <div class="admin-only" style="text-align:center; margin-bottom: 24px;">
+      <button class="add-btn" onclick="openMemberModal()">+ 멤버 추가</button>
+    </div>
+    <div class="members-scroll-wrap">
+      <!-- 임원진 (상단 고정 영역) -->
+      <div class="leaders-grid" id="leadersGrid"></div>
+      <!-- 일반 멤버 영역 -->
+      <div class="members-grid" id="membersGrid"></div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news">
+    <div class="section-header">
+      <div class="section-tag">Notice</div>
+      <h2>공지사항 & 뉴스</h2>
+      <p>학회의 최신 소식과 공지를 확인하세요.</p>
+    </div>
+    <div class="admin-only" style="text-align:center; margin-bottom: 24px;">
+      <button class="add-btn" onclick="openNewsModal()">+ 공지 추가</button>
+    </div>
+    <div class="news-scroll-wrap">
+      <div class="news-row" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="brand-name">SAFE</div>
+        <p>Sogang Analysis of Finance & Economics<br/>서강대학교 경제·금융 학술 학회</p>
       </div>
-      <div class="footer-col">
-        <h5>리서치</h5><a href="#reports">거시경제</a><a href="#reports">주식 분석</a>
-      </div>
-      <div class="footer-col">
-        <h5>연락처</h5><a href="#">safe@sogang.ac.kr</a><a href="#">Instagram</a><a href="#">Notion</a>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>학회</h5><a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a>
+        </div>
+        <div class="footer-col">
+          <h5>리서치</h5><a href="#reports">거시경제</a><a href="#reports">주식 분석</a>
+        </div>
+        <div class="footer-col">
+          <h5>연락처</h5><a href="#">safe@sogang.ac.kr</a><a href="#">Instagram</a><a href="#">Notion</a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 SAFE — Sogang Analysis of Finance & Economics</span>
-    <span>Sogang University, Seoul, Korea</span>
-  </div>
-</footer>
+    <div class="footer-bottom">
+      <span>© 2026 SAFE — Sogang Analysis of Finance & Economics</span>
+      <span>Sogang University, Seoul, Korea</span>
+    </div>
+  </footer>
+
+</div> <!-- main-content-wrapper 끝 -->
 
 <script>
   // ── DATA + STORAGE ──
@@ -640,7 +666,7 @@
       <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(aboutData.title)}</h3>
       <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc1)}</p>
       <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc2)}</p>
-      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px; box-shadow: 0 4px 15px rgba(44,62,107, 0.2);">모집 공고 보기 →</a>
+      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
     `;
   }
 
@@ -1001,27 +1027,23 @@
     }
   }
 
-  // ── 🌟 개선된 스크롤 줌인 & 페이드아웃 효과 (True Parallax) ──
+  // ── 🌟 완벽하게 수정된 스크롤 줌인 & 페이드아웃 효과 ──
   window.addEventListener('scroll', () => {
-    const bg = document.getElementById('globalBg');
-    if (!bg) return;
+    const container = document.getElementById('topParallax');
+    const bg = document.getElementById('topBg');
+    if (!container || !bg) return;
+    
     const scrollY = window.scrollY;
-    const windowH = window.innerHeight;
+    const containerHeight = container.offsetHeight;
 
-    // About 섹션(흰색 배경 부분)을 넘어가면 굳이 계산할 필요 없으므로 리소스 절약
-    if (scrollY > windowH * 1.5) return; 
+    if (scrollY <= containerHeight) {
+      const scrollRatio = scrollY / containerHeight;
+      const scale = 1 + (scrollRatio * 0.1); 
+      const opacity = 1 - (scrollRatio * 0.5);
 
-    // 화면 비율 계산
-    const scrollRatio = scrollY / windowH;
-    
-    // 서서히 줌인 (1배 -> 1.15배)
-    const scale = 1 + (scrollRatio * 0.15); 
-    
-    // 서서히 페이드 아웃 (About 헤더를 지날 때까지 배경이 은은하게 남아있도록 속도 조절)
-    const opacity = 1 - (scrollRatio * 0.85);
-
-    bg.style.transform = `scale(${scale})`;
-    bg.style.opacity = Math.max(0, opacity); 
+      bg.style.transform = `scale(${scale})`;
+      bg.style.opacity = Math.max(0, opacity); 
+    }
   });
 
   // INIT
