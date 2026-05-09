@@ -76,11 +76,12 @@
       background: var(--white);
       border-bottom: 1px solid var(--border);
       z-index: 99;
-      padding: 4px 0;
+      padding: 8px 0 4px;
+      min-height: 76px;
     }
 
-    /* push everything down to make room for ticker tape */
-    body { padding-top: 46px; }
+    /* push everything down to make room for ticker tape with chart */
+    body { padding-top: 80px; }
 
     /* ── HERO ── */
     #home {
@@ -228,10 +229,10 @@
       gap: 24px;
     }
     .panel-grid.two-col {
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1fr 1fr;
     }
-    .panel-grid.three-col {
-      grid-template-columns: 1fr 1fr 1fr;
+    .panel-grid.two-col-wide {
+      grid-template-columns: 1.3fr 1fr;
     }
 
     .widget-card {
@@ -257,12 +258,16 @@
       overflow: hidden;
       border-radius: 8px;
     }
-    .widget-card.tall .widget-frame { height: 550px; }
-    .widget-card.medium .widget-frame { height: 450px; }
-    .widget-card.chart .widget-frame { height: 600px; }
+    /* Heights tuned so each widget displays without internal scrollbars/cutoffs */
+    .widget-card.h-overview .widget-frame { height: 560px; }
+    .widget-card.h-heatmap  .widget-frame { height: 560px; }
+    .widget-card.h-news     .widget-frame { height: 620px; }
+    .widget-card.h-chart    .widget-frame { height: 680px; }
+    .widget-card.h-calendar .widget-frame { height: 620px; }
+    .widget-card.h-worldmap .widget-frame { height: 620px; }
 
     @media (max-width: 900px) {
-      .panel-grid.two-col, .panel-grid.three-col {
+      .panel-grid.two-col, .panel-grid.two-col-wide {
         grid-template-columns: 1fr;
       }
     }
@@ -457,8 +462,8 @@
     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
     {
       "symbols": [
-        { "description": "NASDAQ", "proName": "NASDAQ:NDX" },
-        { "description": "S&P 500", "proName": "SP:SPX" },
+        { "description": "NAS100", "proName": "FOREXCOM:NSXUSD" },
+        { "description": "SPX500", "proName": "FOREXCOM:SPXUSD" },
         { "description": "IWM", "proName": "AMEX:IWM" },
         { "description": "BTC", "proName": "BINANCE:BTCUSDT" },
         { "description": "ETH", "proName": "BINANCE:ETHUSDT" },
@@ -474,7 +479,7 @@
       ],
       "showSymbolLogo": true,
       "isTransparent": true,
-      "displayMode": "adaptive",
+      "displayMode": "regular",
       "colorTheme": "light",
       "locale": "en"
     }
@@ -553,65 +558,89 @@
   <div class="markets-tabs">
     <button class="markets-tab active" onclick="switchMarketsTab('overview', this)">📊 Overview</button>
     <button class="markets-tab" onclick="switchMarketsTab('chart', this)">📈 Chart</button>
-    <button class="markets-tab" onclick="switchMarketsTab('calendar', this)">🗓 Calendar & News</button>
+    <button class="markets-tab" onclick="switchMarketsTab('calendar', this)">🗓 Calendar</button>
   </div>
 
   <!-- PANEL 1: OVERVIEW -->
   <div class="markets-panel active" id="panel-overview">
-    <div class="panel-grid two-col">
-      <div class="widget-card tall">
-        <h3>🌐 Market Overview</h3>
+    <!-- Top row: full-width Symbol Overview -->
+    <div class="widget-card h-overview" style="margin-bottom: 24px;">
+      <h3>🌐 Global Markets Overview</h3>
+      <div class="widget-frame">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container" style="height:100%;width:100%">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+          {
+            "symbols": [
+              ["NASDAQ", "FOREXCOM:NSXUSD|1D"],
+              ["SP500", "FOREXCOM:SPXUSD|1D"],
+              ["IWM", "AMEX:IWM|1D"],
+              ["BTCUSDT", "BINANCE:BTCUSDT|1D"],
+              ["ETHUSDT", "BINANCE:ETHUSDT|1D"],
+              ["SOXX", "NASDAQ:SOXX|1D"],
+              ["IONQ", "NYSE:IONQ|1D"],
+              ["RGTI", "NASDAQ:RGTI|1D"],
+              ["ARKF", "AMEX:ARKF|1D"],
+              ["URA", "AMEX:URA|1D"],
+              ["IBB", "NASDAQ:IBB|1D"],
+              ["WTI", "BLACKBULL:WTI|1D"],
+              ["GOLD", "TVC:GOLD|1D"],
+              ["SILVER", "TVC:SILVER|1D"]
+            ],
+            "chartOnly": false,
+            "width": "100%",
+            "height": "100%",
+            "locale": "en",
+            "colorTheme": "light",
+            "autosize": true,
+            "showVolume": false,
+            "showMA": false,
+            "hideDateRanges": false,
+            "hideMarketStatus": false,
+            "hideSymbolLogo": false,
+            "scalePosition": "right",
+            "scaleMode": "Normal",
+            "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+            "fontSize": "10",
+            "noTimeScale": false,
+            "valuesTracking": "1",
+            "changeMode": "price-and-percent",
+            "chartType": "area",
+            "lineWidth": 2,
+            "lineType": 0,
+            "dateRanges": [
+              "1d|1",
+              "1m|30",
+              "3m|60",
+              "12m|1D",
+              "60m|1W",
+              "all|1M"
+            ]
+          }
+          </script>
+        </div>
+        <!-- TradingView Widget END -->
+      </div>
+    </div>
+
+    <!-- Bottom row: News + Heatmap -->
+    <div class="panel-grid two-col-wide">
+      <div class="widget-card h-news">
+        <h3>📰 Top Stories</h3>
         <div class="widget-frame">
           <!-- TradingView Widget BEGIN -->
           <div class="tradingview-widget-container" style="height:100%;width:100%">
-            <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
             {
-              "symbols": [
-                ["NASDAQ", "NASDAQ:NDX|1D"],
-                ["S&P 500", "SP:SPX|1D"],
-                ["IWM", "AMEX:IWM|1D"],
-                ["BTC", "BINANCE:BTCUSDT|1D"],
-                ["ETH", "BINANCE:ETHUSDT|1D"],
-                ["SOXX", "NASDAQ:SOXX|1D"],
-                ["IONQ", "NYSE:IONQ|1D"],
-                ["RGTI", "NASDAQ:RGTI|1D"],
-                ["ARKF", "AMEX:ARKF|1D"],
-                ["URA", "AMEX:URA|1D"],
-                ["IBB", "NASDAQ:IBB|1D"],
-                ["WTI", "BLACKBULL:WTI|1D"],
-                ["GOLD", "TVC:GOLD|1D"],
-                ["SILVER", "TVC:SILVER|1D"]
-              ],
-              "chartOnly": false,
-              "width": "100%",
-              "height": "100%",
-              "locale": "en",
+              "displayMode": "regular",
+              "feedMode": "all_symbols",
               "colorTheme": "light",
-              "autosize": true,
-              "showVolume": false,
-              "showMA": false,
-              "hideDateRanges": false,
-              "hideMarketStatus": false,
-              "hideSymbolLogo": false,
-              "scalePosition": "right",
-              "scaleMode": "Normal",
-              "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
-              "fontSize": "10",
-              "noTimeScale": false,
-              "valuesTracking": "1",
-              "changeMode": "price-and-percent",
-              "chartType": "area",
-              "lineWidth": 2,
-              "lineType": 0,
-              "dateRanges": [
-                "1d|1",
-                "1m|30",
-                "3m|60",
-                "12m|1D",
-                "60m|1W",
-                "all|1M"
-              ]
+              "isTransparent": true,
+              "locale": "en",
+              "width": "100%",
+              "height": "100%"
             }
             </script>
           </div>
@@ -619,7 +648,7 @@
         </div>
       </div>
 
-      <div class="widget-card medium">
+      <div class="widget-card h-heatmap">
         <h3>💱 Forex Heatmap</h3>
         <div class="widget-frame">
           <!-- TradingView Widget BEGIN -->
@@ -653,15 +682,15 @@
 
   <!-- PANEL 2: CHART -->
   <div class="markets-panel" id="panel-chart">
-    <div class="widget-card chart">
+    <div class="widget-card h-chart">
       <h3>📈 Advanced Chart</h3>
       <p style="font-size:0.83rem;color:var(--text-sub);margin-bottom:14px;margin-top:-8px;">
-        차트 좌측 상단에서 심볼을 변경할 수 있습니다 · 추천 티커: NASDAQ:NDX, SP:SPX, AMEX:IWM, BINANCE:BTCUSDT, BINANCE:ETHUSDT, NASDAQ:SOXX, NYSE:IONQ, NASDAQ:RGTI, AMEX:ARKF, AMEX:URA, NASDAQ:IBB, BLACKBULL:WTI, TVC:GOLD, TVC:SILVER
+        차트 좌측 상단에서 심볼을 변경할 수 있습니다 · 추천 티커: NAS100, SPX500, IWM, BTCUSDT, ETHUSDT, SOXX, IONQ, RGTI, ARKF, URA, IBB, WTI, GOLD, SILVER
       </p>
       <div class="widget-frame">
         <!-- TradingView Widget BEGIN -->
         <div class="tradingview-widget-container" style="height:100%;width:100%">
-          <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
           {
             "allow_symbol_change": true,
@@ -676,14 +705,14 @@
             "locale": "en",
             "save_image": true,
             "style": "1",
-            "symbol": "NASDAQ:NDX",
+            "symbol": "FOREXCOM:NSXUSD",
             "theme": "light",
             "timezone": "Etc/UTC",
             "backgroundColor": "#ffffff",
             "gridColor": "rgba(226, 230, 240, 0.6)",
             "watchlist": [
-              "NASDAQ:NDX",
-              "SP:SPX",
+              "FOREXCOM:NSXUSD",
+              "FOREXCOM:SPXUSD",
               "AMEX:IWM",
               "BINANCE:BTCUSDT",
               "BINANCE:ETHUSDT",
@@ -711,8 +740,8 @@
 
   <!-- PANEL 3: CALENDAR & NEWS -->
   <div class="markets-panel" id="panel-calendar">
-    <div class="panel-grid three-col">
-      <div class="widget-card tall">
+    <div class="panel-grid two-col">
+      <div class="widget-card h-calendar">
         <h3>🗓 Economic Calendar</h3>
         <div class="widget-frame">
           <!-- TradingView Widget BEGIN -->
@@ -734,33 +763,11 @@
         </div>
       </div>
 
-      <div class="widget-card tall">
+      <div class="widget-card h-worldmap">
         <h3>🌍 Economic World Map</h3>
         <div class="widget-frame">
           <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-economic-map.js"></script>
           <tv-economic-map color-theme="light" style="width:100%;height:100%;display:block;"></tv-economic-map>
-        </div>
-      </div>
-
-      <div class="widget-card tall">
-        <h3>📰 Top Stories</h3>
-        <div class="widget-frame">
-          <!-- TradingView Widget BEGIN -->
-          <div class="tradingview-widget-container" style="height:100%;width:100%">
-            <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-            {
-              "displayMode": "regular",
-              "feedMode": "all_symbols",
-              "colorTheme": "light",
-              "isTransparent": true,
-              "locale": "en",
-              "width": "100%",
-              "height": "100%"
-            }
-            </script>
-          </div>
-          <!-- TradingView Widget END -->
         </div>
       </div>
     </div>
