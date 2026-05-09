@@ -344,6 +344,184 @@
     .admin-only { display: none !important; }
     body.is-admin .admin-only { display: block !important; }
 
+    /* ── GENERATION TABS (기수 탭) ── */
+    .gen-tabs {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .gen-tab-btn {
+      padding: 9px 22px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      background: white;
+      color: var(--text-sub);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .gen-tab-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .gen-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .gen-tabs-empty {
+      color: var(--text-sub); font-size: 0.88rem; font-style: italic;
+    }
+
+    /* ── ADMIN ADD BUTTONS ── */
+    .add-btn {
+      padding: 10px 22px;
+      border-radius: 10px;
+      border: 1.5px dashed var(--accent);
+      background: var(--accent-soft);
+      color: var(--primary);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .add-btn:hover { background: var(--accent); color: white; }
+
+    /* ── CARD ADMIN ACTIONS (수정/삭제 버튼) ── */
+    .card-admin-actions {
+      display: none;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    body.is-admin .card-admin-actions { display: flex; }
+    .card-admin-actions button {
+      flex: 1;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      background: white;
+      transition: all 0.15s;
+    }
+    .card-edit-btn { color: var(--primary); }
+    .card-edit-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+    .card-del-btn { color: #c62828; }
+    .card-del-btn:hover { background: #fce8e6; border-color: #c62828; }
+
+    /* ── MEMBERS SCROLL WRAP (세로 스크롤) ── */
+    .members-scroll-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      max-height: 560px;
+      overflow-y: auto;
+      padding: 4px 8px 16px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--border);
+    }
+    .members-scroll-wrap::-webkit-scrollbar { width: 8px; }
+    .members-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 4px; }
+    .members-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    /* ── NEWS HORIZONTAL SCROLL ── */
+    .news-scroll-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--border);
+    }
+    .news-scroll-wrap::-webkit-scrollbar { height: 8px; }
+    .news-scroll-wrap::-webkit-scrollbar-track { background: var(--border); border-radius: 4px; }
+    .news-scroll-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+    .news-row {
+      display: flex;
+      gap: 24px;
+      padding: 4px;
+    }
+    .news-row .news-card {
+      flex: 0 0 320px;       /* fixed width, won't shrink */
+      max-width: 320px;
+    }
+
+    /* ── EDIT MODALS (보고서/멤버/공지) ── */
+    .edit-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26, 31, 54, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+    .edit-modal-overlay.open { display: flex; }
+    .edit-modal {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .edit-modal h3 {
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .form-row { margin-bottom: 14px; }
+    .form-row label {
+      display: block;
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 5px;
+      letter-spacing: 0.3px;
+    }
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      background: white;
+    }
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus { border-color: var(--accent); }
+    .form-row textarea { resize: vertical; }
+    .form-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .modal-error {
+      font-size: 0.83rem;
+      color: #c62828;
+      min-height: 18px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .modal-btns {
+      display: flex; gap: 10px;
+      margin-top: 8px;
+    }
+    .modal-btns button {
+      flex: 1;
+      padding: 11px;
+      border-radius: 10px;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-cancel { background: var(--bg); color: var(--text-sub); }
+    .btn-cancel:hover { background: var(--border); }
+    .btn-confirm { background: var(--primary); color: white; }
+    .btn-confirm:hover { background: var(--primary-light); }
+
     .admin-btn {
       margin-left: 12px;
       padding: 7px 14px;
@@ -518,6 +696,117 @@
 <!-- Admin mode floating badge -->
 <div class="admin-badge-float" id="adminBadge">⚡ 관리자 모드</div>
 
+<!-- ─── 보고서 추가/수정 모달 ─── -->
+<div class="edit-modal-overlay" id="reportModal">
+  <div class="edit-modal">
+    <h3 id="reportModalTitle">📋 보고서 추가</h3>
+    <div class="form-row">
+      <label>제목</label>
+      <input type="text" id="rTitle" placeholder="예: 2025 하반기 글로벌 경기 전망"/>
+    </div>
+    <div class="form-row-grid">
+      <div class="form-row">
+        <label>기수</label>
+        <input type="number" id="rGen" placeholder="예: 1" min="0"/>
+      </div>
+      <div class="form-row">
+        <label>카테고리</label>
+        <select id="rCategory">
+          <option value="economy">경제 보고서</option>
+          <option value="industry">산업 분석 보고서</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-grid">
+      <div class="form-row">
+        <label>작성자</label>
+        <input type="text" id="rAuthor" placeholder="예: 김도현"/>
+      </div>
+      <div class="form-row">
+        <label>작성 연월</label>
+        <input type="month" id="rDate"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>요약 설명</label>
+      <textarea id="rDesc" placeholder="보고서 내용을 2~3줄로 요약해주세요." rows="3"></textarea>
+    </div>
+    <div class="form-row">
+      <label>구글 드라이브 링크</label>
+      <input type="text" id="rLink" placeholder="https://drive.google.com/..."/>
+    </div>
+    <div class="modal-error" id="rError"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeEditModal('reportModal')">취소</button>
+      <button class="btn-confirm" onclick="saveReport()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 멤버 추가/수정 모달 ─── -->
+<div class="edit-modal-overlay" id="memberModal">
+  <div class="edit-modal">
+    <h3 id="memberModalTitle">👤 멤버 추가</h3>
+    <div class="form-row-grid">
+      <div class="form-row">
+        <label>이름</label>
+        <input type="text" id="mName" placeholder="예: 홍길동"/>
+      </div>
+      <div class="form-row">
+        <label>기수</label>
+        <input type="number" id="mGen" placeholder="예: 1" min="0"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>역할 / 직책</label>
+      <input type="text" id="mRole" placeholder="예: 회장 / 리서치 파트"/>
+    </div>
+    <div class="form-row">
+      <label>학과 & 학번</label>
+      <input type="text" id="mDept" placeholder="예: 경영학과 25"/>
+    </div>
+    <div class="modal-error" id="mError"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeEditModal('memberModal')">취소</button>
+      <button class="btn-confirm" onclick="saveMember()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 공지 추가/수정 모달 ─── -->
+<div class="edit-modal-overlay" id="newsModal">
+  <div class="edit-modal">
+    <h3 id="newsModalTitle">📢 공지 추가</h3>
+    <div class="form-row-grid">
+      <div class="form-row">
+        <label>유형</label>
+        <select id="nType">
+          <option value="recruit">모집</option>
+          <option value="event">이벤트</option>
+          <option value="notice">공지</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>날짜</label>
+        <input type="date" id="nDate"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>제목</label>
+      <input type="text" id="nTitle" placeholder="공지 제목"/>
+    </div>
+    <div class="form-row">
+      <label>내용</label>
+      <textarea id="nDesc" placeholder="공지 내용" rows="4"></textarea>
+    </div>
+    <div class="modal-error" id="nError"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeEditModal('newsModal')">취소</button>
+      <button class="btn-confirm" onclick="saveNews()">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- HERO -->
 <section id="home">
   <div class="hero-inner">
@@ -584,25 +873,17 @@
     <p>SAFE 멤버들이 직접 작성한 분석 보고서를 확인하세요.</p>
   </div>
 
-  <div class="reports-filter">
-    <button class="filter-btn active" onclick="filterReports('all', this)">전체</button>
-    <button class="filter-btn" onclick="filterReports('macro', this)">거시경제</button>
-    <button class="filter-btn" onclick="filterReports('equity', this)">주식</button>
-    <button class="filter-btn" onclick="filterReports('fixed', this)">채권·금리</button>
-    <button class="filter-btn" onclick="filterReports('quant', this)">퀀트</button>
+  <!-- 기수 탭 (자동 생성) -->
+  <div class="gen-tabs" id="reportGenTabs"></div>
+
+  <!-- 관리자 전용: 보고서 추가 버튼 -->
+  <div class="admin-only" style="text-align:center; margin-bottom: 32px;">
+    <button class="add-btn" onclick="openReportModal()">+ 보고서 추가</button>
   </div>
 
   <div class="reports-grid" id="reportsGrid">
     <!-- Cards injected by JS -->
   </div>
-
-  <div class="upload-area admin-only" onclick="document.getElementById('fileInput').click()">
-    <div class="upload-icon">📄</div>
-    <p><strong>보고서 업로드</strong></p>
-    <p>클릭하거나 파일을 드래그하여 PDF를 업로드하세요</p>
-    <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="handleUpload(event)"/>
-  </div>
-  <div id="uploadFeedback" style="text-align:center;margin-top:16px;font-size:0.9rem;color:var(--accent);"></div>
 </section>
 
 <!-- MEMBERS -->
@@ -612,7 +893,19 @@
     <h2>멤버 소개</h2>
     <p>SAFE를 이끌어가는 구성원들을 소개합니다.</p>
   </div>
-  <div class="members-grid" id="membersGrid"></div>
+
+  <!-- 기수 탭 -->
+  <div class="gen-tabs" id="memberGenTabs"></div>
+
+  <!-- 관리자 전용: 멤버 추가 버튼 -->
+  <div class="admin-only" style="text-align:center; margin-bottom: 24px;">
+    <button class="add-btn" onclick="openMemberModal()">+ 멤버 추가</button>
+  </div>
+
+  <!-- 세로 스크롤 컨테이너 -->
+  <div class="members-scroll-wrap">
+    <div class="members-grid" id="membersGrid"></div>
+  </div>
 </section>
 
 <!-- NEWS -->
@@ -622,7 +915,16 @@
     <h2>공지사항 & 뉴스</h2>
     <p>학회의 최신 소식과 공지를 확인하세요.</p>
   </div>
-  <div class="news-grid" id="newsGrid"></div>
+
+  <!-- 관리자 전용: 공지 추가 버튼 -->
+  <div class="admin-only" style="text-align:center; margin-bottom: 24px;">
+    <button class="add-btn" onclick="openNewsModal()">+ 공지 추가</button>
+  </div>
+
+  <!-- 가로 스크롤 컨테이너 -->
+  <div class="news-scroll-wrap">
+    <div class="news-row" id="newsGrid"></div>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -660,80 +962,370 @@
 </footer>
 
 <script>
-  // ── DATA ──
-  const reports = [];
+  // ── DATA + STORAGE ──
+  const STORAGE = {
+    reports: 'safe_reports',
+    members: 'safe_members',
+    news:    'safe_news'
+  };
 
-  const members = [];
+  // 카테고리 메타데이터 (보고서)
+  const CATEGORY_META = {
+    economy:  { label: '경제 보고서',     cls: 'tag-macro' },
+    industry: { label: '산업 분석 보고서', cls: 'tag-equity' }
+  };
 
-  const news = [
-    { type:'recruit', typeLabel:'모집', typeClass:'type-recruit', title:'SAFE 7기 정기 모집 공고', desc:'2025년 2학기 신입 부원을 모집합니다. 금융·경제에 열정 있는 분이라면 누구든 환영합니다.', date:'2025.08.20' },
-    { type:'event', typeLabel:'이벤트', typeClass:'type-event', title:'하반기 리서치 발표회 개최', desc:'SAFE 멤버들이 한 학기 동안 연구한 보고서를 발표하는 정기 발표회가 개최됩니다.', date:'2025.06.10' },
-    { type:'notice', typeLabel:'공지', typeClass:'type-notice', title:'[공지] 외부 연사 초청 세미나', desc:'전 Goldman Sachs 애널리스트를 초청하여 글로벌 채권 시장 전망에 대한 특강을 진행합니다.', date:'2025.05.22' },
-  ];
+  // 공지 유형 메타데이터
+  const NEWS_TYPE_META = {
+    recruit: { label: '모집',     cls: 'type-recruit' },
+    event:   { label: '이벤트',   cls: 'type-event' },
+    notice:  { label: '공지',     cls: 'type-notice' }
+  };
 
-  // ── RENDER ──
-  function renderReports(filter = 'all') {
+  // localStorage에서 불러오거나 빈 배열로 초기화
+  let reports = JSON.parse(localStorage.getItem(STORAGE.reports) || '[]');
+  let members = JSON.parse(localStorage.getItem(STORAGE.members) || '[]');
+  let news    = JSON.parse(localStorage.getItem(STORAGE.news)    || '[]');
+
+  function saveReports() { localStorage.setItem(STORAGE.reports, JSON.stringify(reports)); }
+  function saveMembers() { localStorage.setItem(STORAGE.members, JSON.stringify(members)); }
+  function saveNews()    { localStorage.setItem(STORAGE.news,    JSON.stringify(news));    }
+
+  // 현재 활성 기수 필터
+  let activeReportGen = null;  // null = 전체, 또는 숫자
+  let activeMemberGen = null;
+
+  // 편집 중인 항목 ID
+  let editingReportId = null;
+  let editingMemberId = null;
+  let editingNewsId   = null;
+
+  // ── HTML escape (XSS 방지) ──
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ── 기수 목록 추출 ──
+  function getGens(list) {
+    const set = {};
+    list.forEach(item => { if (item.gen != null) set[item.gen] = true; });
+    return Object.keys(set).map(Number).sort((a, b) => a - b);
+  }
+
+  // ── 기수 탭 렌더링 ──
+  function renderGenTabs(containerId, gens, activeGen, onClick) {
+    const container = document.getElementById(containerId);
+    if (gens.length === 0) {
+      container.innerHTML = '<div class="gen-tabs-empty">아직 등록된 기수가 없습니다.</div>';
+      return;
+    }
+    let html = `<button class="gen-tab-btn ${activeGen === null ? 'active' : ''}" onclick="${onClick}(null)">전체</button>`;
+    gens.forEach(g => {
+      html += `<button class="gen-tab-btn ${activeGen === g ? 'active' : ''}" onclick="${onClick}(${g})">${g}기</button>`;
+    });
+    container.innerHTML = html;
+  }
+
+  // ── 보고서 렌더 ──
+  function renderReportGenTabs() {
+    renderGenTabs('reportGenTabs', getGens(reports), activeReportGen, 'selectReportGen');
+  }
+
+  function selectReportGen(gen) {
+    activeReportGen = gen;
+    renderReportGenTabs();
+    renderReports();
+  }
+
+  function renderReports() {
     const grid = document.getElementById('reportsGrid');
-    const filtered = filter === 'all' ? reports : reports.filter(r => r.category === filter);
-    if (filtered.length === 0) {
+    const list = (activeReportGen === null) ? reports : reports.filter(r => r.gen === activeReportGen);
+    if (list.length === 0) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);font-size:0.9rem;">아직 등록된 보고서가 없습니다.</div>';
       return;
     }
-    grid.innerHTML = filtered.map(r => `
+    grid.innerHTML = list.map(r => {
+      const cat = CATEGORY_META[r.category] || { label: '기타', cls: 'tag-macro' };
+      return `
       <div class="report-card">
-        <span class="report-tag ${r.tagClass}">${r.tag}</span>
-        <h3>${r.title}</h3>
-        <p>${r.desc}</p>
-        <div class="report-meta">
-          <span>✍️ ${r.author} · ${r.date}</span>
-          <a href="${r.file}" class="report-dl">PDF ↓</a>
+        <div class="card-admin-actions">
+          <button class="card-edit-btn" onclick="openReportEdit(${r.id})">✏️ 수정</button>
+          <button class="card-del-btn" onclick="deleteReport(${r.id})">🗑 삭제</button>
         </div>
-      </div>
-    `).join('');
+        <span class="report-tag ${cat.cls}">${esc(cat.label)}</span>
+        <h3>${esc(r.title)}</h3>
+        <p>${esc(r.desc)}</p>
+        <div class="report-meta">
+          <span>✍️ ${esc(r.author)} · ${esc(r.date)} · ${r.gen}기</span>
+          <a href="${esc(r.file)}" target="_blank" rel="noopener" class="report-dl">PDF ↓</a>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── 멤버 렌더 ──
+  function renderMemberGenTabs() {
+    renderGenTabs('memberGenTabs', getGens(members), activeMemberGen, 'selectMemberGen');
+  }
+
+  function selectMemberGen(gen) {
+    activeMemberGen = gen;
+    renderMemberGenTabs();
+    renderMembers();
   }
 
   function renderMembers() {
     const grid = document.getElementById('membersGrid');
-    if (members.length === 0) {
+    const list = (activeMemberGen === null) ? members : members.filter(m => m.gen === activeMemberGen);
+    if (list.length === 0) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);font-size:0.9rem;">아직 등록된 멤버가 없습니다.</div>';
       return;
     }
-    grid.innerHTML = members.map(m => `
+    grid.innerHTML = list.map(m => `
       <div class="member-card">
-        <div class="member-avatar">${m.initial}</div>
-        <h4>${m.name}</h4>
-        <div class="member-role">${m.role}</div>
-        <p>${m.dept}</p>
+        <div class="card-admin-actions">
+          <button class="card-edit-btn" onclick="openMemberEdit(${m.id})">✏️ 수정</button>
+          <button class="card-del-btn" onclick="deleteMember(${m.id})">🗑 삭제</button>
+        </div>
+        <div class="member-avatar">${esc((m.name || '?').charAt(0))}</div>
+        <h4>${esc(m.name)}</h4>
+        <div class="member-role">${esc(m.role)}</div>
+        <p>${esc(m.dept)} · ${m.gen}기</p>
       </div>
     `).join('');
   }
 
+  // ── 공지 렌더 ──
   function renderNews() {
-    document.getElementById('newsGrid').innerHTML = news.map(n => `
+    const grid = document.getElementById('newsGrid');
+    if (news.length === 0) {
+      grid.innerHTML = '<div style="padding:40px;color:var(--text-sub);font-size:0.9rem;flex:1;text-align:center;">아직 등록된 공지가 없습니다.</div>';
+      return;
+    }
+    grid.innerHTML = news.map(n => {
+      const meta = NEWS_TYPE_META[n.type] || NEWS_TYPE_META.notice;
+      return `
       <div class="news-card">
         <div class="news-header">
-          <span class="news-type ${n.typeClass}">${n.typeLabel}</span>
-          <span class="news-date">${n.date}</span>
+          <span class="news-type ${meta.cls}">${esc(meta.label)}</span>
+          <span class="news-date">${esc(n.date)}</span>
         </div>
         <div class="news-body">
-          <h3>${n.title}</h3>
-          <p>${n.desc}</p>
+          <div class="card-admin-actions">
+            <button class="card-edit-btn" onclick="openNewsEdit(${n.id})">✏️ 수정</button>
+            <button class="card-del-btn" onclick="deleteNews(${n.id})">🗑 삭제</button>
+          </div>
+          <h3>${esc(n.title)}</h3>
+          <p>${esc(n.desc)}</p>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
 
-  function filterReports(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderReports(cat);
+  // ── 모달 닫기 ──
+  function closeEditModal(id) {
+    document.getElementById(id).classList.remove('open');
   }
 
-  function handleUpload(e) {
-    const file = e.target.files[0];
-    if (file) {
-      document.getElementById('uploadFeedback').textContent = `✅ "${file.name}" 업로드 완료! (실제 서버 연동 시 저장됩니다)`;
+  // 모달 외부 클릭 시 닫기
+  ['reportModal', 'memberModal', 'newsModal'].forEach(id => {
+    document.getElementById(id).addEventListener('click', (e) => {
+      if (e.target.id === id) closeEditModal(id);
+    });
+  });
+
+  // ── 보고서 추가/수정 ──
+  function openReportModal() {
+    editingReportId = null;
+    document.getElementById('reportModalTitle').textContent = '📋 보고서 추가';
+    document.getElementById('rTitle').value = '';
+    document.getElementById('rGen').value = activeReportGen != null ? activeReportGen : '';
+    document.getElementById('rCategory').value = 'economy';
+    document.getElementById('rAuthor').value = '';
+    document.getElementById('rDate').value = '';
+    document.getElementById('rDesc').value = '';
+    document.getElementById('rLink').value = '';
+    document.getElementById('rError').textContent = '';
+    document.getElementById('reportModal').classList.add('open');
+  }
+
+  function openReportEdit(id) {
+    const r = reports.find(x => x.id === id);
+    if (!r) return;
+    editingReportId = id;
+    document.getElementById('reportModalTitle').textContent = '✏️ 보고서 수정';
+    document.getElementById('rTitle').value = r.title;
+    document.getElementById('rGen').value = r.gen;
+    document.getElementById('rCategory').value = r.category;
+    document.getElementById('rAuthor').value = r.author;
+    document.getElementById('rDate').value = r.date.replace('.', '-');
+    document.getElementById('rDesc').value = r.desc;
+    document.getElementById('rLink').value = r.file;
+    document.getElementById('rError').textContent = '';
+    document.getElementById('reportModal').classList.add('open');
+  }
+
+  function saveReport() {
+    const title = document.getElementById('rTitle').value.trim();
+    const gen = parseInt(document.getElementById('rGen').value);
+    const category = document.getElementById('rCategory').value;
+    const author = document.getElementById('rAuthor').value.trim();
+    const date = document.getElementById('rDate').value;
+    const desc = document.getElementById('rDesc').value.trim();
+    const link = document.getElementById('rLink').value.trim();
+    const err = document.getElementById('rError');
+
+    if (!title || !author || !date || !desc || !link) {
+      err.textContent = '모든 필드를 입력해주세요.';
+      return;
     }
+    if (isNaN(gen)) {
+      err.textContent = '기수는 숫자로 입력해주세요.';
+      return;
+    }
+
+    const item = { id: editingReportId || Date.now(), title, gen, category, author, date: date.replace('-', '.'), desc, file: link };
+
+    if (editingReportId) {
+      const idx = reports.findIndex(r => r.id === editingReportId);
+      if (idx >= 0) reports[idx] = item;
+    } else {
+      reports.unshift(item);
+    }
+    saveReports();
+    renderReportGenTabs();
+    renderReports();
+    closeEditModal('reportModal');
+  }
+
+  function deleteReport(id) {
+    if (!confirm('이 보고서를 삭제하시겠습니까?')) return;
+    reports = reports.filter(r => r.id !== id);
+    saveReports();
+    renderReportGenTabs();
+    renderReports();
+  }
+
+  // ── 멤버 추가/수정 ──
+  function openMemberModal() {
+    editingMemberId = null;
+    document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
+    document.getElementById('mName').value = '';
+    document.getElementById('mGen').value = activeMemberGen != null ? activeMemberGen : '';
+    document.getElementById('mRole').value = '';
+    document.getElementById('mDept').value = '';
+    document.getElementById('mError').textContent = '';
+    document.getElementById('memberModal').classList.add('open');
+  }
+
+  function openMemberEdit(id) {
+    const m = members.find(x => x.id === id);
+    if (!m) return;
+    editingMemberId = id;
+    document.getElementById('memberModalTitle').textContent = '✏️ 멤버 수정';
+    document.getElementById('mName').value = m.name;
+    document.getElementById('mGen').value = m.gen;
+    document.getElementById('mRole').value = m.role;
+    document.getElementById('mDept').value = m.dept;
+    document.getElementById('mError').textContent = '';
+    document.getElementById('memberModal').classList.add('open');
+  }
+
+  function saveMember() {
+    const name = document.getElementById('mName').value.trim();
+    const gen = parseInt(document.getElementById('mGen').value);
+    const role = document.getElementById('mRole').value.trim();
+    const dept = document.getElementById('mDept').value.trim();
+    const err = document.getElementById('mError');
+
+    if (!name || !role || !dept) {
+      err.textContent = '이름, 역할, 학과를 모두 입력해주세요.';
+      return;
+    }
+    if (isNaN(gen)) {
+      err.textContent = '기수는 숫자로 입력해주세요.';
+      return;
+    }
+
+    const item = { id: editingMemberId || Date.now(), name, gen, role, dept };
+
+    if (editingMemberId) {
+      const idx = members.findIndex(m => m.id === editingMemberId);
+      if (idx >= 0) members[idx] = item;
+    } else {
+      members.push(item);
+    }
+    saveMembers();
+    renderMemberGenTabs();
+    renderMembers();
+    closeEditModal('memberModal');
+  }
+
+  function deleteMember(id) {
+    if (!confirm('이 멤버를 삭제하시겠습니까?')) return;
+    members = members.filter(m => m.id !== id);
+    saveMembers();
+    renderMemberGenTabs();
+    renderMembers();
+  }
+
+  // ── 공지 추가/수정 ──
+  function openNewsModal() {
+    editingNewsId = null;
+    document.getElementById('newsModalTitle').textContent = '📢 공지 추가';
+    document.getElementById('nType').value = 'notice';
+    document.getElementById('nDate').value = '';
+    document.getElementById('nTitle').value = '';
+    document.getElementById('nDesc').value = '';
+    document.getElementById('nError').textContent = '';
+    document.getElementById('newsModal').classList.add('open');
+  }
+
+  function openNewsEdit(id) {
+    const n = news.find(x => x.id === id);
+    if (!n) return;
+    editingNewsId = id;
+    document.getElementById('newsModalTitle').textContent = '✏️ 공지 수정';
+    document.getElementById('nType').value = n.type;
+    document.getElementById('nDate').value = n.date.replace(/\./g, '-');
+    document.getElementById('nTitle').value = n.title;
+    document.getElementById('nDesc').value = n.desc;
+    document.getElementById('nError').textContent = '';
+    document.getElementById('newsModal').classList.add('open');
+  }
+
+  function saveNews() {
+    const type = document.getElementById('nType').value;
+    const date = document.getElementById('nDate').value;
+    const title = document.getElementById('nTitle').value.trim();
+    const desc = document.getElementById('nDesc').value.trim();
+    const err = document.getElementById('nError');
+
+    if (!date || !title || !desc) {
+      err.textContent = '모든 필드를 입력해주세요.';
+      return;
+    }
+
+    const item = { id: editingNewsId || Date.now(), type, date: date.replace(/-/g, '.'), title, desc };
+
+    if (editingNewsId) {
+      const idx = news.findIndex(n => n.id === editingNewsId);
+      if (idx >= 0) news[idx] = item;
+    } else {
+      news.unshift(item);
+    }
+    saveNews();
+    renderNews();
+    closeEditModal('newsModal');
+  }
+
+  function deleteNews(id) {
+    if (!confirm('이 공지를 삭제하시겠습니까?')) return;
+    news = news.filter(n => n.id !== id);
+    saveNews();
+    renderNews();
   }
 
   // nav active highlight on scroll
@@ -813,7 +1405,9 @@
   });
 
   // init
+  renderReportGenTabs();
   renderReports();
+  renderMemberGenTabs();
   renderMembers();
   renderNews();
   updateAdminUI();
