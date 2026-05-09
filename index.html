@@ -62,7 +62,7 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--accent-soft); }
 
-    /* ── 🌟 TOP PARALLAX CONTAINER (마켓 이전까지의 전체를 묶음) ── */
+    /* ── 🌟 TOP PARALLAX CONTAINER ── */
     .top-parallax-container {
       position: relative;
       overflow: hidden; 
@@ -81,7 +81,7 @@
       transform-origin: center center;
     }
 
-    /* 오버레이 (가독성을 위한 반투명 막, 그림자 없이 깔끔하게) */
+    /* 오버레이 (가독성을 위한 반투명 막) */
     .top-bg::after {
       content: '';
       position: absolute;
@@ -154,14 +154,13 @@
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
     .about-values { display: flex; flex-direction: column; gap: 18px; }
     
-    /* 🌟 특징 카드: 사진 위에서 깔끔하게 보이도록 약간의 유리 질감 효과 */
     .value-item { 
       display: flex; gap: 16px; align-items: flex-start; 
       padding: 20px; 
       border-radius: 12px; 
       border: 1px solid rgba(255, 255, 255, 0.8); 
-      background: rgba(255, 255, 255, 0.6); /* 반투명 화이트 */
-      backdrop-filter: blur(12px); /* 배경 사진을 부드럽게 뭉갬 */
+      background: rgba(255, 255, 255, 0.6); 
+      backdrop-filter: blur(12px); 
       box-shadow: 0 4px 24px rgba(44, 62, 107, 0.05);
     }
     .value-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; color: white; }
@@ -182,7 +181,7 @@
     }
     .gen-select:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05); }
 
-    /* ── 하얀색 본문 시작 영역 (마켓부터 배경 완전히 가려짐) ── */
+    /* ── 하얀색 본문 시작 영역 ── */
     .main-content-wrapper {
       position: relative;
       z-index: 2;
@@ -303,7 +302,7 @@
 </head>
 <body>
 
-<!-- 🌟 사진이 늘어나는 영역 (히어로 ~ About 전체를 묶음) -->
+<!-- 🌟 사진이 늘어나는 영역 (마켓 이전까지 전체 묶음) -->
 <div class="top-parallax-container" id="topParallax">
   
   <!-- 배경 사진 -->
@@ -327,7 +326,7 @@
     </div>
   </section>
 
-  <!-- 🌟 ABOUT SECTION (전체 투명화로 사진 위에 올라감) -->
+  <!-- ABOUT SECTION (사진 위에 올라감) -->
   <section id="about">
     <div class="about-header-wrapper">
       <div class="section-tag">About SAFE</div>
@@ -1044,7 +1043,7 @@
       // 기존 0.8 -> 1.5 로 변경해 더 다이내믹하게 사라지는 페이드아웃 강조
       const opacity = 1 - (scrollRatio * 1.5);
 
-      bg.style.transform = `scale(${scale})`;
+      bg.style.transform = `scale(${scale}) translate3d(0, 0, 0)`;
       bg.style.opacity = Math.max(0, opacity); 
     }
   });
