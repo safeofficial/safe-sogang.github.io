@@ -1028,7 +1028,7 @@
     }
   }
 
-  // ── 스크롤 효과 ──
+  // ── 🌟 강조된 스크롤 줌인 & 페이드아웃 효과 ──
   window.addEventListener('scroll', () => {
     const container = document.getElementById('topParallax');
     const bg = document.getElementById('topBg');
@@ -1039,8 +1039,10 @@
 
     if (scrollY <= containerHeight) {
       const scrollRatio = scrollY / containerHeight;
-      const scale = 1 + (scrollRatio * 0.1); 
-      const opacity = 1 - (scrollRatio * 0.8); // 부드럽게 페이드아웃 되도록 수치 조정
+      // 기존 0.1 -> 0.35 로 변경해 확 빨려들어가는 줌인 효과 강조
+      const scale = 1 + (scrollRatio * 0.35); 
+      // 기존 0.8 -> 1.5 로 변경해 더 다이내믹하게 사라지는 페이드아웃 강조
+      const opacity = 1 - (scrollRatio * 1.5);
 
       bg.style.transform = `scale(${scale})`;
       bg.style.opacity = Math.max(0, opacity); 
