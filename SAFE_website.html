@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SAFE — Sogang Analysis of Finance & Economics</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-  
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -71,7 +68,6 @@
       overflow: hidden; 
     }
 
-    /* 배경 사진 */
     .top-bg {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -84,7 +80,6 @@
       transform-origin: center center;
     }
 
-    /* 오버레이 (가독성을 위한 반투명 막) */
     .top-bg::after {
       content: '';
       position: absolute;
@@ -139,7 +134,7 @@
     .stat-num { font-size: 2rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 2px; }
 
-    /* ── 🌟 ABOUT SECTION (전체 투명화) ── */
+    /* ── ABOUT SECTION ── */
     #about {
       background: transparent !important;
       padding: 60px 5% 120px;
@@ -184,25 +179,48 @@
     }
     .gen-select:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(44, 62, 107, 0.05); }
 
-    /* ── 하얀색 본문 시작 영역 ── */
+    /* ── 본문 배경 ── */
     .main-content-wrapper {
       position: relative;
       z-index: 2;
       background: var(--bg);
     }
 
-    /* ── MARKET OVERVIEW ── */
+    /* ── 🌟 NEW MARKET OVERVIEW DASHBOARD ── */
     #market { background: var(--bg); padding: 100px 5%; border-top: 1px solid var(--border); }
-    .market-widget-container {
-      position: relative;
-      max-width: 1100px; margin: 0 auto; height: 500px; 
-      background: white; border: 1px solid var(--border); border-radius: 14px; 
-      overflow: hidden; box-shadow: 0 12px 32px rgba(44,62,107,0.05);
+    
+    .market-dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr; /* 좌측 차트를 좀 더 넓게, 우측 히트맵을 좁게 분할 */
+      gap: 24px;
     }
-    /* 차트가 들어갈 껍데기 박스 */
-    #chart-container {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+
+    /* 1. 상단 심볼 오버뷰 컨테이너 (전체 너비 사용) */
+    .market-box-top {
+      grid-column: 1 / -1; 
+      height: 500px;
+      background: #0f0f0f;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(44,62,107,0.08);
+      border: 1px solid #2a2e39; /* 다크 위젯을 깔끔하게 잡아주는 다크 보더 */
+    }
+
+    /* 2. 하단 2분할 컨테이너 */
+    .market-box {
+      height: 450px;
+      background: #0f0f0f;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(44,62,107,0.08);
+      border: 1px solid #2a2e39;
+    }
+
+    /* 모바일에서는 세로로 차곡차곡 쌓임 */
+    @media (max-width: 900px) {
+      .market-dashboard { grid-template-columns: 1fr; }
     }
 
     /* ── REPORTS ── */
@@ -498,10 +516,113 @@
       <p>주요 지수와 시장 동향을 실시간으로 트래킹합니다.</p>
     </div>
     
-    <div class="market-widget-container">
-      <div id="chart-container"></div>
-    </div>
-  </section>
+    <div class="market-dashboard">
+      
+      <div class="market-box-top">
+        <div class="tradingview-widget-container" style="height:100%; width:100%">
+          <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+          {
+            "lineWidth": 2,
+            "lineType": 0,
+            "chartType": "area",
+            "fontColor": "rgb(106, 109, 120)",
+            "gridLineColor": "rgba(242, 242, 242, 0.06)",
+            "volumeUpColor": "rgba(34, 171, 148, 0.5)",
+            "volumeDownColor": "rgba(247, 82, 95, 0.5)",
+            "backgroundColor": "#0F0F0F",
+            "widgetFontColor": "#DBDBDB",
+            "upColor": "#22ab94",
+            "downColor": "#f7525f",
+            "borderUpColor": "#22ab94",
+            "borderDownColor": "#f7525f",
+            "wickUpColor": "#22ab94",
+            "wickDownColor": "#f7525f",
+            "colorTheme": "dark",
+            "isTransparent": false,
+            "locale": "kr",
+            "chartOnly": false,
+            "scalePosition": "right",
+            "scaleMode": "Normal",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "valuesTracking": "1",
+            "changeMode": "price-and-percent",
+            "symbols": [
+              [ "IG:NASDAQ|1D" ],
+              [ "VANTAGE:SP500|1D" ],
+              [ "BINANCE:BTCUSDT|1D" ],
+              [ "BINANCE:ETHUSDT|1D" ],
+              [ "OANDA:XAUUSD|1D" ],
+              [ "TVC:SILVER|1D" ],
+              [ "TVC:USOIL|1D" ],
+              [ "NASDAQ:SOXX|1D" ],
+              [ "AMEX:NASA|1D" ]
+            ],
+            "dateRanges": [ "1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M" ],
+            "fontSize": "10",
+            "headerFontSize": "medium",
+            "autosize": true,
+            "width": "100%",
+            "height": "100%",
+            "noTimeScale": false,
+            "hideDateRanges": false,
+            "hideMarketStatus": false,
+            "hideSymbolLogo": false
+          }
+          </script>
+        </div>
+      </div>
+
+      <div class="market-box">
+        <div class="tradingview-widget-container" style="height:100%; width:100%">
+          <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+          {
+            "allow_symbol_change": true,
+            "calendar": false,
+            "details": false,
+            "hide_side_toolbar": true,
+            "hide_top_toolbar": false,
+            "hide_legend": true,
+            "hide_volume": true,
+            "hotlist": false,
+            "interval": "D",
+            "locale": "kr",
+            "save_image": true,
+            "style": "1",
+            "symbol": "NASDAQ:AAPL",
+            "theme": "dark",
+            "timezone": "Etc/UTC",
+            "backgroundColor": "#0F0F0F",
+            "gridColor": "rgba(242, 242, 242, 0.06)",
+            "watchlist": [],
+            "withdateranges": false,
+            "compareSymbols": [],
+            "studies": [],
+            "autosize": true
+          }
+          </script>
+        </div>
+      </div>
+
+      <div class="market-box">
+        <div class="tradingview-widget-container" style="height:100%; width:100%">
+          <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
+          {
+            "colorTheme": "dark",
+            "isTransparent": false,
+            "locale": "kr",
+            "currencies": [ "EUR", "USD", "JPY", "CNY", "KRW" ],
+            "backgroundColor": "#0F0F0F",
+            "width": "100%",
+            "height": "100%"
+          }
+          </script>
+        </div>
+      </div>
+
+    </div> </section>
 
   <section id="reports">
     <div class="section-header">
@@ -597,4 +718,425 @@
   const defaultAbout = {
     title: "서강대 경제·금융 분석 학회",
     desc1: "SAFE(Sogang Analysis of Finance & Economics)는 2025년에 설립된 서강대학교 경영·경제학과 기반의 경제 금융 분석 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석, 산업 분석 등 다양한 분야에서 체계적인 리서치 활동을 이어오고 있습니다.",
-    desc2: "매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을
+    desc2: "매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다."
+  };
+
+  let aboutData = JSON.parse(localStorage.getItem(STORAGE.about)) || defaultAbout;
+  let reports = JSON.parse(localStorage.getItem(STORAGE.reports) || '[]');
+  let members = JSON.parse(localStorage.getItem(STORAGE.members) || '[]');
+  let news    = JSON.parse(localStorage.getItem(STORAGE.news)    || '[]');
+
+  function storeAbout()   { localStorage.setItem(STORAGE.about, JSON.stringify(aboutData)); }
+  function storeReports() { localStorage.setItem(STORAGE.reports, JSON.stringify(reports)); }
+  function storeMembers() { localStorage.setItem(STORAGE.members, JSON.stringify(members)); }
+  function storeNews()    { localStorage.setItem(STORAGE.news,    JSON.stringify(news)); }
+
+  let activeReportGen = 'none'; 
+  let activeMemberGen = 0; 
+
+  let editingReportId = null;
+  let editingMemberId = null;
+  let editingNewsId   = null;
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ── ABOUT RENDER & EDIT ──
+  function renderAbout() {
+    const container = document.getElementById('dynamicAboutContent');
+    container.innerHTML = `
+      <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(aboutData.title)}</h3>
+      <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc1)}</p>
+      <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc2)}</p>
+      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
+    `;
+  }
+
+  function openAboutModal() {
+    document.getElementById('aTitle').value = aboutData.title;
+    document.getElementById('aDesc1').value = aboutData.desc1;
+    document.getElementById('aDesc2').value = aboutData.desc2;
+    document.getElementById('aboutModal').classList.add('open');
+  }
+
+  function submitAbout() {
+    aboutData.title = document.getElementById('aTitle').value.trim();
+    aboutData.desc1 = document.getElementById('aDesc1').value.trim();
+    aboutData.desc2 = document.getElementById('aDesc2').value.trim();
+    storeAbout();
+    renderAbout();
+    closeModal('aboutModal');
+  }
+
+  // ── SELECT DROPDOWN LOGIC ──
+  function getGens(list) {
+    const set = {};
+    list.forEach(item => { if (item.gen != null) set[item.gen] = true; });
+    return Object.keys(set).map(Number).sort((a, b) => a - b);
+  }
+
+  function renderSelectGens(selectId, gens, activeGen) {
+    const select = document.getElementById(selectId);
+    if (gens.length === 0) {
+      select.innerHTML = '<option value="none">기수 선택</option>';
+      select.disabled = true;
+      return;
+    }
+    select.disabled = false;
+    let html = `<option value="none" ${activeGen === 'none' ? 'selected' : ''}>기수 선택</option>`;
+    gens.forEach(g => {
+      const label = g === 0 ? '설립 멤버' : `${g}기`;
+      html += `<option value="${g}" ${activeGen === g ? 'selected' : ''}>${label}</option>`;
+    });
+    select.innerHTML = html;
+  }
+
+  // ── REPORTS ──
+  function renderReportGenTabs() {
+    renderSelectGens('reportGenSelect', getGens(reports), activeReportGen);
+  }
+
+  function selectReportGen(val) {
+    activeReportGen = (val === 'none' || val === '') ? 'none' : Number(val);
+    renderReports();
+  }
+
+  function renderReports() {
+    const grid = document.getElementById('reportsGrid');
+    
+    if (activeReportGen === 'none') {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">기수를 선택하시면 해당 기수의 보고서를 확인할 수 있습니다.</div>';
+      return;
+    }
+
+    const list = reports.filter(r => r.gen === activeReportGen);
+    if (list.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">해당 기수에 등록된 보고서가 없습니다.</div>';
+      return;
+    }
+    
+    grid.innerHTML = list.map(r => {
+      const cat = CATEGORY_META[r.category] || { label: '기타', cls: 'tag-macro' };
+      return `
+      <div class="report-card">
+        <div class="card-admin-actions">
+          <button class="card-edit-btn" onclick="openReportEdit(${r.id})">✏️ 수정</button>
+          <button class="card-del-btn" onclick="deleteReport(${r.id})">🗑 삭제</button>
+        </div>
+        <span class="report-tag ${cat.cls}">${esc(cat.label)}</span>
+        <h3>${esc(r.title)}</h3>
+        <p>${esc(r.desc)}</p>
+        <div class="report-meta">
+          <span>✍️ ${esc(r.author)} · ${esc(r.date)} · ${r.gen}기</span>
+          <a href="${esc(r.file)}" target="_blank" rel="noopener" class="report-dl">PDF ↓</a>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── MEMBERS ──
+  function renderMemberGenTabs() {
+    renderSelectGens('memberGenSelect', getGens(members), activeMemberGen);
+  }
+
+  function selectMemberGen(val) {
+    activeMemberGen = (val === 'none' || val === '') ? 'none' : Number(val);
+    renderMembers();
+  }
+
+  function renderMembers() {
+    const leadersGrid = document.getElementById('leadersGrid');
+    const regularsGrid = document.getElementById('membersGrid');
+    
+    if (activeMemberGen === 'none') {
+      leadersGrid.innerHTML = '';
+      regularsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">기수를 선택하시면 해당 기수의 멤버를 확인할 수 있습니다.</div>';
+      return;
+    }
+
+    const list = members.filter(m => m.gen === activeMemberGen);
+    
+    if (list.length === 0) {
+      leadersGrid.innerHTML = '';
+      regularsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-sub);">해당 기수에 등록된 멤버가 없습니다.</div>';
+      return;
+    }
+
+    const leaders = list.filter(m => m.role.includes('학회장') || m.role.includes('부학회장'));
+    const regulars = list.filter(m => !m.role.includes('학회장') && !m.role.includes('부학회장'));
+
+    const createCard = (m) => `
+      <div class="member-card">
+        <div class="card-admin-actions">
+          <button class="card-edit-btn" onclick="openMemberEdit(${m.id})">✏️ 수정</button>
+          <button class="card-del-btn" onclick="deleteMember(${m.id})">🗑 삭제</button>
+        </div>
+        <div class="member-avatar">${esc((m.name || '?').charAt(0))}</div>
+        <h4>${esc(m.name)}</h4>
+        <div class="member-role">${esc(m.role)}</div>
+        <p>${esc(m.dept)} · ${m.gen === 0 ? '설립 멤버' : m.gen + '기'}</p>
+      </div>
+    `;
+
+    leadersGrid.innerHTML = leaders.map(createCard).join('');
+    regularsGrid.innerHTML = regulars.map(createCard).join('');
+  }
+
+  // ── NEWS ──
+  function renderNews() {
+    const grid = document.getElementById('newsGrid');
+    if (news.length === 0) {
+      grid.innerHTML = '<div style="padding:40px;color:var(--text-sub);text-align:center;width:100%;">아직 등록된 공지가 없습니다.</div>';
+      return;
+    }
+    grid.innerHTML = news.map(n => {
+      const meta = NEWS_TYPE_META[n.type] || NEWS_TYPE_META.notice;
+      return `
+      <div class="news-card">
+        <div class="news-header">
+          <span class="news-type ${meta.cls}">${esc(meta.label)}</span>
+          <span class="news-date">${esc(n.date)}</span>
+        </div>
+        <div class="news-body">
+          <div class="card-admin-actions">
+            <button class="card-edit-btn" onclick="openNewsEdit(${n.id})">✏️ 수정</button>
+            <button class="card-del-btn" onclick="deleteNews(${n.id})">🗑 삭제</button>
+          </div>
+          <h3>${esc(n.title)}</h3>
+          <p>${esc(n.desc)}</p>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── MODAL UTILS ──
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', (e) => { if (e.target === el) closeModal(el.id); });
+  });
+
+  // ── CRUD (REPORTS) ──
+  function openReportModal() {
+    editingReportId = null;
+    document.getElementById('reportModalTitle').textContent = '📋 보고서 추가';
+    document.getElementById('rTitle').value = '';
+    document.getElementById('rGen').value = (activeReportGen !== 'none') ? activeReportGen : '';
+    document.getElementById('rAuthor').value = '';
+    document.getElementById('rDate').value = '';
+    document.getElementById('rDesc').value = '';
+    document.getElementById('rLink').value = '';
+    document.getElementById('rError').textContent = '';
+    document.getElementById('reportModal').classList.add('open');
+  }
+
+  function openReportEdit(id) {
+    const r = reports.find(x => x.id === id);
+    if (!r) return;
+    editingReportId = id;
+    document.getElementById('reportModalTitle').textContent = '✏️ 보고서 수정';
+    document.getElementById('rTitle').value = r.title;
+    document.getElementById('rGen').value = r.gen;
+    document.getElementById('rCategory').value = r.category;
+    document.getElementById('rAuthor').value = r.author;
+    document.getElementById('rDate').value = r.date.replace('.', '-');
+    document.getElementById('rDesc').value = r.desc;
+    document.getElementById('rLink').value = r.file;
+    document.getElementById('reportModal').classList.add('open');
+  }
+
+  function submitReport() {
+    const title = document.getElementById('rTitle').value.trim();
+    const gen = parseInt(document.getElementById('rGen').value);
+    const category = document.getElementById('rCategory').value;
+    const author = document.getElementById('rAuthor').value.trim();
+    const date = document.getElementById('rDate').value;
+    const desc = document.getElementById('rDesc').value.trim();
+    const link = document.getElementById('rLink').value.trim();
+    const err = document.getElementById('rError');
+
+    if (!title || !author || !date || !desc || !link) return err.textContent = '모든 필드를 입력해주세요.';
+    if (isNaN(gen)) return err.textContent = '기수는 숫자로 입력해주세요.';
+
+    const item = { id: editingReportId || Date.now(), title, gen, category, author, date: date.replace('-', '.'), desc, file: link };
+    if (editingReportId) reports[reports.findIndex(r => r.id === editingReportId)] = item;
+    else reports.unshift(item);
+
+    storeReports(); renderReportGenTabs(); renderReports(); closeModal('reportModal');
+  }
+
+  function deleteReport(id) {
+    if (!confirm('삭제하시겠습니까?')) return;
+    reports = reports.filter(r => r.id !== id);
+    storeReports(); renderReportGenTabs(); renderReports();
+  }
+
+  // ── CRUD (MEMBERS) ──
+  function openMemberModal() {
+    editingMemberId = null;
+    document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
+    document.getElementById('mName').value = '';
+    document.getElementById('mGen').value = (activeMemberGen !== 'none') ? activeMemberGen : '';
+    document.getElementById('mRole').value = '';
+    document.getElementById('mDept').value = '';
+    document.getElementById('mError').textContent = '';
+    document.getElementById('memberModal').classList.add('open');
+  }
+
+  function openMemberEdit(id) {
+    const m = members.find(x => x.id === id);
+    if (!m) return;
+    editingMemberId = id;
+    document.getElementById('memberModalTitle').textContent = '✏️ 멤버 수정';
+    document.getElementById('mName').value = m.name;
+    document.getElementById('mGen').value = m.gen;
+    document.getElementById('mRole').value = m.role;
+    document.getElementById('mDept').value = m.dept;
+    document.getElementById('memberModal').classList.add('open');
+  }
+
+  function submitMember() {
+    const name = document.getElementById('mName').value.trim();
+    const gen = parseInt(document.getElementById('mGen').value);
+    const role = document.getElementById('mRole').value.trim();
+    const dept = document.getElementById('mDept').value.trim();
+    const err = document.getElementById('mError');
+
+    if (!name || !role || !dept) return err.textContent = '모든 필드를 입력해주세요.';
+    if (isNaN(gen)) return err.textContent = '기수는 숫자로 입력해주세요 (설립멤버는 0).';
+
+    const item = { id: editingMemberId || Date.now(), name, gen, role, dept };
+    if (editingMemberId) members[members.findIndex(m => m.id === editingMemberId)] = item;
+    else members.push(item);
+
+    storeMembers(); renderMemberGenTabs(); renderMembers(); closeModal('memberModal');
+  }
+
+  function deleteMember(id) {
+    if (!confirm('삭제하시겠습니까?')) return;
+    members = members.filter(m => m.id !== id);
+    storeMembers(); renderMemberGenTabs(); renderMembers();
+  }
+
+  // ── CRUD (NEWS) ──
+  function openNewsModal() {
+    editingNewsId = null;
+    document.getElementById('newsModalTitle').textContent = '📢 공지 추가';
+    document.getElementById('nType').value = 'notice';
+    document.getElementById('nDate').value = '';
+    document.getElementById('nTitle').value = '';
+    document.getElementById('nDesc').value = '';
+    document.getElementById('nError').textContent = '';
+    document.getElementById('newsModal').classList.add('open');
+  }
+
+  function openNewsEdit(id) {
+    const n = news.find(x => x.id === id);
+    if (!n) return;
+    editingNewsId = id;
+    document.getElementById('newsModalTitle').textContent = '✏️ 공지 수정';
+    document.getElementById('nType').value = n.type;
+    document.getElementById('nDate').value = n.date.replace(/\./g, '-');
+    document.getElementById('nTitle').value = n.title;
+    document.getElementById('nDesc').value = n.desc;
+    document.getElementById('newsModal').classList.add('open');
+  }
+
+  function submitNewsData() {
+    const type = document.getElementById('nType').value;
+    const date = document.getElementById('nDate').value;
+    const title = document.getElementById('nTitle').value.trim();
+    const desc = document.getElementById('nDesc').value.trim();
+    const err = document.getElementById('nError');
+
+    if (!date || !title || !desc) return err.textContent = '모든 필드를 입력해주세요.';
+
+    const item = { id: editingNewsId || Date.now(), type, date: date.replace(/-/g, '.'), title, desc };
+    if (editingNewsId) news[news.findIndex(n => n.id === editingNewsId)] = item;
+    else news.unshift(item);
+
+    storeNews(); renderNews(); closeModal('newsModal');
+  }
+
+  function deleteNews(id) {
+    if (!confirm('삭제하시겠습니까?')) return;
+    news = news.filter(n => n.id !== id);
+    storeNews(); renderNews();
+  }
+
+  // nav highlight
+  const sections = ['home','about','market','reports','members','news'];
+  window.addEventListener('scroll', () => {
+    let current = 'home';
+    sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 156) current = id; });
+    document.querySelectorAll('.nav-links a').forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+  });
+
+  // ── ADMIN LOGIN ──
+  const ADMIN_PASSWORD = 'safe2025!'; 
+  let isAdmin = localStorage.getItem('safe_isAdmin') === 'true';
+
+  function updateAdminUI() {
+    const btn = document.getElementById('adminBtn');
+    const badge = document.getElementById('adminBadge');
+    if (isAdmin) {
+      btn.textContent = '🔓 로그아웃'; btn.classList.add('logged-in'); badge.classList.add('visible');
+      document.body.classList.add('is-admin');
+    } else {
+      btn.textContent = '🔒 관리자'; btn.classList.remove('logged-in'); badge.classList.remove('visible');
+      document.body.classList.remove('is-admin');
+    }
+  }
+
+  function handleAdminBtn() {
+    if (isAdmin) {
+      if (confirm('로그아웃 하시겠습니까?')) { isAdmin = false; localStorage.removeItem('safe_isAdmin'); updateAdminUI(); }
+    } else {
+      document.getElementById('loginModal').classList.add('open');
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('loginError').textContent = '';
+      setTimeout(() => document.getElementById('loginPassword').focus(), 100);
+    }
+  }
+
+  function submitLogin() {
+    const pw = document.getElementById('loginPassword').value;
+    if (!pw) return document.getElementById('loginError').textContent = '비밀번호를 입력해주세요.';
+    if (pw === ADMIN_PASSWORD) {
+      isAdmin = true; localStorage.setItem('safe_isAdmin', 'true');
+      updateAdminUI(); closeModal('loginModal');
+    } else {
+      document.getElementById('loginError').textContent = '비밀번호가 올바르지 않습니다.';
+    }
+  }
+
+  // ── 스크롤 효과 ──
+  window.addEventListener('scroll', () => {
+    const container = document.getElementById('topParallax');
+    const bg = document.getElementById('topBg');
+    if (!container || !bg) return;
+    
+    const scrollY = window.scrollY;
+    const containerHeight = container.offsetHeight;
+
+    if (scrollY <= containerHeight) {
+      const scrollRatio = scrollY / containerHeight;
+      const scale = 1 + (scrollRatio * 0.35); 
+      const opacity = 1 - (scrollRatio * 1.5);
+
+      bg.style.transform = `scale(${scale}) translate3d(0, 0, 0)`;
+      bg.style.opacity = Math.max(0, opacity); 
+    }
+  });
+
+  // INIT
+  renderAbout();
+  renderReportGenTabs(); renderReports();
+  renderMemberGenTabs(); renderMembers();
+  renderNews();
+  updateAdminUI();
+</script>
+</body>
+</html>
