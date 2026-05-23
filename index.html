@@ -148,8 +148,6 @@
     .about-header-wrapper p { color: var(--text-sub); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
-    .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
-    .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
     .about-values { display: flex; flex-direction: column; gap: 18px; }
     
     .value-item { 
@@ -189,25 +187,38 @@
     /* ── 🌟 NEW MARKET OVERVIEW DASHBOARD ── */
     #market { background: var(--bg); padding: 100px 5%; border-top: 1px solid var(--border); }
     
-    /* 대시보드 스위치 버튼 (간격 확보) */
     .view-toggle { text-align: center; margin-top: 32px; margin-bottom: 40px; }
     .toggle-btn { padding: 12px 28px; border-radius: 20px; border: none; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; cursor: pointer; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(44,62,107,0.2); transition: 0.3s; }
     .toggle-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(44,62,107,0.3); }
 
-    .market-dashboard {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
+    .market-dashboard { position: relative; max-width: 1200px; margin: 0 auto; }
+    
+    /* 🌟 무한 로딩 버그 픽스: display:none 대신 position absolute 사용 */
+    .market-tab-content {
+      width: 100%;
+      transition: opacity 0.3s ease;
+    }
+    .mode-hidden {
+      position: absolute;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .mode-active {
+      position: relative;
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 1;
     }
 
+    .market-row-wrapper { display: flex; flex-direction: column; gap: 24px; }
     .market-row { display: grid; gap: 24px; }
     .market-row-1col { grid-template-columns: 1fr; }
     .market-row-2col { grid-template-columns: 1.5fr 1fr; } 
     .market-row-half { grid-template-columns: 1fr 1fr; }
 
-    /* 위젯 박스 공통 디자인 */
     .market-box {
       background: #0f0f0f;
       border-radius: 14px;
@@ -216,8 +227,6 @@
       border: 1px solid #2a2e39;
       position: relative;
     }
-
-    .mode-econ { display: none; }
 
     @media (max-width: 900px) {
       .market-row { grid-template-columns: 1fr !important; }
@@ -274,7 +283,6 @@
       color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit;
     }
     .add-btn:hover, .edit-about-btn:hover { background: var(--accent-soft); }
-    .edit-about-btn { margin-top: 16px; }
 
     .card-admin-actions { display: none; gap: 6px; margin-bottom: 12px; }
     body.is-admin .card-admin-actions { display: flex; }
@@ -330,7 +338,6 @@
 <body>
 
 <div class="top-parallax-container" id="topParallax">
-  
   <div class="top-bg" id="topBg"></div>
 
   <section id="home">
@@ -353,26 +360,23 @@
   <section id="about">
     <div class="about-header-wrapper">
       <div class="section-tag">About SAFE</div>
-      <h2>우리는 왜 SAFE인가</h2>
-      <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
+      <h2 id="aboutHeaderTitle">우리는 왜 SAFE인가</h2>
+      <p id="aboutHeaderDesc">금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
+      <button class="admin-only edit-about-btn" onclick="openAboutHeaderModal()" style="margin-top:10px;">✏️ 헤더 수정</button>
     </div>
 
     <div class="about-grid">
-      <div class="about-text-container">
-        <div id="dynamicAboutContent">
-          </div>
-        <button class="admin-only edit-about-btn" onclick="openAboutModal()">✏️ 소개글 수정</button>
-      </div>
-      <div class="about-values">
-        <div class="value-item"><div class="value-icon">📊</div><div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
-        <div class="value-item"><div class="value-icon">🤝</div><div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
-        <div class="value-item"><div class="value-icon">🎯</div><div><h4>Career-Oriented</h4><p>금융·경제·투자를 이해하고 분석하는 실질적인 역량을 키워나가는 것을 목표로 합니다.</p></div></div>
-      </div>
+      <div class="about-text-container" id="dynamicAboutContent">
+        </div>
+      
+      <div id="dynamicAboutValues" style="display:flex; flex-direction:column; gap:18px;">
+        </div>
     </div>
   </section>
+</div> 
 
-</div> <div class="main-content-wrapper">
 
+<div class="main-content-wrapper">
   <div class="ticker-tape-wrap">
     <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
     <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
@@ -411,9 +415,27 @@
 
   <div class="admin-badge-float" id="adminBadge">⚡ 관리자 모드</div>
 
-  <div class="modal-overlay" id="aboutModal">
+  <div class="modal-overlay" id="aboutHeaderModal">
     <div class="modal-box">
-      <h3>✏️ 학회 소개 수정</h3>
+      <h3>✏️ 헤더 문구 수정</h3>
+      <div class="form-row">
+        <label>큰 제목</label>
+        <input type="text" id="ahTitle" placeholder="예: 우리는 왜 SAFE인가"/>
+      </div>
+      <div class="form-row">
+        <label>설명 슬로건</label>
+        <textarea id="ahDesc" rows="3"></textarea>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('aboutHeaderModal')">취소</button>
+        <button class="btn-confirm" onclick="submitAboutHeader()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="aboutMainModal">
+    <div class="modal-box">
+      <h3>✏️ 소개 본문 수정</h3>
       <div class="form-row">
         <label>소제목</label>
         <input type="text" id="aTitle" placeholder="예: 서강대 경제·금융 분석 학회"/>
@@ -427,8 +449,20 @@
         <textarea id="aDesc2" rows="4"></textarea>
       </div>
       <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal('aboutModal')">취소</button>
-        <button class="btn-confirm" onclick="submitAbout()">저장</button>
+        <button class="btn-cancel" onclick="closeModal('aboutMainModal')">취소</button>
+        <button class="btn-confirm" onclick="submitAboutMain()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="aboutValuesModal">
+    <div class="modal-box" style="max-width: 600px;">
+      <h3>✏️ 핵심 특징 수정 (3가지)</h3>
+      <div id="valuesEditContainer">
+        </div>
+      <div class="modal-btns" style="margin-top: 20px;">
+        <button class="btn-cancel" onclick="closeModal('aboutValuesModal')">취소</button>
+        <button class="btn-confirm" onclick="submitAboutValues()">저장</button>
       </div>
     </div>
   </div>
@@ -522,158 +556,159 @@
     
     <div class="market-dashboard">
       
-      <div id="default-mode">
-        <div class="market-row market-row-1col" style="margin-bottom: 24px;">
-          <div class="market-box" style="height: 500px;">
-            <div class="tradingview-widget-container" style="height:100%; width:100%">
-              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-              {
-                "lineWidth": 2,
-                "lineType": 0,
-                "chartType": "area",
-                "fontColor": "rgb(106, 109, 120)",
-                "gridLineColor": "rgba(242, 242, 242, 0.06)",
-                "volumeUpColor": "rgba(34, 171, 148, 0.5)",
-                "volumeDownColor": "rgba(247, 82, 95, 0.5)",
-                "backgroundColor": "#0F0F0F",
-                "widgetFontColor": "#DBDBDB",
-                "upColor": "#22ab94",
-                "downColor": "#f7525f",
-                "borderUpColor": "#22ab94",
-                "borderDownColor": "#f7525f",
-                "wickUpColor": "#22ab94",
-                "wickDownColor": "#f7525f",
-                "colorTheme": "dark",
-                "isTransparent": false,
-                "locale": "kr",
-                "chartOnly": false,
-                "scalePosition": "right",
-                "scaleMode": "Normal",
-                "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-                "valuesTracking": "1",
-                "changeMode": "price-and-percent",
-                "symbols": [
-                  [ "IG:NASDAQ|1D" ], [ "VANTAGE:SP500|1D" ], [ "BINANCE:BTCUSDT|1D" ],
-                  [ "BINANCE:ETHUSDT|1D" ], [ "OANDA:XAUUSD|1D" ], [ "TVC:SILVER|1D" ],
-                  [ "TVC:USOIL|1D" ], [ "NASDAQ:SOXX|1D" ], [ "AMEX:NASA|1D" ]
-                ],
-                "dateRanges": [ "1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M" ],
-                "fontSize": "10",
-                "headerFontSize": "medium",
-                "autosize": true,
-                "width": "100%",
-                "height": "100%",
-                "noTimeScale": false,
-                "hideDateRanges": false,
-                "hideMarketStatus": false,
-                "hideSymbolLogo": false
-              }
-              </script>
-            </div>
-          </div>
-        </div>
-
-        <div class="market-row market-row-2col">
-          <div class="market-box" style="height: 550px;">
-            <div class="tradingview-widget-container" style="height:100%; width:100%">
-              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-              {
-                "allow_symbol_change": true,
-                "calendar": false,
-                "details": false,
-                "hide_side_toolbar": true,
-                "hide_top_toolbar": false,
-                "hide_legend": true,
-                "hide_volume": true,
-                "hotlist": false,
-                "interval": "D",
-                "locale": "kr",
-                "save_image": true,
-                "style": "1",
-                "symbol": "NASDAQ:AAPL",
-                "theme": "dark",
-                "timezone": "Etc/UTC",
-                "backgroundColor": "#0F0F0F",
-                "gridColor": "rgba(242, 242, 242, 0.06)",
-                "watchlist": [],
-                "withdateranges": false,
-                "compareSymbols": [],
-                "studies": [],
-                "autosize": true
-              }
-              </script>
+      <div id="default-mode" class="market-tab-content mode-active">
+        <div class="market-row-wrapper">
+          <div class="market-row market-row-1col">
+            <div class="market-box" style="height: 500px;">
+              <div class="tradingview-widget-container" style="height:100%; width:100%">
+                <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+                {
+                  "lineWidth": 2,
+                  "lineType": 0,
+                  "chartType": "area",
+                  "fontColor": "rgb(106, 109, 120)",
+                  "gridLineColor": "rgba(242, 242, 242, 0.06)",
+                  "volumeUpColor": "rgba(34, 171, 148, 0.5)",
+                  "volumeDownColor": "rgba(247, 82, 95, 0.5)",
+                  "backgroundColor": "#0F0F0F",
+                  "widgetFontColor": "#DBDBDB",
+                  "upColor": "#22ab94",
+                  "downColor": "#f7525f",
+                  "borderUpColor": "#22ab94",
+                  "borderDownColor": "#f7525f",
+                  "wickUpColor": "#22ab94",
+                  "wickDownColor": "#f7525f",
+                  "colorTheme": "dark",
+                  "isTransparent": false,
+                  "locale": "kr",
+                  "chartOnly": false,
+                  "scalePosition": "right",
+                  "scaleMode": "Normal",
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                  "valuesTracking": "1",
+                  "changeMode": "price-and-percent",
+                  "symbols": [
+                    [ "IG:NASDAQ|1D" ], [ "VANTAGE:SP500|1D" ], [ "BINANCE:BTCUSDT|1D" ],
+                    [ "BINANCE:ETHUSDT|1D" ], [ "OANDA:XAUUSD|1D" ], [ "TVC:SILVER|1D" ],
+                    [ "TVC:USOIL|1D" ], [ "NASDAQ:SOXX|1D" ], [ "AMEX:NASA|1D" ]
+                  ],
+                  "dateRanges": [ "1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M" ],
+                  "fontSize": "10",
+                  "headerFontSize": "medium",
+                  "autosize": true,
+                  "width": "100%",
+                  "height": "100%",
+                  "noTimeScale": false,
+                  "hideDateRanges": false,
+                  "hideMarketStatus": false,
+                  "hideSymbolLogo": false
+                }
+                </script>
+              </div>
             </div>
           </div>
 
-          <div class="market-box" style="height: 550px;">
-            <div class="tradingview-widget-container" style="height:100%; width:100%">
-              <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-              {
-                "displayMode": "regular",
-                "feedMode": "all_symbols",
-                "colorTheme": "dark",
-                "isTransparent": false,
-                "backgroundColor": "#0F0F0F",
-                "locale": "kr",
-                "width": "100%",
-                "height": "100%"
-              }
-              </script>
+          <div class="market-row market-row-2col">
+            <div class="market-box" style="height: 550px;">
+              <div class="tradingview-widget-container" style="height:100%; width:100%">
+                <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                {
+                  "allow_symbol_change": true,
+                  "calendar": false,
+                  "details": false,
+                  "hide_side_toolbar": true,
+                  "hide_top_toolbar": false,
+                  "hide_legend": true,
+                  "hide_volume": true,
+                  "hotlist": false,
+                  "interval": "D",
+                  "locale": "kr",
+                  "save_image": true,
+                  "style": "1",
+                  "symbol": "NASDAQ:AAPL",
+                  "theme": "dark",
+                  "timezone": "Etc/UTC",
+                  "backgroundColor": "#0F0F0F",
+                  "gridColor": "rgba(242, 242, 242, 0.06)",
+                  "watchlist": [],
+                  "withdateranges": false,
+                  "compareSymbols": [],
+                  "studies": [],
+                  "autosize": true
+                }
+                </script>
+              </div>
+            </div>
+
+            <div class="market-box" style="height: 550px;">
+              <div class="tradingview-widget-container" style="height:100%; width:100%">
+                <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+                {
+                  "displayMode": "regular",
+                  "feedMode": "all_symbols",
+                  "colorTheme": "dark",
+                  "isTransparent": false,
+                  "backgroundColor": "#0F0F0F",
+                  "locale": "kr",
+                  "width": "100%",
+                  "height": "100%"
+                }
+                </script>
+              </div>
             </div>
           </div>
         </div>
-
-      </div> <div id="econ-mode" class="mode-econ">
-        
-        <div class="market-row market-row-1col" style="margin-bottom: 24px;">
-          <div class="market-box" style="height: 600px;">
-             <script type="module" src="https://widgets.tradingview-widget.com/w/kr/tv-economic-map.js"></script>
-             <tv-economic-map theme="dark" transparent="false" style="width: 100%; height: 100%; background: #0F0F0F;"></tv-economic-map>
+      </div> <div id="econ-mode" class="market-tab-content mode-hidden">
+        <div class="market-row-wrapper">
+          <div class="market-row market-row-1col">
+            <div class="market-box" style="height: 500px;">
+               <script type="module" src="https://widgets.tradingview-widget.com/w/kr/tv-economic-map.js"></script>
+               <tv-economic-map theme="dark" transparent="false" style="width: 100%; height: 100%; background: #0F0F0F;"></tv-economic-map>
+            </div>
           </div>
-        </div>
 
-        <div class="market-row market-row-1col" style="margin-bottom: 24px;">
-          <div class="market-box" style="height: 600px;">
-            <div class="tradingview-widget-container" style="height:100%; width:100%">
-              <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-              {
-                "colorTheme": "dark",
-                "isTransparent": false,
-                "locale": "kr",
-                "countryFilter": "us,kr",
-                "importanceFilter": "-1,0,1",
-                "backgroundColor": "#0F0F0F",
-                "width": "100%",
-                "height": "100%"
-              }
-              </script>
+          <div class="market-row market-row-1col">
+            <div class="market-box" style="height: 500px;">
+              <div class="tradingview-widget-container" style="height:100%; width:100%">
+                <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                {
+                  "colorTheme": "dark",
+                  "isTransparent": false,
+                  "locale": "kr",
+                  "countryFilter": "us,kr",
+                  "importanceFilter": "-1,0,1",
+                  "backgroundColor": "#0F0F0F",
+                  "width": "100%",
+                  "height": "100%"
+                }
+                </script>
+              </div>
+            </div>
+          </div>
+
+          <div class="market-row market-row-1col">
+            <div class="market-box" style="height: 450px;">
+              <div class="tradingview-widget-container" style="height:100%; width:100%">
+                <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
+                {
+                  "colorTheme": "dark",
+                  "isTransparent": false,
+                  "locale": "kr",
+                  "currencies": [ "EUR", "USD", "JPY", "CNY", "KRW" ],
+                  "backgroundColor": "#0F0F0F",
+                  "width": "100%",
+                  "height": "100%"
+                }
+                </script>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="market-row market-row-1col">
-          <div class="market-box" style="height: 450px;">
-            <div class="tradingview-widget-container" style="height:100%; width:100%">
-              <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
-              {
-                "colorTheme": "dark",
-                "isTransparent": false,
-                "locale": "kr",
-                "currencies": [ "EUR", "USD", "JPY", "CNY", "KRW" ],
-                "backgroundColor": "#0F0F0F",
-                "width": "100%",
-                "height": "100%"
-              }
-              </script>
-            </div>
-          </div>
-        </div>
-
       </div> </div>
   </section>
 
@@ -751,7 +786,7 @@
 </div> <script>
   // ── DATA + STORAGE ──
   const STORAGE = {
-    about: 'safe_about_data_v2',
+    about: 'safe_about_data_v3', // 🌟 새로운 데이터 구조 반영
     reports: 'safe_reports_data',
     members: 'safe_members_data',
     news:    'safe_news_data'
@@ -768,10 +803,18 @@
     notice:  { label: '공지',   cls: 'type-notice' }
   };
 
+  // 🌟 확장된 About Data 초기값 (헤더/메인텍스트/3가치 모두 포함)
   const defaultAbout = {
-    title: "서강대 경제·금융 분석 학회",
-    desc1: "SAFE(Sogang Analysis of Finance & Economics)는 2025년에 설립된 서강대학교 경영·경제학과 기반의 경제 금융 분석 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석, 산업 분석 등 다양한 분야에서 체계적인 리서치 활동을 이어오고 있습니다.",
-    desc2: "매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다."
+    headerTitle: "우리는 왜 SAFE인가",
+    headerDesc: "금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.",
+    mainTitle: "서강대 경제·금융 분석 학회",
+    mainDesc1: "SAFE(Sogang Analysis of Finance & Economics)는 2025년에 설립된 서강대학교 경영·경제학과 기반의 경제 금융 분석 학회입니다. 거시경제, 채권·금리, 주식 밸류에이션, 퀀트 분석, 산업 분석 등 다양한 분야에서 체계적인 리서치 활동을 이어오고 있습니다.",
+    mainDesc2: "매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.",
+    values: [
+      { icon: "📊", title: "Data-Driven Research", desc: "데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다." },
+      { icon: "🤝", title: "Collaborative Learning", desc: "팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다." },
+      { icon: "🎯", title: "Career-Oriented", desc: "금융·경제·투자를 이해하고 분석하는 실질적인 역량을 키워나가는 것을 목표로 합니다." }
+    ]
   };
 
   let aboutData = JSON.parse(localStorage.getItem(STORAGE.about)) || defaultAbout;
@@ -797,31 +840,88 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  // ── ABOUT RENDER & EDIT ──
+  // ── 🌟 ABOUT RENDER & EDIT (모든 영역 수정 권한 추가 반영) ──
   function renderAbout() {
-    const container = document.getElementById('dynamicAboutContent');
-    container.innerHTML = `
-      <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(aboutData.title)}</h3>
-      <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc1)}</p>
-      <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.desc2)}</p>
-      <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
+    // 1. 헤더 (우리는 왜 SAFE인가)
+    document.getElementById('aboutHeaderTitle').textContent = aboutData.headerTitle;
+    document.getElementById('aboutHeaderDesc').textContent = aboutData.headerDesc;
+
+    // 2. 왼쪽 메인 소개글
+    const textContainer = document.getElementById('dynamicAboutContent');
+    textContainer.innerHTML = `
+      <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(aboutData.mainTitle)}</h3>
+      <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.mainDesc1)}</p>
+      <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.mainDesc2)}</p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="#news" class="btn-primary" style="display:inline-block;">모집 공고 보기 →</a>
+        <button class="admin-only edit-about-btn" style="margin-top:0;" onclick="openAboutMainModal()">✏️ 소개글 수정</button>
+      </div>
     `;
+
+    // 3. 오른쪽 핵심 특징 (3가지 카드)
+    const valuesContainer = document.getElementById('dynamicAboutValues');
+    let valuesHtml = aboutData.values.map(v => `
+      <div class="value-item">
+        <div class="value-icon">${esc(v.icon)}</div>
+        <div>
+          <h4>${esc(v.title)}</h4>
+          <p>${esc(v.desc)}</p>
+        </div>
+      </div>
+    `).join('');
+    // 특징 하단에 일괄 수정 버튼 추가
+    valuesHtml += `<div style="text-align: right;"><button class="admin-only edit-about-btn" style="margin-top:0;" onclick="openAboutValuesModal()">✏️ 특징 수정</button></div>`;
+    valuesContainer.innerHTML = valuesHtml;
   }
 
-  function openAboutModal() {
-    document.getElementById('aTitle').value = aboutData.title;
-    document.getElementById('aDesc1').value = aboutData.desc1;
-    document.getElementById('aDesc2').value = aboutData.desc2;
-    document.getElementById('aboutModal').classList.add('open');
+  /* 헤더 수정 로직 */
+  function openAboutHeaderModal() {
+    document.getElementById('ahTitle').value = aboutData.headerTitle;
+    document.getElementById('ahDesc').value = aboutData.headerDesc;
+    document.getElementById('aboutHeaderModal').classList.add('open');
+  }
+  function submitAboutHeader() {
+    aboutData.headerTitle = document.getElementById('ahTitle').value.trim();
+    aboutData.headerDesc = document.getElementById('ahDesc').value.trim();
+    storeAbout(); renderAbout(); closeModal('aboutHeaderModal');
   }
 
-  function submitAbout() {
-    aboutData.title = document.getElementById('aTitle').value.trim();
-    aboutData.desc1 = document.getElementById('aDesc1').value.trim();
-    aboutData.desc2 = document.getElementById('aDesc2').value.trim();
-    storeAbout();
-    renderAbout();
-    closeModal('aboutModal');
+  /* 메인 소개글 수정 로직 */
+  function openAboutMainModal() {
+    document.getElementById('aTitle').value = aboutData.mainTitle;
+    document.getElementById('aDesc1').value = aboutData.mainDesc1;
+    document.getElementById('aDesc2').value = aboutData.mainDesc2;
+    document.getElementById('aboutMainModal').classList.add('open');
+  }
+  function submitAboutMain() {
+    aboutData.mainTitle = document.getElementById('aTitle').value.trim();
+    aboutData.mainDesc1 = document.getElementById('aDesc1').value.trim();
+    aboutData.mainDesc2 = document.getElementById('aDesc2').value.trim();
+    storeAbout(); renderAbout(); closeModal('aboutMainModal');
+  }
+
+  /* 특징 3가지 수정 로직 (모달 안에 인풋박스를 JS로 동적 생성) */
+  function openAboutValuesModal() {
+    const container = document.getElementById('valuesEditContainer');
+    container.innerHTML = aboutData.values.map((v, i) => `
+      <div style="background:#f8f9fb; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #e2e6f0;">
+        <h4 style="margin-bottom:10px; color:#2c3e6b;">포인트 ${i+1}</h4>
+        <div class="form-row-grid">
+          <div class="form-row"><label>아이콘 (이모지)</label><input type="text" id="vIcon${i}" value="${esc(v.icon)}"/></div>
+          <div class="form-row"><label>제목</label><input type="text" id="vTitle${i}" value="${esc(v.title)}"/></div>
+        </div>
+        <div class="form-row" style="margin-bottom:0;"><label>설명</label><textarea id="vDesc${i}" rows="2">${esc(v.desc)}</textarea></div>
+      </div>
+    `).join('');
+    document.getElementById('aboutValuesModal').classList.add('open');
+  }
+  function submitAboutValues() {
+    for (let i = 0; i < 3; i++) {
+      aboutData.values[i].icon = document.getElementById(`vIcon${i}`).value.trim();
+      aboutData.values[i].title = document.getElementById(`vTitle${i}`).value.trim();
+      aboutData.values[i].desc = document.getElementById(`vDesc${i}`).value.trim();
+    }
+    storeAbout(); renderAbout(); closeModal('aboutValuesModal');
   }
 
   // ── SELECT DROPDOWN LOGIC ──
@@ -1058,7 +1158,7 @@
     const err = document.getElementById('mError');
 
     if (!name || !role || !dept) return err.textContent = '모든 필드를 입력해주세요.';
-    if (isNaN(gen)) return err.textContent = '기수를 숫자로 입력해주세요 (설립멤버는 0).';
+    if (isNaN(gen)) return err.textContent = '기수는 숫자로 입력해주세요 (설립멤버는 0).';
 
     const item = { id: editingMemberId || Date.now(), name, gen, role, dept };
     if (editingMemberId) members[members.findIndex(m => m.id === editingMemberId)] = item;
@@ -1165,20 +1265,25 @@
     }
   }
 
-  // ── 대시보드 스위칭 로직 ──
+  // ── 대시보드 스위칭 로직 (버그 수정됨) ──
   function toggleMarketMode() {
     const defaultMode = document.getElementById('default-mode');
     const econMode = document.getElementById('econ-mode');
     const btn = document.getElementById('modeBtn');
     
-    if (defaultMode.style.display === 'none') {
-      defaultMode.style.display = 'block';
-      econMode.style.display = 'none';
-      btn.textContent = '경제 지표 모드로 보기';
-    } else {
-      defaultMode.style.display = 'none';
-      econMode.style.display = 'block';
+    // classList를 사용하여 투명도와 포인터 이벤트를 조절 (display none 회피)
+    if (defaultMode.classList.contains('mode-active')) {
+      defaultMode.classList.remove('mode-active');
+      defaultMode.classList.add('mode-hidden');
+      econMode.classList.remove('mode-hidden');
+      econMode.classList.add('mode-active');
       btn.textContent = '마켓 차트 모드로 보기';
+    } else {
+      econMode.classList.remove('mode-active');
+      econMode.classList.add('mode-hidden');
+      defaultMode.classList.remove('mode-hidden');
+      defaultMode.classList.add('mode-active');
+      btn.textContent = '경제 지표 모드로 보기';
     }
   }
 
