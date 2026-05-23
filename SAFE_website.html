@@ -375,7 +375,7 @@
 
   <div class="ticker-tape-wrap">
     <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
-    <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,TVC:DXY,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
+    <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
   </div>
 
   <nav>
@@ -625,15 +625,18 @@
             </div>
           </div>
         </div>
+
       </div> <div id="econ-mode" class="mode-econ">
-        <div class="market-row market-row-1col">
-          
-          <div class="market-box" style="height: 500px;">
+        
+        <div class="market-row market-row-1col" style="margin-bottom: 24px;">
+          <div class="market-box" style="height: 600px;">
              <script type="module" src="https://widgets.tradingview-widget.com/w/kr/tv-economic-map.js"></script>
              <tv-economic-map theme="dark" transparent="false" style="width: 100%; height: 100%; background: #0F0F0F;"></tv-economic-map>
           </div>
+        </div>
 
-          <div class="market-box" style="height: 500px;">
+        <div class="market-row market-row-1col" style="margin-bottom: 24px;">
+          <div class="market-box" style="height: 600px;">
             <div class="tradingview-widget-container" style="height:100%; width:100%">
               <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
@@ -650,7 +653,9 @@
               </script>
             </div>
           </div>
+        </div>
 
+        <div class="market-row market-row-1col">
           <div class="market-box" style="height: 450px;">
             <div class="tradingview-widget-container" style="height:100%; width:100%">
               <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
@@ -667,8 +672,8 @@
               </script>
             </div>
           </div>
-
         </div>
+
       </div> </div>
   </section>
 
