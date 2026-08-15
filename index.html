@@ -186,7 +186,7 @@
     /* ── NEWS ── */
     #news { background: var(--white); padding: 100px 5%; }
     .news-scroll-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
-    .news-row { display: flex; gap: 24px; padding: 4px; }
+    .news-row { display: flex; gap: 24px; padding: 4px; align-items: flex-start; }
     .news-card { flex: 0 0 320px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.25s; }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); background: white; }
     .news-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; }
@@ -198,6 +198,16 @@
     .news-body { padding: 14px 24px 24px; }
     .news-card h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .news-card p { font-size: 0.86rem; color: var(--text-sub); }
+    /* 공지 첨부파일 */
+    .news-file {
+      display: inline-flex; align-items: center; gap: 7px; margin-top: 14px;
+      background: var(--accent-soft); color: var(--primary);
+      border: 1px solid #cfdaf1; border-radius: 9px;
+      padding: 8px 13px; font-size: 12.5px; font-weight: 600;
+      text-decoration: none; max-width: 100%; transition: all 0.18s;
+    }
+    .news-file:hover { background: #dbe4f7; border-color: var(--accent); }
+    .news-file .fname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     /* ── ADMIN ELEMENTS ── */
     .admin-only { display: none !important; }
     body.is-admin .admin-only { display: block !important; }
@@ -237,21 +247,23 @@
     .admin-btn:hover, .admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
     .admin-badge-float { position: fixed; bottom: 24px; right: 24px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 10px 18px; border-radius: 24px; font-size: 12px; font-weight: 700; box-shadow: 0 6px 18px rgba(44,62,107,0.25); z-index: 99; display: none; }
     .admin-badge-float.visible { display: block; }
-
-    /* ── NEW: 링크/업로드 전환 탭 ── */
+    /* ── 탭 전환 ── */
     .seg { display: flex; gap: 6px; background: var(--bg); padding: 4px; border-radius: 10px; margin-bottom: 14px; }
     .seg button {
-      flex: 1; padding: 8px; border: none; background: transparent; border-radius: 7px;
+      flex: 1; padding: 8px 6px; border: none; background: transparent; border-radius: 7px;
       font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; font-family: inherit; transition: all 0.15s;
     }
     .seg button.on { background: white; color: var(--primary); box-shadow: 0 1px 4px rgba(44,62,107,0.14); }
-    .field-hint { font-size: 11.5px; color: var(--text-sub); margin-top: 6px; line-height: 1.5; }
+    .field-hint { font-size: 11.5px; color: var(--text-sub); margin-top: 6px; line-height: 1.55; }
+    .preview-chip {
+      display: inline-block; margin-top: 7px; padding: 5px 12px; border-radius: 8px;
+      background: var(--accent-soft); color: var(--primary); font-size: 12px; font-weight: 700;
+    }
     .upload-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; display: none; }
     .upload-bar.on { display: block; }
     .upload-bar i { display: block; height: 100%; width: 40%; background: var(--accent); border-radius: 3px; animation: slide 1.1s ease-in-out infinite; }
     @keyframes slide { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
-
-    /* ── NEW: 연결 상태 배너 ── */
+    /* ── 상태 배너 ── */
     .status-banner {
       position: fixed; bottom: 24px; left: 24px; z-index: 99;
       padding: 11px 18px; border-radius: 10px; font-size: 12.5px; font-weight: 600;
@@ -262,7 +274,6 @@
     .status-banner.load { background: var(--accent-soft); color: var(--primary); }
     .status-banner.err  { background: #fce8e6; color: #b3261e; border: 1px solid #f3c2be; }
     .grid-msg { grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-sub); }
-
     /* ── FOOTER ── */
     footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 48px 5% 32px; position: relative; z-index: 2;}
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.15); }
@@ -275,7 +286,6 @@
     .footer-bottom { max-width: 1100px; margin: 24px auto 0; display: flex; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px; }
     @media (max-width: 768px) {
       .about-grid { grid-template-columns: 1fr; }
-      /* 모바일에서도 관리자 버튼은 남겨둡니다 (기존에는 통째로 숨겨져서 로그인이 불가능했습니다) */
       .nav-links a { display: none; }
       .nav-links { gap: 0; }
       .admin-btn { margin-left: 0; }
@@ -298,7 +308,7 @@
         <a href="#about" class="btn-outline">학회 소개</a>
       </div>
       <div class="hero-stats">
-        <div class="stat"><div class="stat-num" id="statMembers">–</div><div class="stat-label">활동 멤버</div></div>
+        <div class="stat"><div class="stat-num" id="statMembers">–</div><div class="stat-label">총 SAFE 멤버</div></div>
         <div class="stat"><div class="stat-num" id="statReports">–</div><div class="stat-label">발간 리포트</div></div>
         <div class="stat"><div class="stat-num" id="statGens">–</div><div class="stat-label">활동 기수</div></div>
       </div>
@@ -420,19 +430,19 @@
         <label>보고서 파일</label>
         <div class="seg">
           <button type="button" id="segLink"   class="on" onclick="setReportMode('link')">🔗 링크 연결</button>
-          <button type="button" id="segUpload"          onclick="setReportMode('upload')">📎 PDF 업로드</button>
+          <button type="button" id="segUpload"          onclick="setReportMode('upload')">📎 파일 업로드</button>
         </div>
 
         <div id="modeLink">
           <input type="text" id="rLink" placeholder="https://drive.google.com/file/d/.../view"/>
           <div class="field-hint">
-            구글 드라이브에서 <b>공유 → 링크가 있는 모든 사용자 → 뷰어</b>로 바꿔야 학회 외부 사람도 열립니다.<br/>
+            구글 드라이브에서 <b>공유 → 링크가 있는 모든 사용자 → 뷰어</b>로 바꿔야 외부 사람도 열립니다.<br/>
             용량이 큰 리포트(10MB 이상)는 이쪽을 쓰는 게 좋습니다.
           </div>
         </div>
 
         <div id="modeUpload" style="display:none;">
-          <input type="file" id="rFile" accept="application/pdf"/>
+          <input type="file" id="rFile" accept=".pdf"/>
           <div class="field-hint" id="rFileCurrent"></div>
           <div class="field-hint">
             사이트에 직접 올립니다. 드라이브 권한 설정 실수로 안 열리는 사고가 없어집니다.<br/>
@@ -462,9 +472,20 @@
         <label>역할 / 직책 (학회장/부학회장 입력 시 상단 고정)</label>
         <input type="text" id="mRole" placeholder="예: 학회장 / 리서치 파트"/>
       </div>
-      <div class="form-row">
-        <label>학과 &amp; 학번</label>
-        <input type="text" id="mDept"/>
+      <div class="form-row-grid">
+        <div class="form-row">
+          <label>학과</label>
+          <input type="text" id="mDept" placeholder="예: 경제학과"/>
+        </div>
+        <div class="form-row">
+          <label>학번 (전체)</label>
+          <input type="text" id="mSid" inputmode="numeric" placeholder="예: 20241234" oninput="previewEntryYear()"/>
+        </div>
+      </div>
+      <div id="mPreviewWrap" style="margin-top:-6px; margin-bottom:14px;"></div>
+      <div class="field-hint" style="margin-top:-8px; margin-bottom:14px;">
+        🔒 <b>전체 학번은 임원진만 볼 수 있습니다.</b> 웹사이트에는 <b>학번 두 자리만</b> 나갑니다.<br/>
+        같은 사람이 여러 기수로 등록돼도 <b>이름 + 학과 + 학번</b>이 같으면 총 멤버 수에서 한 명으로 셉니다.
       </div>
       <div class="modal-error" id="mError"></div>
       <div class="modal-btns">
@@ -489,6 +510,31 @@
       </div>
       <div class="form-row"><label>제목</label><input type="text" id="nTitle"/></div>
       <div class="form-row"><label>내용</label><textarea id="nDesc" rows="4"></textarea></div>
+
+      <div class="form-row">
+        <label>첨부파일 (선택)</label>
+        <div class="seg">
+          <button type="button" id="nSegNone"   class="on" onclick="setNewsMode('none')">없음</button>
+          <button type="button" id="nSegLink"            onclick="setNewsMode('link')">🔗 링크</button>
+          <button type="button" id="nSegUpload"          onclick="setNewsMode('upload')">📎 파일 업로드</button>
+        </div>
+
+        <div id="nModeLink" style="display:none;">
+          <input type="text" id="nLink" placeholder="https://drive.google.com/... 또는 지원서 폼 주소"/>
+          <div class="field-hint">구글 드라이브·폼 주소를 붙여넣으면 공지 카드에 버튼으로 표시됩니다.</div>
+        </div>
+
+        <div id="nModeUpload" style="display:none;">
+          <input type="file" id="nFile" accept=".pdf,.doc,.docx,.hwp,.hwpx,.ppt,.pptx,.xls,.xlsx"/>
+          <div class="field-hint" id="nFileCurrent"></div>
+          <div class="field-hint">
+            모집요강·지원서 양식 등을 올릴 수 있습니다.<br/>
+            <b>PDF · 워드(doc, docx) · 한글(hwp) · 엑셀 · PPT</b> 지원, 10MB 이하 권장.
+          </div>
+          <div class="upload-bar" id="nUploadBar"><i></i></div>
+        </div>
+      </div>
+
       <div class="modal-error" id="nError"></div>
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('newsModal')">취소</button>
@@ -521,7 +567,6 @@
           "hide_top_toolbar": false,
           "hide_legend": false,
           "save_image": false,
-          "container_id": "tradingview_market",
           "support_host": "https://www.tradingview.com"
         }
         </script>
@@ -601,24 +646,35 @@
   </footer>
 </div>
 
-<!-- Supabase 클라이언트 -->
+<!-- ⚙️ 키 설정은 config.js 파일에 있습니다. 이 파일은 건드릴 필요 없습니다. -->
+<script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   ⚙️ 여기 두 줄만 본인 프로젝트 값으로 바꾸세요.
-   Supabase 대시보드 → Project Settings → API 에서 복사합니다.
-
-   ⚠️ anon key는 공개되어도 괜찮습니다. 원래 브라우저에 노출되도록
-      설계된 키이고, 실제 권한은 서버의 RLS 정책이 통제합니다.
-      절대 넣으면 안 되는 건 service_role key 입니다.
+   SAFE 웹사이트 — Supabase 연동
+   설정값(주소·키)은 config.js 에 있습니다.
    ═══════════════════════════════════════════════════════════════ */
-const SUPABASE_URL      = 'https://vxccyrwnrewsnbmgqiqd.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_YPRU6IL_gV9hsdYwD1CkPw_wUDuX0_2';
 
-/* ─────────────────────────────────────────────────────────────── */
+var CFG = window.SAFE_CONFIG || {};
+// 주소 끝 슬래시 / 공백은 자동으로 정리합니다
+var SUPABASE_URL      = String(CFG.SUPABASE_URL || '').trim().replace(/\/+$/, '');
+var SUPABASE_ANON_KEY = String(CFG.SUPABASE_ANON_KEY || '').trim();
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+var sb = null;
+var configError = null;
+
+if (!window.SAFE_CONFIG) {
+  configError = 'config.js 파일을 찾을 수 없습니다. index.html 과 같은 위치에 있어야 합니다.';
+} else if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(SUPABASE_URL)) {
+  configError = 'config.js 의 SUPABASE_URL 이 올바르지 않습니다. https://프로젝트ID.supabase.co 형식이어야 합니다.';
+} else if (/^sb_secret_/.test(SUPABASE_ANON_KEY)) {
+  configError = '⛔ config.js 에 secret key 가 들어 있습니다. 즉시 Publishable key 로 바꾸고, Supabase에서 secret key를 재발급하세요.';
+} else if (!SUPABASE_ANON_KEY || /여기에|YOUR/i.test(SUPABASE_ANON_KEY)) {
+  configError = 'config.js 의 SUPABASE_ANON_KEY 를 아직 입력하지 않았습니다.';
+} else {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
 
 const CATEGORY_META = {
   economy:  { label: '경제 보고서',      cls: 'tag-macro' },
@@ -629,7 +685,6 @@ const NEWS_TYPE_META = {
   event:   { label: '이벤트', cls: 'type-event' },
   notice:  { label: '공지',   cls: 'type-notice' }
 };
-
 const FALLBACK_ABOUT = {
   title: '서강대 경제·금융 분석 학회',
   body1: 'SAFE(Sogang Analysis of Finance & Economics)는 2025년에 설립된 서강대학교 경영·경제학과 기반의 경제 금융 분석 학회입니다.',
@@ -638,23 +693,38 @@ const FALLBACK_ABOUT = {
 
 // ── 상태 ──
 let aboutData = { ...FALLBACK_ABOUT };
-let reports = [];
-let members = [];
-let news    = [];
-
+let reports = [], members = [], news = [];
 let isAdmin = false;
 let activeReportGen = 'none';
 let activeMemberGen = 'none';
-let editingReportId = null;
-let editingMemberId = null;
-let editingNewsId   = null;
-let reportMode = 'link';
-let editingReportStoragePath = null;
+let editingReportId = null, editingMemberId = null, editingNewsId = null;
+let reportMode = 'link', newsMode = 'none';
+let editingReportStoragePath = null, editingNewsStoragePath = null;
 
 function esc(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/* ═══════════════ 학번 → 표시용 두 자리 ═══════════════
+   20241234 → 앞 4자리(2024)가 연도 → '24'
+   24123456 → 연도 형태가 아니므로 앞 두 자리 → '24'
+   (서버의 계산 규칙과 동일합니다)                        */
+function entryYearOf(sid) {
+  const d = String(sid || '').replace(/\D/g, '');
+  if (d.length >= 4 && /^(19|20)\d{2}$/.test(d.slice(0, 4))) return d.slice(2, 4);
+  return d.slice(0, 2);
+}
+
+function previewEntryYear() {
+  const sid  = document.getElementById('mSid').value;
+  const dept = document.getElementById('mDept').value.trim();
+  const y    = entryYearOf(sid);
+  const wrap = document.getElementById('mPreviewWrap');
+  wrap.innerHTML = y.length === 2
+    ? `<span class="preview-chip">웹사이트 표시: ${esc(dept || '○○학과')} ${esc(y)}학번</span>`
+    : '';
 }
 
 // ── 상태 배너 ──
@@ -664,7 +734,6 @@ function setStatus(kind, msg) {
   b.className = 'status-banner show ' + kind;
   b.innerHTML = msg;
 }
-
 function busy(btnId, on, labelOn, labelOff) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
@@ -675,6 +744,7 @@ function busy(btnId, on, labelOn, labelOff) {
 /* ═══════════════ 데이터 로드 ═══════════════ */
 
 async function loadAll(silent) {
+  if (!sb) return;
   if (!silent) setStatus('load', '⏳ 데이터를 불러오는 중…');
   try {
     const [a, r, m, n] = await Promise.all([
@@ -714,10 +784,22 @@ function renderEverything() {
   renderNews();
 }
 
+/* 같은 사람이 여러 기수로 등록돼도 한 명으로 셉니다.
+   기준: 이름 + 학과 + 전체 학번 (서버가 만든 person_key)   */
+function totalUniqueMembers() {
+  const seen = new Set();
+  members.forEach(m => {
+    const key = m.person_key
+      || `${String(m.name || '').trim()}|${String(m.dept || '').trim()}|${m.entry_year || ''}`.toLowerCase();
+    seen.add(key);
+  });
+  return seen.size;
+}
+
 function renderStats() {
   const gens = getGens(members).filter(g => g > 0);
   const latest = gens.length ? Math.max.apply(null, gens) : 0;
-  document.getElementById('statMembers').textContent = members.filter(m => m.gen === latest).length || members.length;
+  document.getElementById('statMembers').textContent = totalUniqueMembers();
   document.getElementById('statReports').textContent = reports.length;
   document.getElementById('statGens').textContent    = latest ? latest + '기' : '–';
 }
@@ -787,9 +869,7 @@ function renderSelectGens(selectId, gens, activeGen) {
 
 /* ═══════════════ REPORTS ═══════════════ */
 
-function renderReportGenTabs() {
-  renderSelectGens('reportGenSelect', getGens(reports), activeReportGen);
-}
+function renderReportGenTabs() { renderSelectGens('reportGenSelect', getGens(reports), activeReportGen); }
 function selectReportGen(val) {
   activeReportGen = (val === 'none' || val === '') ? 'none' : Number(val);
   renderReports();
@@ -797,7 +877,6 @@ function selectReportGen(val) {
 
 function renderReports() {
   const grid = document.getElementById('reportsGrid');
-
   if (activeReportGen === 'none') {
     grid.innerHTML = '<div class="grid-msg">기수를 선택하시면 해당 기수의 보고서를 확인할 수 있습니다.</div>';
     return;
@@ -807,7 +886,6 @@ function renderReports() {
     grid.innerHTML = '<div class="grid-msg">해당 기수에 등록된 보고서가 없습니다.</div>';
     return;
   }
-
   grid.innerHTML = list.map(r => {
     const cat = CATEGORY_META[r.category] || { label: '기타', cls: 'tag-macro' };
     const dlLabel = r.file_type === 'upload' ? 'PDF ↓' : '링크 열기 ↗';
@@ -837,17 +915,11 @@ function setReportMode(mode) {
 }
 
 function openReportModal() {
-  editingReportId = null;
-  editingReportStoragePath = null;
+  editingReportId = null; editingReportStoragePath = null;
   document.getElementById('reportModalTitle').textContent = '📋 보고서 추가';
-  document.getElementById('rTitle').value = '';
+  ['rTitle','rAuthor','rDate','rDesc','rLink','rFile'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('rGen').value = (activeReportGen !== 'none') ? activeReportGen : '';
   document.getElementById('rCategory').value = 'economy';
-  document.getElementById('rAuthor').value = '';
-  document.getElementById('rDate').value = '';
-  document.getElementById('rDesc').value = '';
-  document.getElementById('rLink').value = '';
-  document.getElementById('rFile').value = '';
   document.getElementById('rFileCurrent').textContent = '';
   document.getElementById('rError').textContent = '';
   setReportMode('link');
@@ -873,7 +945,7 @@ function openReportEdit(id) {
     setReportMode('upload');
     document.getElementById('rLink').value = '';
     document.getElementById('rFileCurrent').innerHTML =
-      '현재 파일: <b>' + esc((r.storage_path || '').replace(/^\d+_/, '')) + '</b> — 파일을 새로 선택하지 않으면 그대로 유지됩니다.';
+      '현재 파일: <b>' + esc((r.storage_path || '').replace(/^\d+_/, '')) + '</b> — 새로 선택하지 않으면 그대로 유지됩니다.';
   } else {
     setReportMode('link');
     document.getElementById('rLink').value = r.file_url || '';
@@ -900,53 +972,36 @@ async function submitReport() {
 
   if (reportMode === 'link') {
     const link = document.getElementById('rLink').value.trim();
-    if (!link) return err.textContent = '구글 드라이브 링크를 입력해주세요.';
+    if (!link) return err.textContent = '링크를 입력해주세요.';
     if (!/^https?:\/\//i.test(link)) return err.textContent = '링크는 http:// 또는 https:// 로 시작해야 합니다.';
-    file_url = link;
-    file_type = 'link';
-    // 링크 방식으로 바꾸면 기존 업로드 파일은 정리
+    file_url = link; file_type = 'link';
     if (editingReportStoragePath) {
-      await sb.storage.from('reports').remove([editingReportStoragePath]).catch(() => {});
+      await removeFile('reports', editingReportStoragePath);
       storage_path = null;
     }
   } else {
     const f = document.getElementById('rFile').files[0];
     if (!f && !editingReportStoragePath) return err.textContent = 'PDF 파일을 선택해주세요.';
-
     if (f) {
-      if (f.type !== 'application/pdf') return err.textContent = 'PDF 파일만 업로드할 수 있습니다.';
-      if (f.size > 25 * 1024 * 1024) return err.textContent = '파일이 25MB를 넘습니다. 구글 드라이브 링크 방식을 이용해주세요.';
-      if (f.size > 10 * 1024 * 1024 &&
-          !confirm('10MB가 넘는 파일입니다.\n무료 저장공간(1GB)과 월 전송량(5GB)을 빠르게 소모합니다.\n그래도 업로드할까요?')) return;
+      const chk = checkFile(f, ['pdf']);
+      if (chk) return err.textContent = chk;
 
       document.getElementById('rUploadBar').classList.add('on');
       busy('rSubmitBtn', true, '업로드 중…', '저장');
-
-      const safeName = f.name.replace(/[^\w.\-]/g, '_');
-      const path = Date.now() + '_' + safeName;
-      const up = await sb.storage.from('reports').upload(path, f, { contentType: 'application/pdf', upsert: false });
-
+      const path = newPath(f.name);
+      const up = await sb.storage.from('reports').upload(path, f);
       document.getElementById('rUploadBar').classList.remove('on');
       busy('rSubmitBtn', false, '업로드 중…', '저장');
-
       if (up.error) return err.textContent = '업로드 실패: ' + dbMsg(up.error);
 
-      if (editingReportStoragePath) {
-        await sb.storage.from('reports').remove([editingReportStoragePath]).catch(() => {});
-      }
+      if (editingReportStoragePath) await removeFile('reports', editingReportStoragePath);
       storage_path = path;
     }
-
     file_type = 'upload';
     file_url = sb.storage.from('reports').getPublicUrl(storage_path).data.publicUrl;
   }
 
-  const payload = {
-    title, gen, category, author,
-    date: date.replace('-', '.'),
-    description: desc,
-    file_url, file_type, storage_path
-  };
+  const payload = { title, gen, category, author, date: date.replace('-', '.'), description: desc, file_url, file_type, storage_path };
 
   busy('rSubmitBtn', true, '저장 중…', '저장');
   const { error } = editingReportId
@@ -955,7 +1010,6 @@ async function submitReport() {
   busy('rSubmitBtn', false, '저장 중…', '저장');
 
   if (error) return err.textContent = dbMsg(error);
-
   if (!isNaN(gen)) activeReportGen = gen;
   await loadAll(true);
   closeModal('reportModal');
@@ -966,15 +1020,13 @@ async function deleteReport(id) {
   const r = reports.find(x => x.id === id);
   const { error } = await sb.from('reports').delete().eq('id', id);
   if (error) return alert('삭제 실패: ' + dbMsg(error));
-  if (r && r.storage_path) await sb.storage.from('reports').remove([r.storage_path]).catch(() => {});
+  if (r && r.storage_path) await removeFile('reports', r.storage_path);
   await loadAll(true);
 }
 
 /* ═══════════════ MEMBERS ═══════════════ */
 
-function renderMemberGenTabs() {
-  renderSelectGens('memberGenSelect', getGens(members), activeMemberGen);
-}
+function renderMemberGenTabs() { renderSelectGens('memberGenSelect', getGens(members), activeMemberGen); }
 function selectMemberGen(val) {
   activeMemberGen = (val === 'none' || val === '') ? 'none' : Number(val);
   renderMembers();
@@ -990,7 +1042,6 @@ function renderMembers() {
     return;
   }
   const list = members.filter(m => m.gen === activeMemberGen);
-
   if (list.length === 0) {
     leadersGrid.innerHTML = '';
     regularsGrid.innerHTML = '<div class="grid-msg">해당 기수에 등록된 멤버가 없습니다.</div>';
@@ -1000,7 +1051,10 @@ function renderMembers() {
   const leaders  = list.filter(isLeader);
   const regulars = list.filter(m => !isLeader(m));
 
-  const createCard = (m) => `
+  const createCard = (m) => {
+    const year = m.entry_year ? ` ${esc(m.entry_year)}학번` : '';
+    const genLabel = m.gen === 0 ? '설립 멤버' : m.gen + '기';
+    return `
     <div class="member-card">
       <div class="card-admin-actions">
         <button class="card-edit-btn" onclick="openMemberEdit(${m.id})">✏️ 수정</button>
@@ -1009,9 +1063,9 @@ function renderMembers() {
       <div class="member-avatar">${esc((m.name || '?').charAt(0))}</div>
       <h4>${esc(m.name)}</h4>
       <div class="member-role">${esc(m.role)}</div>
-      <p>${esc(m.dept)} · ${m.gen === 0 ? '설립 멤버' : m.gen + '기'}</p>
-    </div>
-  `;
+      <p>${esc(m.dept)}${year} · ${genLabel}</p>
+    </div>`;
+  };
   leadersGrid.innerHTML  = leaders.map(createCard).join('');
   regularsGrid.innerHTML = regulars.map(createCard).join('');
 }
@@ -1019,50 +1073,76 @@ function renderMembers() {
 function openMemberModal() {
   editingMemberId = null;
   document.getElementById('memberModalTitle').textContent = '👤 멤버 추가';
-  document.getElementById('mName').value = '';
+  ['mName','mRole','mDept','mSid'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('mGen').value = (activeMemberGen !== 'none') ? activeMemberGen : '';
-  document.getElementById('mRole').value = '';
-  document.getElementById('mDept').value = '';
   document.getElementById('mError').textContent = '';
+  document.getElementById('mPreviewWrap').innerHTML = '';
   document.getElementById('memberModal').classList.add('open');
 }
 
-function openMemberEdit(id) {
+async function openMemberEdit(id) {
   const m = members.find(x => x.id === id);
   if (!m) return;
   editingMemberId = id;
   document.getElementById('memberModalTitle').textContent = '✏️ 멤버 수정';
   document.getElementById('mName').value = m.name;
-  document.getElementById('mGen').value = m.gen;
+  document.getElementById('mGen').value  = m.gen;
   document.getElementById('mRole').value = m.role;
   document.getElementById('mDept').value = m.dept || '';
+  document.getElementById('mSid').value  = '';
   document.getElementById('mError').textContent = '';
+  document.getElementById('mPreviewWrap').innerHTML = '';
   document.getElementById('memberModal').classList.add('open');
+
+  // 전체 학번은 로그인한 임원진만 읽을 수 있습니다
+  const { data } = await sb.from('member_ids').select('student_id').eq('member_id', id).maybeSingle();
+  if (data && data.student_id) {
+    document.getElementById('mSid').value = data.student_id;
+    previewEntryYear();
+  }
 }
 
 async function submitMember() {
   const err  = document.getElementById('mError');
+  err.textContent = '';
+
   const name = document.getElementById('mName').value.trim();
   const gen  = parseInt(document.getElementById('mGen').value, 10);
   const role = document.getElementById('mRole').value.trim();
   const dept = document.getElementById('mDept').value.trim();
+  const sid  = document.getElementById('mSid').value.replace(/\D/g, '');
 
-  if (!name || !role) return err.textContent = '이름과 역할을 입력해주세요.';
+  if (!name || !role || !dept) return err.textContent = '이름·역할·학과를 모두 입력해주세요.';
   if (isNaN(gen)) return err.textContent = '기수를 숫자로 입력해주세요 (설립멤버는 0).';
-
-  const payload = { name, gen, role, dept };
+  if (sid.length < 2) return err.textContent = '학번을 숫자로 입력해주세요 (예: 20241234).';
 
   busy('mSubmitBtn', true, '저장 중…', '저장');
-  const { error } = editingMemberId
-    ? await sb.from('members').update(payload).eq('id', editingMemberId)
-    : await sb.from('members').insert(payload);
-  busy('mSubmitBtn', false, '저장 중…', '저장');
+  try {
+    let memberId = editingMemberId;
 
-  if (error) return err.textContent = dbMsg(error);
+    if (editingMemberId) {
+      const { error } = await sb.from('members').update({ name, gen, role, dept }).eq('id', editingMemberId);
+      if (error) throw error;
+    } else {
+      const { data, error } = await sb.from('members').insert({ name, gen, role, dept }).select('id').single();
+      if (error) throw error;
+      memberId = data.id;
+    }
 
-  activeMemberGen = gen;
-  await loadAll(true);
-  closeModal('memberModal');
+    // 학번은 임원진 전용 테이블에 저장 → 서버가 학번 두 자리와 동일인 지문을 자동 계산
+    const { error: e2 } = await sb.from('member_ids')
+      .upsert({ member_id: memberId, student_id: sid, updated_at: new Date().toISOString() },
+              { onConflict: 'member_id' });
+    if (e2) throw e2;
+
+    activeMemberGen = gen;
+    await loadAll(true);
+    closeModal('memberModal');
+  } catch (e) {
+    err.textContent = dbMsg(e);
+  } finally {
+    busy('mSubmitBtn', false, '저장 중…', '저장');
+  }
 }
 
 async function deleteMember(id) {
@@ -1082,6 +1162,12 @@ function renderNews() {
   }
   grid.innerHTML = news.map(n => {
     const meta = NEWS_TYPE_META[n.type] || NEWS_TYPE_META.notice;
+    const fileBtn = n.file_url ? `
+      <a href="${esc(n.file_url)}" target="_blank" rel="noopener" class="news-file">
+        <span>${n.file_type === 'upload' ? '📎' : '🔗'}</span>
+        <span class="fname">${esc(n.file_name || '첨부파일')}</span>
+        <span>${n.file_type === 'upload' ? '↓' : '↗'}</span>
+      </a>` : '';
     return `
     <div class="news-card">
       <div class="news-header">
@@ -1095,19 +1181,30 @@ function renderNews() {
         </div>
         <h3>${esc(n.title)}</h3>
         <p>${esc(n.description)}</p>
+        ${fileBtn}
       </div>
     </div>`;
   }).join('');
 }
 
+function setNewsMode(mode) {
+  newsMode = mode;
+  document.getElementById('nSegNone').classList.toggle('on',   mode === 'none');
+  document.getElementById('nSegLink').classList.toggle('on',   mode === 'link');
+  document.getElementById('nSegUpload').classList.toggle('on', mode === 'upload');
+  document.getElementById('nModeLink').style.display   = mode === 'link'   ? 'block' : 'none';
+  document.getElementById('nModeUpload').style.display = mode === 'upload' ? 'block' : 'none';
+}
+
 function openNewsModal() {
-  editingNewsId = null;
+  editingNewsId = null; editingNewsStoragePath = null;
   document.getElementById('newsModalTitle').textContent = '📢 공지 추가';
   document.getElementById('nType').value = 'notice';
   document.getElementById('nDate').value = new Date().toISOString().slice(0, 10);
-  document.getElementById('nTitle').value = '';
-  document.getElementById('nDesc').value = '';
+  ['nTitle','nDesc','nLink','nFile'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('nFileCurrent').textContent = '';
   document.getElementById('nError').textContent = '';
+  setNewsMode('none');
   document.getElementById('newsModal').classList.add('open');
 }
 
@@ -1115,25 +1212,84 @@ function openNewsEdit(id) {
   const n = news.find(x => x.id === id);
   if (!n) return;
   editingNewsId = id;
+  editingNewsStoragePath = n.storage_path || null;
   document.getElementById('newsModalTitle').textContent = '✏️ 공지 수정';
   document.getElementById('nType').value = n.type;
   document.getElementById('nDate').value = String(n.date || '').replace(/\./g, '-');
   document.getElementById('nTitle').value = n.title;
   document.getElementById('nDesc').value = n.description || '';
   document.getElementById('nError').textContent = '';
+  document.getElementById('nFile').value = '';
+  document.getElementById('nLink').value = '';
+  document.getElementById('nFileCurrent').textContent = '';
+
+  if (n.file_type === 'upload') {
+    setNewsMode('upload');
+    document.getElementById('nFileCurrent').innerHTML =
+      '현재 파일: <b>' + esc(n.file_name || '첨부파일') + '</b> — 새로 선택하지 않으면 그대로 유지됩니다.';
+  } else if (n.file_type === 'link') {
+    setNewsMode('link');
+    document.getElementById('nLink').value = n.file_url || '';
+  } else {
+    setNewsMode('none');
+  }
   document.getElementById('newsModal').classList.add('open');
 }
 
 async function submitNewsData() {
   const err   = document.getElementById('nError');
+  err.textContent = '';
+
   const type  = document.getElementById('nType').value;
   const date  = document.getElementById('nDate').value;
   const title = document.getElementById('nTitle').value.trim();
   const desc  = document.getElementById('nDesc').value.trim();
 
-  if (!date || !title || !desc) return err.textContent = '모든 필드를 입력해주세요.';
+  if (!date || !title || !desc) return err.textContent = '유형·날짜·제목·내용을 모두 입력해주세요.';
 
-  const payload = { type, date: date.replace(/-/g, '.'), title, description: desc };
+  let file_url = null, file_type = null, storage_path = editingNewsStoragePath, file_name = null;
+
+  if (newsMode === 'none') {
+    if (editingNewsStoragePath) { await removeFile('notices', editingNewsStoragePath); storage_path = null; }
+
+  } else if (newsMode === 'link') {
+    const link = document.getElementById('nLink').value.trim();
+    if (!link) return err.textContent = '링크를 입력해주세요.';
+    if (!/^https?:\/\//i.test(link)) return err.textContent = '링크는 http:// 또는 https:// 로 시작해야 합니다.';
+    file_url = link; file_type = 'link'; file_name = '자세히 보기';
+    if (editingNewsStoragePath) { await removeFile('notices', editingNewsStoragePath); storage_path = null; }
+
+  } else {
+    const f = document.getElementById('nFile').files[0];
+    const prev = news.find(x => x.id === editingNewsId);
+    if (!f && !editingNewsStoragePath) return err.textContent = '첨부할 파일을 선택해주세요.';
+
+    if (f) {
+      const chk = checkFile(f, ['pdf','doc','docx','hwp','hwpx','ppt','pptx','xls','xlsx']);
+      if (chk) return err.textContent = chk;
+
+      document.getElementById('nUploadBar').classList.add('on');
+      busy('nSubmitBtn', true, '업로드 중…', '저장');
+      const path = newPath(f.name);
+      const up = await sb.storage.from('notices').upload(path, f);
+      document.getElementById('nUploadBar').classList.remove('on');
+      busy('nSubmitBtn', false, '업로드 중…', '저장');
+      if (up.error) return err.textContent = '업로드 실패: ' + dbMsg(up.error);
+
+      if (editingNewsStoragePath) await removeFile('notices', editingNewsStoragePath);
+      storage_path = path;
+      file_name = f.name;
+    } else {
+      file_name = prev ? prev.file_name : '첨부파일';
+    }
+    file_type = 'upload';
+    file_url = sb.storage.from('notices').getPublicUrl(storage_path).data.publicUrl;
+  }
+
+  const payload = {
+    type, date: date.replace(/-/g, '.'), title, description: desc,
+    file_url, file_type, storage_path, file_name
+  };
 
   busy('nSubmitBtn', true, '저장 중…', '저장');
   const { error } = editingNewsId
@@ -1142,16 +1298,40 @@ async function submitNewsData() {
   busy('nSubmitBtn', false, '저장 중…', '저장');
 
   if (error) return err.textContent = dbMsg(error);
-
   await loadAll(true);
   closeModal('newsModal');
 }
 
 async function deleteNews(id) {
   if (!confirm('삭제하시겠습니까? 모든 방문자에게 즉시 반영됩니다.')) return;
+  const n = news.find(x => x.id === id);
   const { error } = await sb.from('news').delete().eq('id', id);
   if (error) return alert('삭제 실패: ' + dbMsg(error));
+  if (n && n.storage_path) await removeFile('notices', n.storage_path);
   await loadAll(true);
+}
+
+/* ═══════════════ 파일 공통 ═══════════════ */
+
+function newPath(name) {
+  const safeName = name.replace(/[^\w.\-]/g, '_');
+  return Date.now() + '_' + safeName;
+}
+
+function checkFile(f, exts) {
+  const ext = (f.name.split('.').pop() || '').toLowerCase();
+  if (exts.indexOf(ext) === -1)
+    return '지원하지 않는 형식입니다. (' + exts.join(', ') + ' 만 가능)';
+  if (f.size > 25 * 1024 * 1024)
+    return '파일이 25MB를 넘습니다. 링크 방식을 이용해주세요.';
+  if (f.size > 10 * 1024 * 1024 &&
+      !confirm('10MB가 넘는 파일입니다.\n무료 저장공간(1GB)과 월 전송량(5GB)을 빠르게 소모합니다.\n그래도 올릴까요?'))
+    return '업로드를 취소했습니다.';
+  return null;
+}
+
+async function removeFile(bucket, path) {
+  try { await sb.storage.from(bucket).remove([path]); } catch (e) { console.warn('파일 삭제 실패:', e); }
 }
 
 /* ═══════════════ 오류 메시지 한글화 ═══════════════ */
@@ -1164,6 +1344,12 @@ function dbMsg(error) {
     return '로그인이 만료되었습니다. 다시 로그인해주세요.';
   if (/Failed to fetch|NetworkError/i.test(m))
     return '서버에 연결할 수 없습니다. 인터넷 연결 또는 Supabase 프로젝트 상태를 확인해주세요.';
+  if (/member_ids.*does not exist|relation .*member_ids/i.test(m))
+    return 'DB 업데이트가 필요합니다. supabase-setup.sql 을 SQL Editor에서 다시 실행해주세요.';
+  if (/column .* does not exist/i.test(m))
+    return 'DB 업데이트가 필요합니다. supabase-setup.sql 을 SQL Editor에서 다시 실행해주세요.';
+  if (/Bucket not found/i.test(m))
+    return '파일 보관함이 없습니다. supabase-setup.sql 을 다시 실행해주세요.';
   if (/duplicate/i.test(m)) return '이미 같은 항목이 있습니다.';
   return m;
 }
@@ -1183,6 +1369,7 @@ function updateAdminUI() {
 }
 
 async function handleAdminBtn() {
+  if (!sb) return alert('설정이 완료되지 않았습니다. config.js 를 확인해주세요.');
   if (isAdmin) {
     if (confirm('로그아웃 하시겠습니까?')) await sb.auth.signOut();
   } else {
@@ -1197,7 +1384,6 @@ async function submitLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pw    = document.getElementById('loginPassword').value;
   const err   = document.getElementById('loginError');
-
   if (!email || !pw) return err.textContent = '이메일과 비밀번호를 모두 입력해주세요.';
 
   busy('loginSubmitBtn', true, '로그인 중…', '로그인');
@@ -1213,10 +1399,12 @@ async function submitLogin() {
   closeModal('loginModal');
 }
 
-sb.auth.onAuthStateChange((_event, session) => {
-  isAdmin = !!session;
-  updateAdminUI();
-});
+if (sb) {
+  sb.auth.onAuthStateChange((_event, session) => {
+    isAdmin = !!session;
+    updateAdminUI();
+  });
+}
 
 /* ═══════════════ 실시간 반영 ═══════════════ */
 
@@ -1226,21 +1414,21 @@ function scheduleRefresh() {
   refreshTimer = setTimeout(() => loadAll(true), 400);
 }
 
-try {
-  sb.channel('safe-public')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'about'   }, scheduleRefresh)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, scheduleRefresh)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, scheduleRefresh)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'news'    }, scheduleRefresh)
-    .subscribe();
-} catch (e) {
-  console.warn('[SAFE] 실시간 구독 실패 (새로고침하면 최신 데이터가 보입니다):', e);
+if (sb) {
+  try {
+    sb.channel('safe-public')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'about'   }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, scheduleRefresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'news'    }, scheduleRefresh)
+      .subscribe();
+  } catch (e) {
+    console.warn('[SAFE] 실시간 구독 실패 (새로고침하면 최신 데이터가 보입니다):', e);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') loadAll(true);
+  });
 }
-
-// 탭을 다시 열었을 때 최신 데이터로 맞춤
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') loadAll(true);
-});
 
 /* ═══════════════ 모달 / 스크롤 ═══════════════ */
 
@@ -1252,6 +1440,7 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(el => el.classList.remove('open'));
 });
+document.getElementById('mDept').addEventListener('input', previewEntryYear);
 
 const sections = ['home','about','market','reports','members','news'];
 window.addEventListener('scroll', () => {
@@ -1274,7 +1463,13 @@ window.addEventListener('scroll', () => {
 
 updateAdminUI();
 renderEverything();
-loadAll();
+
+if (configError) {
+  setStatus('err', '⚠️ 설정 오류<br/><span style="font-weight:500">' + esc(configError) + '</span>');
+  console.error('[SAFE]', configError);
+} else {
+  loadAll();
+}
 </script>
 </body>
 </html>
