@@ -1,0 +1,41 @@
+# ═══════════════════════════════════════════════════════════════
+#  Supabase 무료 플랜은 1주일간 아무 접속이 없으면 프로젝트를
+#  자동으로 일시정지시킵니다. 방학처럼 방문자가 없는 기간에
+#  사이트가 빈 화면이 되는 걸 막기 위해 3일마다 한 번씩 핑을 보냅니다.
+#
+#  ⚙️ 설정 방법 (1회):
+#    GitHub 저장소 → Settings → Secrets and variables → Actions
+#    → New repository secret 으로 아래 2개를 등록하세요.
+#      SUPABASE_URL       = https://xxxxx.supabase.co
+#      SUPABASE_ANON_KEY  = eyJhbGciOi...  (anon public key)
+#
+#  ⚠️ service_role key는 절대 넣지 마세요. anon key만 씁니다.
+# ═══════════════════════════════════════════════════════════════
+
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    - cron: '0 3 */3 * *'   # 3일마다 UTC 03:00 (한국시간 정오)
+  workflow_dispatch:         # Actions 탭에서 수동 실행도 가능
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          STATUS=$(curl -s -o /tmp/body.txt -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/news?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+
+          echo "HTTP $STATUS"
+          cat /tmp/body.txt
+
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Supabase 응답이 200이 아닙니다 (HTTP $STATUS). 프로젝트가 일시정지되었거나 키가 잘못되었을 수 있습니다."
+            exit 1
+          fi
+
+          echo "✅ Supabase 정상 동작 중"
