@@ -158,6 +158,22 @@
       background: white; border: 1px solid var(--border); border-radius: 14px;
       overflow: hidden; box-shadow: 0 12px 32px rgba(44,62,107,0.05);
     }
+    /* 경제지표 · 뉴스 · FX 패널 */
+    .market-grid {
+      max-width: 1100px; margin: 24px auto 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;
+    }
+    .market-panel {
+      background: white; border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; box-shadow: 0 12px 32px rgba(44,62,107,0.05);
+      height: 460px; display: flex; flex-direction: column;
+    }
+    .market-panel-head { padding: 16px 20px 13px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .market-panel-head h3 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+    .market-panel-head span { font-size: 11.5px; color: var(--text-sub); }
+    .market-panel-body { flex: 1; min-height: 0; overflow: hidden; }
+    .market-panel-body .tradingview-widget-container,
+    .market-panel-body .tradingview-widget-container__widget { height: 100%; width: 100%; }
     /* ── REPORTS ── */
     #reports { background: var(--white); padding: 100px 5%; }
     .reports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
@@ -571,6 +587,82 @@
         }
         </script>
       </div>
+    </div>
+
+    <div class="market-grid">
+
+      <!-- 경제지표 캘린더 -->
+      <div class="market-panel">
+        <div class="market-panel-head">
+          <h3>📅 경제지표 캘린더</h3>
+          <span>주요국 지표 발표 일정과 예상치</span>
+        </div>
+        <div class="market-panel-body">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+            {
+              "colorTheme": "light",
+              "isTransparent": false,
+              "locale": "kr",
+              "countryFilter": "us,eu,kr,jp,cn,gb",
+              "importanceFilter": "0,1",
+              "width": "100%",
+              "height": "100%"
+            }
+            </script>
+          </div>
+        </div>
+      </div>
+
+      <!-- 마켓 뉴스 -->
+      <div class="market-panel">
+        <div class="market-panel-head">
+          <h3>📰 마켓 뉴스</h3>
+          <span>실시간 글로벌 금융 헤드라인</span>
+        </div>
+        <div class="market-panel-body">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+            {
+              "feedMode": "all_symbols",
+              "isTransparent": false,
+              "displayMode": "regular",
+              "colorTheme": "light",
+              "locale": "kr",
+              "width": "100%",
+              "height": "100%"
+            }
+            </script>
+          </div>
+        </div>
+      </div>
+
+      <!-- 환율 -->
+      <div class="market-panel">
+        <div class="market-panel-head">
+          <h3>💱 주요 통화 환율</h3>
+          <span>원화 · 달러 · 유로 · 엔 크로스 레이트</span>
+        </div>
+        <div class="market-panel-body">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-cross-rates.js" async>
+            {
+              "currencies": ["KRW", "USD", "EUR", "JPY", "CNY", "GBP"],
+              "isTransparent": false,
+              "colorTheme": "light",
+              "locale": "kr",
+              "backgroundColor": "#ffffff",
+              "width": "100%",
+              "height": "100%"
+            }
+            </script>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
