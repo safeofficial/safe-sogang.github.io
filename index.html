@@ -26,6 +26,9 @@
       color: var(--text);
       line-height: 1.6;
       padding-top: 156px;
+      /* 한글이 단어 중간에서 잘리지 않게 (예: '…공동체입 / 니다.' 방지) */
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     /* ── TICKER TAPE ── */
     .ticker-tape-wrap {
@@ -119,7 +122,7 @@
     #about { background: transparent !important; padding: 60px 5% 120px; }
     .about-header-wrapper { text-align: center; margin-bottom: 60px; }
     .about-header-wrapper h2 { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
-    .about-header-wrapper p { color: var(--text-sub); font-weight: 500; font-size: 1rem; max-width: 500px; margin: 0 auto; }
+    .about-header-wrapper p { color: var(--text-sub); font-weight: 500; font-size: 1rem; max-width: 640px; margin: 0 auto; }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
     .about-text p { color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line; }
@@ -269,6 +272,11 @@
     .form-row textarea { resize: vertical; }
     .form-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .modal-error { font-size: 0.83rem; color: #c62828; min-height: 18px; margin-bottom: 8px; text-align: center; }
+    .modal-group {
+      margin: 22px 0 12px; padding-top: 16px; border-top: 1px solid var(--border);
+      font-size: 0.86rem; font-weight: 800; color: var(--primary); letter-spacing: 0.2px;
+    }
+    .modal-group:first-of-type { border-top: none; padding-top: 0; margin-top: 4px; }
     .modal-btns { display: flex; gap: 10px; margin-top: 8px; }
     .modal-btns button { flex: 1; padding: 11px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; }
     .modal-btns button:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -333,9 +341,9 @@
   <div class="top-bg" id="topBg"></div>
   <section id="home">
     <div class="hero-inner">
-      <div class="hero-badge">Sogang University · Finance &amp; Economics</div>
-      <h1>Analyze.<br/><span>Understand. Invest.</span></h1>
-      <p>서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.</p>
+      <div class="hero-badge" id="heroBadge">Sogang University · Finance &amp; Economics</div>
+      <h1><span id="heroTitle1">Analyze.</span><br/><span id="heroTitle2">Understand. Invest.</span></h1>
+      <p id="heroDesc">서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.</p>
       <div class="hero-btns">
         <a href="#reports" class="btn-primary">리서치 보기 →</a>
         <a href="#about" class="btn-outline">학회 소개</a>
@@ -349,20 +357,16 @@
   </section>
   <section id="about">
     <div class="about-header-wrapper">
-      <div class="section-tag">About SAFE</div>
-      <h2>우리는 왜 SAFE인가</h2>
-      <p>금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
+      <div class="section-tag" id="aboutTag">About SAFE</div>
+      <h2 id="aboutHead">우리는 왜 SAFE인가</h2>
+      <p id="aboutSub">금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.</p>
     </div>
     <div class="about-grid">
       <div class="about-text-container">
         <div id="dynamicAboutContent"></div>
         <button class="admin-only edit-about-btn" onclick="openAboutModal()">✏️ 소개글 수정</button>
       </div>
-      <div class="about-values">
-        <div class="value-item"><div class="value-icon">📊</div><div><h4>Data-Driven Research</h4><p>데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.</p></div></div>
-        <div class="value-item"><div class="value-icon">🤝</div><div><h4>Collaborative Learning</h4><p>팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.</p></div></div>
-        <div class="value-item"><div class="value-icon">🎯</div><div><h4>Career-Oriented</h4><p>금융·경제·투자를 이해하고 분석하는 실질적인 역량을 키워나가는 것을 목표로 합니다.</p></div></div>
-      </div>
+      <div class="about-values" id="aboutValues"></div>
     </div>
   </section>
 </div>
@@ -416,20 +420,70 @@
 
   <!-- 소개 수정 -->
   <div class="modal-overlay" id="aboutModal">
-    <div class="modal-box">
-      <h3>✏️ 학회 소개 수정</h3>
+    <div class="modal-box" style="max-width: 600px;">
+      <h3>✏️ 첫 화면 &amp; 학회 소개 수정</h3>
+
+      <div class="modal-group">🏠 맨 위 첫 화면</div>
+      <div class="form-row">
+        <label>작은 배지 글씨</label>
+        <input type="text" id="aHeroBadge" placeholder="예: Sogang University · Finance &amp; Economics"/>
+      </div>
+      <div class="form-row-grid">
+        <div class="form-row"><label>큰 제목 · 첫째 줄</label><input type="text" id="aHeroT1" placeholder="Analyze."/></div>
+        <div class="form-row"><label>큰 제목 · 둘째 줄</label><input type="text" id="aHeroT2" placeholder="Understand. Invest."/></div>
+      </div>
+      <div class="form-row">
+        <label>제목 아래 설명</label>
+        <textarea id="aHeroDesc" rows="3"></textarea>
+      </div>
+
+      <div class="modal-group">📖 학회 소개 머리말</div>
+      <div class="form-row">
+        <label>영문 태그 (작은 파란 글씨)</label>
+        <input type="text" id="aTag" placeholder="About SAFE"/>
+      </div>
+      <div class="form-row">
+        <label>큰 제목</label>
+        <input type="text" id="aHead" placeholder="우리는 왜 SAFE인가"/>
+      </div>
+      <div class="form-row">
+        <label>한 줄 설명</label>
+        <textarea id="aSub" rows="2"></textarea>
+      </div>
+
+      <div class="modal-group">✍️ 소개 본문 (왼쪽)</div>
       <div class="form-row">
         <label>소제목</label>
         <input type="text" id="aTitle" placeholder="예: 서강대 경제·금융 분석 학회"/>
       </div>
       <div class="form-row">
-        <label>소개 본문 1</label>
+        <label>본문 1</label>
         <textarea id="aDesc1" rows="4"></textarea>
       </div>
       <div class="form-row">
-        <label>소개 본문 2</label>
+        <label>본문 2</label>
         <textarea id="aDesc2" rows="4"></textarea>
       </div>
+
+      <div class="modal-group">💎 핵심 가치 카드 (오른쪽)</div>
+      <div class="form-row-grid" style="grid-template-columns: 70px 1fr;">
+        <div class="form-row"><label>아이콘</label><input type="text" id="aV1Icon" maxlength="4" placeholder="📊"/></div>
+        <div class="form-row"><label>제목 1</label><input type="text" id="aV1Title" placeholder="Data-Driven Research"/></div>
+      </div>
+      <div class="form-row"><textarea id="aV1Desc" rows="2" placeholder="설명 1"></textarea></div>
+
+      <div class="form-row-grid" style="grid-template-columns: 70px 1fr;">
+        <div class="form-row"><label>아이콘</label><input type="text" id="aV2Icon" maxlength="4" placeholder="🤝"/></div>
+        <div class="form-row"><label>제목 2</label><input type="text" id="aV2Title" placeholder="Collaborative Learning"/></div>
+      </div>
+      <div class="form-row"><textarea id="aV2Desc" rows="2" placeholder="설명 2"></textarea></div>
+
+      <div class="form-row-grid" style="grid-template-columns: 70px 1fr;">
+        <div class="form-row"><label>아이콘</label><input type="text" id="aV3Icon" maxlength="4" placeholder="🎯"/></div>
+        <div class="form-row"><label>제목 3</label><input type="text" id="aV3Title" placeholder="Career-Oriented"/></div>
+      </div>
+      <div class="form-row"><textarea id="aV3Desc" rows="2" placeholder="설명 3"></textarea></div>
+
       <div class="modal-error" id="aError"></div>
       <div class="modal-btns">
         <button class="btn-cancel" onclick="closeModal('aboutModal')">취소</button>
@@ -838,10 +892,25 @@ const NEWS_TYPE_META = {
   notice:  { label: '공지',   cls: 'type-notice' }
 };
 const FALLBACK_ABOUT = {
+  hero_badge:  'Sogang University · Finance & Economics',
+  hero_title1: 'Analyze.',
+  hero_title2: 'Understand. Invest.',
+  hero_desc:   '서강대학교 경제·금융 학술 학회 SAFE는 거시경제, 주식, 채권, 퀀트 분야의 깊이 있는 리서치를 통해 금융 전문가를 양성합니다.',
+  about_tag:   'About SAFE',
+  about_head:  '우리는 왜 SAFE인가',
+  about_sub:   '금융 시장을 분석하고, 경제 현상을 탐구하며, 함께 성장하는 학술 공동체입니다.',
   title: '서강대 경제·금융 분석 학회',
   body1: 'SAFE(Sogang Analysis of Finance & Economics)는 2025년에 설립된 서강대학교 경영·경제학과 기반의 경제 금융 분석 학회입니다.',
-  body2: '매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.'
+  body2: '매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.',
+  v1_icon: '📊', v1_title: 'Data-Driven Research',  v1_desc: '데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.',
+  v2_icon: '🤝', v2_title: 'Collaborative Learning', v2_desc: '팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.',
+  v3_icon: '🎯', v3_title: 'Career-Oriented',        v3_desc: '금융·경제·투자를 이해하고 분석하는 실질적인 역량을 키워나가는 것을 목표로 합니다.'
 };
+// 저장된 값이 비어 있으면 기본 문구를 씁니다
+function A(key) {
+  const v = aboutData ? aboutData[key] : null;
+  return (v == null || String(v).trim() === '') ? FALLBACK_ABOUT[key] : v;
+}
 
 // ── 상태 ──
 let aboutData = { ...FALLBACK_ABOUT };
@@ -959,31 +1028,60 @@ function renderStats() {
 /* ═══════════════ ABOUT ═══════════════ */
 
 function renderAbout() {
+  // 첫 화면
+  document.getElementById('heroBadge').textContent  = A('hero_badge');
+  document.getElementById('heroTitle1').textContent = A('hero_title1');
+  document.getElementById('heroTitle2').textContent = A('hero_title2');
+  document.getElementById('heroDesc').textContent   = A('hero_desc');
+
+  // 학회 소개 머리말
+  document.getElementById('aboutTag').textContent  = A('about_tag');
+  document.getElementById('aboutHead').textContent = A('about_head');
+  document.getElementById('aboutSub').textContent  = A('about_sub');
+
+  // 소개 본문
   document.getElementById('dynamicAboutContent').innerHTML = `
-    <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(aboutData.title)}</h3>
-    <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.body1)}</p>
-    <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(aboutData.body2)}</p>
+    <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 16px;">${esc(A('title'))}</h3>
+    <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(A('body1'))}</p>
+    <p style="color: var(--text-sub); margin-bottom: 20px; font-size: 0.97rem; white-space: pre-line;">${esc(A('body2'))}</p>
     <a href="#news" class="btn-primary" style="display:inline-block; margin-top:8px;">모집 공고 보기 →</a>
   `;
+
+  // 핵심 가치 카드 3개
+  document.getElementById('aboutValues').innerHTML = [1, 2, 3].map(i => `
+    <div class="value-item">
+      <div class="value-icon">${esc(A('v' + i + '_icon'))}</div>
+      <div>
+        <h4>${esc(A('v' + i + '_title'))}</h4>
+        <p>${esc(A('v' + i + '_desc'))}</p>
+      </div>
+    </div>`).join('');
 }
 
+// 모달 입력칸 ↔ DB 컬럼 연결표
+const ABOUT_FIELDS = {
+  aHeroBadge: 'hero_badge', aHeroT1: 'hero_title1', aHeroT2: 'hero_title2', aHeroDesc: 'hero_desc',
+  aTag: 'about_tag', aHead: 'about_head', aSub: 'about_sub',
+  aTitle: 'title', aDesc1: 'body1', aDesc2: 'body2',
+  aV1Icon: 'v1_icon', aV1Title: 'v1_title', aV1Desc: 'v1_desc',
+  aV2Icon: 'v2_icon', aV2Title: 'v2_title', aV2Desc: 'v2_desc',
+  aV3Icon: 'v3_icon', aV3Title: 'v3_title', aV3Desc: 'v3_desc'
+};
+
 function openAboutModal() {
-  document.getElementById('aTitle').value = aboutData.title || '';
-  document.getElementById('aDesc1').value = aboutData.body1 || '';
-  document.getElementById('aDesc2').value = aboutData.body2 || '';
+  Object.keys(ABOUT_FIELDS).forEach(id => {
+    document.getElementById(id).value = A(ABOUT_FIELDS[id]);
+  });
   document.getElementById('aError').textContent = '';
   document.getElementById('aboutModal').classList.add('open');
 }
 
 async function submitAbout() {
-  const payload = {
-    id: 1,
-    title: document.getElementById('aTitle').value.trim(),
-    body1: document.getElementById('aDesc1').value.trim(),
-    body2: document.getElementById('aDesc2').value.trim(),
-    updated_at: new Date().toISOString()
-  };
-  if (!payload.title) return document.getElementById('aError').textContent = '소제목을 입력해주세요.';
+  const payload = { id: 1, updated_at: new Date().toISOString() };
+  Object.keys(ABOUT_FIELDS).forEach(id => {
+    payload[ABOUT_FIELDS[id]] = document.getElementById(id).value.trim();
+  });
+  if (!payload.title) return document.getElementById('aError').textContent = '소개 본문의 소제목을 입력해주세요.';
 
   busy('aSubmitBtn', true, '저장 중…', '저장');
   const { error } = await sb.from('about').upsert(payload, { onConflict: 'id' });
