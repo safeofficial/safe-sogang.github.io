@@ -372,9 +372,13 @@
 </div>
 
 <div class="main-content-wrapper">
+  <!-- ═══ 맨 위 시세 티커 ═══
+       종목을 바꾸려면 아래 symbols="..." 안을 쉼표로 구분해 고치면 됩니다.
+       ⚠️ TVC:DXY 는 "This symbol is only available on TradingView" 오류가 떠서 뺐습니다.
+          달러 인덱스를 꼭 넣고 싶으면 CAPITALCOM:DXY 로 시도해 보세요.       -->
   <div class="ticker-tape-wrap">
     <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
-    <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,TVC:DXY,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
+    <tv-ticker-tape symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,BITSTAMP:XRPUSD,FX_IDC:USDKRW,OANDA:XAUUSD,TVC:SILVER,TVC:USOIL,IG:RUSSELL" transparent></tv-ticker-tape>
   </div>
   <nav>
     <a href="#home" class="nav-logo">
@@ -705,11 +709,29 @@
 
     <div class="market-grid">
 
-      <!-- 경제지표 캘린더 -->
+      <!-- ═══════════════════════════════════════════════════════════
+           📅 경제지표 캘린더
+
+           ▸ 나라를 추가하려면 아래 "countryFilter" 줄에 쉼표로 코드를 붙이세요.
+             예)  "countryFilter": "us,kr"        ← 지금 (미국 + 한국)
+                  "countryFilter": "us,kr,jp"     ← 일본 추가
+                  "countryFilter": "us,kr,eu,cn"  ← 유로존·중국 추가
+
+           ▸ 나라 코드
+               us 미국      kr 한국      jp 일본      cn 중국
+               eu 유로존    gb 영국      de 독일      fr 프랑스
+               ca 캐나다    au 호주      ch 스위스    hk 홍콩
+               tw 대만      sg 싱가포르  in 인도      br 브라질
+
+           ▸ "importanceFilter" 는 중요도입니다.
+               "0,1"  = 중간 + 높음 (지금)
+               "1"    = 높음만
+               "-1,0,1" = 전부
+           ═══════════════════════════════════════════════════════════ -->
       <div class="market-panel">
         <div class="market-panel-head">
           <h3>📅 경제지표 캘린더</h3>
-          <span>주요국 지표 발표 일정과 예상치</span>
+          <span>미국 · 한국 주요 지표 발표 일정</span>
         </div>
         <div class="market-panel-body">
           <div class="tradingview-widget-container">
@@ -719,7 +741,7 @@
               "colorTheme": "light",
               "isTransparent": false,
               "locale": "kr",
-              "countryFilter": "us,eu,kr,jp,cn,gb",
+              "countryFilter": "us,kr",
               "importanceFilter": "0,1",
               "width": "100%",
               "height": "100%"
