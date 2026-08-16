@@ -154,10 +154,21 @@
     /* ── MARKET ── */
     #market { background: var(--bg); padding: 100px 5%; border-top: 1px solid var(--border); }
     .market-widget-container {
-      max-width: 1100px; margin: 0 auto; height: 500px;
+      max-width: 1100px; margin: 0 auto; height: 520px;
       background: white; border: 1px solid var(--border); border-radius: 14px;
       overflow: hidden; box-shadow: 0 12px 32px rgba(44,62,107,0.05);
     }
+    /* 다크 테마 위젯을 넣었을 때 카드 배경도 함께 어둡게 */
+    .market-widget-container.dark {
+      background: #0F0F0F; border-color: #2a2a2a;
+      box-shadow: 0 12px 32px rgba(15,15,15,0.18);
+    }
+    .market-widget-container.dark .tradingview-widget-copyright {
+      font-size: 11px; text-align: right; padding: 6px 14px 0;
+      color: #6a6d78; line-height: 1;
+    }
+    .market-widget-container.dark .tradingview-widget-copyright a { color: #6a6d78; text-decoration: none; }
+    .market-widget-container.dark .tradingview-widget-copyright a:hover { color: #9aa0ad; }
     /* 경제지표 · 뉴스 · FX 패널 */
     .market-grid {
       max-width: 1100px; margin: 24px auto 0;
@@ -197,7 +208,7 @@
     #members { background: var(--bg); padding: 100px 5%; }
     .members-scroll-wrap { max-width: 1100px; margin: 0 auto; max-height: 700px; overflow-y: auto; padding: 4px 8px 16px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--border); }
     .leaders-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 40px; }
-    .leaders-grid .member-card { flex: 0 1 280px; border-color: var(--accent); border-width: 2px; background: white; }
+    .leaders-grid .member-card { flex: 1 1 220px; max-width: 300px; border-color: var(--accent); border-width: 2px; background: white; }
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; }
     .member-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 28px 20px; text-align: center; transition: all 0.25s; }
     .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,62,107,0.08); }
@@ -491,8 +502,12 @@
         <div class="form-row"><label>기수 (0 입력시 '설립멤버')</label><input type="number" id="mGen" min="0"/></div>
       </div>
       <div class="form-row">
-        <label>역할 / 직책 (학회장/부학회장 입력 시 상단 고정)</label>
-        <input type="text" id="mRole" placeholder="예: 학회장 / 리서치 파트"/>
+        <label>역할 / 직책</label>
+        <input type="text" id="mRole" placeholder="예: 학회장 / 회계부장 / 리서치 파트"/>
+        <div class="field-hint">
+          <b>학회장 → 부학회장 → 회계부장 → PR부장</b> 순으로 맨 위에 왼쪽부터 고정됩니다.<br/>
+          그 외 학회원은 아래쪽에 <b>가나다순</b>으로 정렬됩니다.
+        </div>
       </div>
       <div class="form-row-grid">
         <div class="form-row">
@@ -571,25 +586,64 @@
       <h2>실시간 글로벌 마켓</h2>
       <p>주요 지수와 시장 동향을 실시간으로 트래킹합니다.</p>
     </div>
-    <div class="market-widget-container">
+    <div class="market-widget-container dark">
       <div class="tradingview-widget-container" style="width: 100%; height: 100%;">
-        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%;"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        <div class="tradingview-widget-container__widget" style="height:calc(100% - 24px); width:100%;"></div>
+        <div class="tradingview-widget-copyright">
+          <a href="https://www.tradingview.com/markets/" rel="noopener nofollow" target="_blank"><span class="blue-text">World markets</span></a> by TradingView
+        </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
         {
+          "lineWidth": 2,
+          "lineType": 0,
+          "chartType": "area",
+          "fontColor": "rgb(106, 109, 120)",
+          "gridLineColor": "rgba(242, 242, 242, 0.06)",
+          "volumeUpColor": "rgba(34, 171, 148, 0.5)",
+          "volumeDownColor": "rgba(247, 82, 95, 0.5)",
+          "backgroundColor": "#0F0F0F",
+          "widgetFontColor": "#DBDBDB",
+          "upColor": "#22ab94",
+          "downColor": "#f7525f",
+          "borderUpColor": "#22ab94",
+          "borderDownColor": "#f7525f",
+          "wickUpColor": "#22ab94",
+          "wickDownColor": "#f7525f",
+          "colorTheme": "dark",
+          "isTransparent": false,
+          "locale": "en",
+          "chartOnly": false,
+          "scalePosition": "right",
+          "scaleMode": "Normal",
+          "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+          "valuesTracking": "1",
+          "changeMode": "price-and-percent",
+          "symbols": [
+            ["NASDAQ:QQQ|1D"],
+            ["AMEX:SPY|1D"],
+            ["NASDAQ:SOXX|1D"],
+            ["AMEX:NASA|1D"],
+            ["TVC:GOLD|1D"],
+            ["BINANCE:BTCUSDT|1D"],
+            ["BINANCE:ETHUSDT|1D"]
+          ],
+          "dateRanges": [
+            "1d|1",
+            "1m|30",
+            "3m|60",
+            "12m|1D",
+            "60m|1W",
+            "all|1M"
+          ],
+          "fontSize": "10",
+          "headerFontSize": "medium",
           "autosize": true,
-          "symbol": "FOREXCOM:SPXUSD",
-          "interval": "D",
-          "timezone": "Asia/Seoul",
-          "theme": "light",
-          "style": "1",
-          "locale": "kr",
-          "enable_publishing": false,
-          "backgroundColor": "rgba(255, 255, 255, 1)",
-          "gridColor": "rgba(240, 243, 250, 0)",
-          "hide_top_toolbar": false,
-          "hide_legend": false,
-          "save_image": false,
-          "support_host": "https://www.tradingview.com"
+          "width": "100%",
+          "height": "100%",
+          "noTimeScale": false,
+          "hideDateRanges": false,
+          "hideMarketStatus": false,
+          "hideSymbolLogo": false
         }
         </script>
       </div>
@@ -1124,6 +1178,22 @@ async function deleteReport(id) {
 
 /* ═══════════════ MEMBERS ═══════════════ */
 
+/* 임원진 정렬 순서 (숫자가 작을수록 왼쪽)
+   0 = 임원이 아님 → 아래쪽 학회원 목록으로 갑니다.
+   '부학회장'에 '학회장'이 들어있으므로 반드시 부학회장을 먼저 확인해야 합니다. */
+function leaderRank(role) {
+  const r = String(role || '');
+  if (r.includes('부학회장'))            return 2;
+  if (r.includes('학회장'))              return 1;
+  if (r.includes('회계'))                return 3;
+  if (/\bPR\b/i.test(r) || r.includes('홍보')) return 4;
+  return 0;
+}
+// 이름 가나다순
+function byName(a, b) {
+  return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
+}
+
 function renderMemberGenTabs() { renderSelectGens('memberGenSelect', getGens(members), activeMemberGen); }
 function selectMemberGen(val) {
   activeMemberGen = (val === 'none' || val === '') ? 'none' : Number(val);
@@ -1145,9 +1215,11 @@ function renderMembers() {
     regularsGrid.innerHTML = '<div class="grid-msg">해당 기수에 등록된 멤버가 없습니다.</div>';
     return;
   }
-  const isLeader = m => (m.role || '').includes('학회장');
-  const leaders  = list.filter(isLeader);
-  const regulars = list.filter(m => !isLeader(m));
+  // 임원진은 직책 순서대로 왼쪽부터: 학회장 → 부학회장 → 회계부장 → PR부장
+  const leaders  = list.filter(m => leaderRank(m.role) > 0)
+                       .sort((a, b) => (leaderRank(a.role) - leaderRank(b.role)) || byName(a, b));
+  // 나머지 학회원은 가나다순
+  const regulars = list.filter(m => leaderRank(m.role) === 0).sort(byName);
 
   const createCard = (m) => {
     const year = m.entry_year ? ` ${esc(m.entry_year)}학번` : '';
