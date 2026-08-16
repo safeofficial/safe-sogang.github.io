@@ -277,6 +277,20 @@
       font-size: 0.86rem; font-weight: 800; color: var(--primary); letter-spacing: 0.2px;
     }
     .modal-group:first-of-type { border-top: none; padding-top: 0; margin-top: 4px; }
+    /* 연락처 링크 편집 */
+    .contact-row { display: grid; grid-template-columns: 1fr 1.5fr 36px; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .contact-row input { padding: 8px 11px; }
+    .contact-del {
+      height: 37px; border-radius: 8px; border: 1px solid #f3c2be; background: #fce8e6;
+      color: #c62828; font-weight: 800; font-size: 15px; cursor: pointer; font-family: inherit; line-height: 1;
+    }
+    .contact-del:hover { background: #f9d5d2; }
+    .contact-add {
+      width: 100%; margin-top: 4px; padding: 10px; border-radius: 9px;
+      border: 1px dashed var(--accent); background: var(--accent-soft); color: var(--primary);
+      font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+    }
+    .contact-add:hover { background: #dbe4f7; }
     .modal-btns { display: flex; gap: 10px; margin-top: 8px; }
     .modal-btns button { flex: 1; padding: 11px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; }
     .modal-btns button:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -487,6 +501,14 @@
         <div class="form-row"><label>제목 3</label><input type="text" id="aV3Title" placeholder="Career-Oriented"/></div>
       </div>
       <div class="form-row"><textarea id="aV3Desc" rows="2" placeholder="설명 3"></textarea></div>
+
+      <div class="modal-group">📮 맨 아래 연락처</div>
+      <div class="field-hint" style="margin-bottom:10px;">
+        왼쪽에 <b>보이는 이름</b>, 오른쪽에 <b>연결할 주소</b>를 넣으세요.<br/>
+        이메일은 주소만 적으면 자동으로 메일 보내기로 연결됩니다. (예: safe@sogang.ac.kr)
+      </div>
+      <div id="contactRows"></div>
+      <button type="button" class="contact-add" onclick="addContactRow()">+ 링크 추가</button>
 
       <div class="modal-error" id="aError"></div>
       <div class="modal-btns">
@@ -863,7 +885,8 @@
           <h5>리서치</h5><a href="#reports">거시경제</a><a href="#reports">주식 분석</a>
         </div>
         <div class="footer-col">
-          <h5>연락처</h5><a href="#">safe@sogang.ac.kr</a><a href="#">Instagram</a><a href="#">Notion</a>
+          <h5>연락처</h5>
+          <div id="footerContacts"></div>
         </div>
       </div>
     </div>
@@ -926,7 +949,11 @@ const FALLBACK_ABOUT = {
   body2: '매 학기 정기 발표, 토론, 포트폴리오 프로젝트, 보고서 발간을 통해 학문적 깊이와 실무 감각을 동시에 키워나갑니다.',
   v1_icon: '📊', v1_title: 'Data-Driven Research',  v1_desc: '데이터와 논리에 기반한 엄밀한 분석으로 시장을 이해합니다.',
   v2_icon: '🤝', v2_title: 'Collaborative Learning', v2_desc: '팀 기반 스터디와 발표를 통해 함께 성장하는 문화를 지향합니다.',
-  v3_icon: '🎯', v3_title: 'Career-Oriented',        v3_desc: '금융·경제·투자를 이해하고 분석하는 실질적인 역량을 키워나가는 것을 목표로 합니다.'
+  v3_icon: '🎯', v3_title: 'Career-Oriented',        v3_desc: '금융·경제·투자를 이해하고 분석하는 실질적인 역량을 키워나가는 것을 목표로 합니다.',
+  contacts: [
+    { label: 'safe@sogang.ac.kr', url: 'mailto:safe@sogang.ac.kr' },
+    { label: 'Instagram',         url: 'https://www.instagram.com/safe._.official/' }
+  ]
 };
 // 저장된 값이 비어 있으면 기본 문구를 씁니다
 function A(key) {
@@ -1078,6 +1105,35 @@ function renderAbout() {
         <p>${esc(A('v' + i + '_desc'))}</p>
       </div>
     </div>`).join('');
+
+  // 맨 아래 연락처
+  document.getElementById('footerContacts').innerHTML = getContacts().map(c => {
+    const url = safeUrl(c.url);
+    const ext = /^https?:/i.test(url) ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${esc(url)}"${ext}>${esc(c.label)}</a>`;
+  }).join('');
+}
+
+/* 저장된 연락처 목록 (없으면 기본값) */
+function getContacts() {
+  const c = aboutData && aboutData.contacts;
+  const list = Array.isArray(c) ? c : (typeof c === 'string' ? safeParse(c) : null);
+  const clean = (list || []).filter(x => x && String(x.label || '').trim() && String(x.url || '').trim());
+  return clean.length ? clean : FALLBACK_ABOUT.contacts;
+}
+function safeParse(s) { try { return JSON.parse(s); } catch (e) { return null; } }
+
+/* 주소를 안전하게 정리합니다.
+   · 이메일만 적으면      → mailto: 자동 추가
+   · http/https 가 없으면 → https:// 자동 추가
+   · javascript: 같은 위험한 주소는 차단                */
+function safeUrl(raw) {
+  const s = String(raw || '').trim();
+  if (!s) return '#';
+  if (/^(https?:|mailto:|tel:)/i.test(s)) return s;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return 'mailto:' + s;
+  if (/^(javascript|data|vbscript):/i.test(s)) return '#';
+  return 'https://' + s.replace(/^\/+/, '');
 }
 
 // 모달 입력칸 ↔ DB 컬럼 연결표
@@ -1090,10 +1146,26 @@ const ABOUT_FIELDS = {
   aV3Icon: 'v3_icon', aV3Title: 'v3_title', aV3Desc: 'v3_desc'
 };
 
+/* 연락처 편집 줄 */
+function addContactRow(label, url) {
+  const wrap = document.createElement('div');
+  wrap.className = 'contact-row';
+  wrap.innerHTML = `
+    <input type="text" class="c-label" placeholder="Instagram" />
+    <input type="text" class="c-url"   placeholder="instagram.com/... 또는 이메일" />
+    <button type="button" class="contact-del" title="삭제">×</button>`;
+  wrap.querySelector('.c-label').value = label || '';
+  wrap.querySelector('.c-url').value   = url || '';
+  wrap.querySelector('.contact-del').onclick = () => wrap.remove();
+  document.getElementById('contactRows').appendChild(wrap);
+}
+
 function openAboutModal() {
   Object.keys(ABOUT_FIELDS).forEach(id => {
     document.getElementById(id).value = A(ABOUT_FIELDS[id]);
   });
+  document.getElementById('contactRows').innerHTML = '';
+  getContacts().forEach(c => addContactRow(c.label, c.url));
   document.getElementById('aError').textContent = '';
   document.getElementById('aboutModal').classList.add('open');
 }
@@ -1104,6 +1176,13 @@ async function submitAbout() {
     payload[ABOUT_FIELDS[id]] = document.getElementById(id).value.trim();
   });
   if (!payload.title) return document.getElementById('aError').textContent = '소개 본문의 소제목을 입력해주세요.';
+
+  payload.contacts = Array.from(document.querySelectorAll('#contactRows .contact-row'))
+    .map(r => ({
+      label: r.querySelector('.c-label').value.trim(),
+      url:   safeUrl(r.querySelector('.c-url').value)
+    }))
+    .filter(c => c.label && c.url !== '#');
 
   busy('aSubmitBtn', true, '저장 중…', '저장');
   const { error } = await sb.from('about').upsert(payload, { onConflict: 'id' });
