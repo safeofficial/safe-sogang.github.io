@@ -302,6 +302,37 @@
     .admin-btn:hover, .admin-btn.logged-in { border-color: var(--primary); color: var(--primary); background: var(--accent-soft); }
     .admin-badge-float { position: fixed; bottom: 24px; right: 24px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 10px 18px; border-radius: 24px; font-size: 12px; font-weight: 700; box-shadow: 0 6px 18px rgba(44,62,107,0.25); z-index: 99; display: none; }
     .admin-badge-float.visible { display: block; }
+    /* 방문 통계 버튼 */
+    .stats-btn {
+      position: fixed; bottom: 68px; right: 24px; z-index: 99; display: none;
+      padding: 10px 18px; border-radius: 24px; border: 1px solid var(--accent);
+      background: white; color: var(--primary); font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: inherit; box-shadow: 0 6px 18px rgba(44,62,107,0.14);
+      transition: all 0.18s;
+    }
+    body.is-admin .stats-btn { display: block; }
+    .stats-btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
+    /* 통계 타일 */
+    .stat-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 8px; }
+    .stat-tile { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px 16px; }
+    .stat-tile .k { font-size: 11.5px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.3px; margin-bottom: 6px; }
+    .stat-tile .v { font-size: 1.7rem; font-weight: 800; color: var(--primary); line-height: 1.1; }
+    .stat-tile .s { font-size: 11.5px; color: var(--text-sub); margin-top: 3px; }
+    /* 막대 그래프 */
+    .chart-title { font-size: 0.86rem; font-weight: 800; color: var(--primary); margin: 22px 0 10px; }
+    .bar-chart {
+      display: flex; align-items: flex-end; gap: 3px; height: 130px;
+      padding: 10px 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .bar-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; }
+    .bar-col i {
+      display: block; width: 100%; min-height: 2px; border-radius: 3px 3px 0 0;
+      background: linear-gradient(180deg, var(--accent), var(--primary));
+    }
+    .bar-col.zero i { background: var(--border); }
+    .bar-axis { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-sub); padding: 6px 2px 0; }
+    .stats-note { font-size: 11.5px; color: var(--text-sub); line-height: 1.6; margin-top: 14px; }
+    .stats-empty { width: 100%; text-align: center; color: var(--text-sub); font-size: 13px; align-self: center; }
     /* ── 탭 전환 ── */
     .seg { display: flex; gap: 6px; background: var(--bg); padding: 4px; border-radius: 10px; margin-bottom: 14px; }
     .seg button {
@@ -436,7 +467,22 @@
   </div>
 
   <div class="admin-badge-float" id="adminBadge">⚡ 관리자 모드</div>
+  <button class="stats-btn admin-only-btn" id="statsBtn" onclick="openStats()">📊 방문 통계</button>
   <div class="status-banner" id="statusBanner"></div>
+
+  <!-- 방문 통계 (임원진 전용) -->
+  <div class="modal-overlay" id="statsModal">
+    <div class="modal-box" style="max-width: 620px;">
+      <h3>📊 방문 통계</h3>
+      <div id="statsBody">
+        <div class="stats-empty" style="padding:40px 0;">불러오는 중…</div>
+      </div>
+      <div class="modal-btns" style="margin-top:18px;">
+        <button class="btn-cancel" onclick="closeModal('statsModal')">닫기</button>
+        <button class="btn-confirm" onclick="loadStats()">새로고침</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 소개 수정 -->
   <div class="modal-overlay" id="aboutModal">
@@ -1778,7 +1824,92 @@ if (sb) {
   sb.auth.onAuthStateChange((_event, session) => {
     isAdmin = !!session;
     updateAdminUI();
+    recordVisitOnce(session);
   });
+}
+
+/* ═══════════════ 방문 통계 ═══════════════
+   · 브라우저마다 무작위 익명 번호를 하나 만들어 저장합니다.
+   · IP·위치·이름 등 개인정보는 저장하지 않습니다.
+   · 임원진(로그인 상태)의 방문은 집계에서 빠집니다.        */
+
+let visitRecorded = false;
+
+function visitorId() {
+  try {
+    let v = localStorage.getItem('safe_visitor');
+    if (!v) {
+      v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now());
+      localStorage.setItem('safe_visitor', v);
+    }
+    return v;
+  } catch (e) {
+    return null; // 쿠키·저장소 차단 브라우저에서는 집계하지 않습니다
+  }
+}
+
+async function recordVisitOnce(session) {
+  if (visitRecorded || !sb) return;
+  visitRecorded = true;
+  if (session) return;              // 임원진 본인 방문은 세지 않음
+  const v = visitorId();
+  if (!v) return;
+  try { await sb.rpc('record_visit', { p_visitor: v }); }
+  catch (e) { console.warn('[SAFE] 방문 기록 실패:', e); }
+}
+
+function openStats() {
+  document.getElementById('statsModal').classList.add('open');
+  loadStats();
+}
+
+async function loadStats() {
+  const box = document.getElementById('statsBody');
+  box.innerHTML = '<div class="stats-empty" style="padding:40px 0;">불러오는 중…</div>';
+
+  const { data, error } = await sb.rpc('visit_stats');
+  if (error) {
+    box.innerHTML = '<div class="stats-empty" style="padding:30px 0;color:#c62828;">'
+      + esc(/does not exist|function/i.test(error.message)
+          ? '업데이트.sql 을 아직 실행하지 않았습니다. Supabase SQL Editor에서 실행해주세요.'
+          : dbMsg(error)) + '</div>';
+    return;
+  }
+
+  const s = data || {};
+  const tile = (k, v, sub) =>
+    `<div class="stat-tile"><div class="k">${k}</div><div class="v">${Number(v || 0).toLocaleString()}</div><div class="s">${sub}</div></div>`;
+
+  const daily = Array.isArray(s.daily) ? s.daily : [];
+  const max = daily.reduce((m, d) => Math.max(m, d.visitors || 0), 0);
+
+  const bars = daily.length
+    ? daily.map(d => {
+        const h = max ? Math.round((d.visitors / max) * 100) : 0;
+        return `<div class="bar-col${d.visitors ? '' : ' zero'}" title="${esc(d.day)} · 방문자 ${d.visitors}명 · 조회 ${d.views}회">`
+             + `<i style="height:${Math.max(h, 2)}%"></i></div>`;
+      }).join('')
+    : '<div class="stats-empty">아직 방문 기록이 없습니다.</div>';
+
+  const axis = daily.length
+    ? `<div class="bar-axis"><span>${esc(daily[0].day.slice(5))}</span><span>${esc(daily[daily.length - 1].day.slice(5))}</span></div>`
+    : '';
+
+  box.innerHTML = `
+    <div class="stat-tiles">
+      ${tile('오늘',       s.today_visitors, `조회 ${Number(s.today_views || 0).toLocaleString()}회`)}
+      ${tile('최근 7일',   s.week_visitors,  `조회 ${Number(s.week_views  || 0).toLocaleString()}회`)}
+      ${tile('최근 30일',  s.month_visitors, `조회 ${Number(s.month_views || 0).toLocaleString()}회`)}
+      ${tile('전체 누적',  s.total_visitors, `조회 ${Number(s.total_views || 0).toLocaleString()}회`)}
+    </div>
+    <div class="chart-title">최근 30일 일별 방문자</div>
+    <div class="bar-chart">${bars}</div>
+    ${axis}
+    <div class="stats-note">
+      숫자는 <b>방문자 수</b>(같은 사람이 하루에 여러 번 와도 1명), 아래 작은 글씨는 <b>조회 수</b>입니다.<br/>
+      막대에 마우스를 올리면 그날 수치가 보입니다. 임원진이 로그인한 상태로 본 것은 집계에서 빠집니다.<br/>
+      IP·위치 등 개인정보는 저장하지 않으며, 이 통계는 로그인한 임원진만 볼 수 있습니다.
+    </div>`;
 }
 
 /* ═══════════════ 실시간 반영 ═══════════════ */
