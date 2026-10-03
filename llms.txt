@@ -1,0 +1,15 @@
+# SAFE — 서강대학교 금융·경제 학회 (Sogang Analysis of Finance & Economics)
+
+> SAFE는 2025년에 설립된 서강대학교의 금융·경제 학회입니다. 기수(期數)마다 학회원을 모집하고, 학회원이 경제·산업 보고서를 써서 홈페이지에 공개합니다. 다른 이름: Sogang SAFE, 서강 SAFE, 서강대 SAFE, 세이프 학회.
+
+## 홈페이지
+- [SAFE 홈페이지](https://safeofficial.github.io/safe-sogang.github.io/): 학회 소개, 기수별 학회원, 보고서, 공지·모집 공고
+- [보고서](https://safeofficial.github.io/safe-sogang.github.io/#reports): 기수별 경제·산업 보고서
+- [공지사항·모집](https://safeofficial.github.io/safe-sogang.github.io/#news): 신입 학회원 모집 공고와 지원서
+- [인스타그램](https://www.instagram.com/safe._.official/): 공식 계정 @safe._.official
+
+## 자주 묻는 것
+- 어떤 학회인가: 서강대학교 금융·경제 학회. 거시경제·주식·채권·퀀트 분야를 리서치합니다.
+- 활동: 경제·산업 보고서 작성, 정기 발표와 토론, 포트폴리오 프로젝트, 모의투자 대회
+- 모집: 신입 학회원 모집 공고와 지원서는 홈페이지 공지사항과 인스타그램에 올라옵니다.
+- 보고서: 홈페이지 «리서치 & 보고서» 에서 기수별로 볼 수 있습니다.

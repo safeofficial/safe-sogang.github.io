@@ -1,0 +1,18 @@
+# SAFE 홈페이지 — 검색 엔진·AI 모두 허용
+# ⚠️ 사이트 «맨 위 폴더» 에 있어야 합니다 (아이디.github.io 저장소의 맨 위).
+User-agent: *
+Allow: /
+
+# AI 검색 (ChatGPT · Claude · Perplexity · Gemini) — 막지 않음
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://safeofficial.github.io/safe-sogang.github.io/sitemap.xml
