@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   safe-home-plus.js — SAFE 홈페이지 덧붙임 (2026-10-03 · 3판)
+   safe-home-plus.js — SAFE 홈페이지 덧붙임 (2026-10-03 · 5판 — 학회 로고·탭 아이콘·푸터 글)
      ① 기록 — 방문 · 공지 봄 · 첨부 받음 · 보고서 받음 · 유입(검색·SNS·AI·도메인·캠페인)
      ② 하단 로고 띠 — 학회원들이 진출한 곳 (천천히 회전)
      ③ 임원진 대시보드 — 개요 · 유입 · 검색 · AI 검색 · 다운로드 · 상세 기록 · SEO 점검 · 로고
@@ -18,6 +18,9 @@
           amplitudeLocation: true,   // false 면 IP 를 안 보내 도시·나라 칸이 빔
           amplitudeUrl: '<Amplitude 대시보드 주소 — 임원 화면에 바로가기>'
         하단에 SAFEPlus.renderAnalyticsNotice('#shpNotice') 로 한 줄 고지.
+     8) 학회 로고(위쪽 SF 마크)와 탭 아이콘을 임원이 대시보드 «로고» 탭에서 <따로> 바꾸게:
+          brand: { mark: '.nav-logo .logo-mark', favicon: true }
+          (about.logo_url = 사이트 로고 · about.icon_url = 탭 아이콘 · 파일은 logos 버킷의 brand/ 아래 · 비우면 원래대로)
      7) 로고 띠 선택값 — logosTitle: '띠 제목', logosNote: '권리 안내 한 줄' ('' 이면 없음),
           logoGray: true 면 평소 흑백·마우스 올리면 컬러 (기본은 원래 색 — 로고 색을 바꾸지 말라는
           브랜드 규정이 흔해서), logoSeconds: 로고 하나당 초 (기본 4).
@@ -302,9 +305,11 @@
     if (on) store('shp_officer', '1'); else { try { localStorage.removeItem('shp_officer'); } catch (e) {} }
     if (AMP.ready) AMP.ready.then(function (amp) { if (amp && amp.setOptOut) amp.setOptOut(!!on); });
   }
-  function renderAnalyticsNotice(target) {
+  function renderAnalyticsNotice(target, custom) {
     var box = el(target); if (!box) return;
     box.classList.add('shp-notice');
+    //  임원이 «소개글 수정» 에서 문구를 적어 두면 그 글로 (비어 있으면 기본 문구)
+    if (custom && String(custom).trim()) { box.textContent = String(custom).trim(); return; }
     box.textContent = cfg.amplitudeKey
       ? '방문 통계 안내 — 이 사이트는 익명 방문 기록을 학회 서버와 Amplitude(미국)에 남깁니다. 이름·학번은 보내지 않으며' +
         (cfg.amplitudeLocation !== false ? ', 위치는 IP 로 추정한 도시 단위까지만 봅니다.' : ', IP·위치도 보내지 않습니다.')
@@ -414,6 +419,49 @@
           '<ul class="shp-logo-list">' + list.map(function (x) { return '<li>' + esc(x.name) + '</li>'; }).join('') + '</ul>';
         return list.length;
       }, function () { return 0; });
+  }
+
+  // ── ②-2 학회 로고 (상단 마크 · 탭 아이콘) ─────────────────────────
+  //  ⚠️ 학회장: «세이프 로고도 관리자 권한을 통해 바꿀 수 있게 — 인턴/취업처럼».
+  //     about.logo_url 이 https 주소면 그 그림을, 비어 있으면 원래 SF 마크를 씁니다.
+  //     공유 미리보기 그림(og.png)은 저장소 파일이라 여기서 못 바꿉니다 (크롤러가 고정 주소를 읽음).
+  //  ⚠️ 학회장: «탭 부분에 보이는 로고랑 사이트 내 로고랑 다르니까 구분해서» → 두 칸 (logo_url · icon_url)
+  var BR = { logo: null, icon: null };
+  var BRAND_KINDS = [
+    { k: 'logo', col: 'logo_url', label: '사이트 로고', sub: '위쪽 메뉴의 SF 마크 자리 — 정사각형 · 배경 투명 PNG · 256px 이상', none: '기본 SF 마크' },
+    { k: 'icon', col: 'icon_url', label: '탭 아이콘',   sub: '브라우저 탭·즐겨찾기의 작은 그림 — 정사각형 PNG 512px (16px 로 줄어도 보이게 단순하게)', none: '기본 logo.png' }
+  ];
+  function okUrl(u) { return /^https:\/\//.test(String(u || '')) ? String(u) : null; }
+  function brandTargets() {
+    var b = cfg.brand || {}; var out = [];
+    if (b.mark) [].forEach.call(document.querySelectorAll(b.mark), function (e) { out.push(e); });
+    return out;
+  }
+  function applyBrand(logoUrl, iconUrl) {
+    BR.logo = okUrl(logoUrl); BR.icon = okUrl(iconUrl);
+    brandTargets().forEach(function (e) {
+      if (e.__shpOrig === undefined) e.__shpOrig = e.innerHTML;
+      if (BR.logo) { e.classList.add('shp-brand-on'); e.innerHTML = '<img class="shp-brand-img" src="' + esc(BR.logo) + '" alt="SAFE 로고" decoding="async">'; }
+      else { e.classList.remove('shp-brand-on'); e.innerHTML = e.__shpOrig; }
+    });
+    if (cfg.brand && cfg.brand.favicon !== false) {
+      [].forEach.call(document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]'), function (l) {
+        if (l.__shpOrig === undefined) l.__shpOrig = l.getAttribute('href');
+        l.setAttribute('href', BR.icon || l.__shpOrig);
+      });
+    }
+  }
+  function loadBrand() {
+    if (!sb || !cfg.brand) return Promise.resolve(null);
+    return Promise.resolve(sb.from('about').select('logo_url,icon_url').eq('id', 1).maybeSingle())
+      .then(function (r) { var d = r && !r.error && r.data ? r.data : {}; applyBrand(d.logo_url, d.icon_url); return d; }, function () { return null; });
+  }
+  function brandPathOf(url) {   //  우리 버킷의 파일이면 저장소 경로를, 아니면 null
+    var m = /\/storage\/v1\/object\/public\/logos\/(.+)$/.exec(String(url || '')); return m ? decodeURIComponent(m[1]) : null;
+  }
+  function saveBrand(col, url) {
+    var row = { id: 1 }; row[col] = url || null;
+    return Promise.resolve(sb.from('about').upsert(row, { onConflict: 'id' }));
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -1042,7 +1090,20 @@
   }
   function tabLogos() {
     if (!LG.rows) return '<div class="shp-empty">불러오는 중…</div>';
-    var h = card('로고 띠 미리보기', '홈페이지 아래쪽 — 마우스를 올리면 멈추고 컬러로', '<div class="shp-logo-prev"></div>');
+    var h = '';
+    if (cfg.brand) {
+      h += card('학회 로고 · 탭 아이콘', '둘은 따로입니다 — 비우면 원래대로', BRAND_KINDS.map(function (b) {
+        var cur = BR[b.k];
+        return '<div class="shp-brand-row" data-kind="' + b.k + '"><div class="shp-sub-h">' + esc(b.label) + ' <span class="shp-muted" style="font-weight:400">— ' + esc(b.sub) + '</span></div>' +
+          '<div class="shp-row wrap"><span class="shp-brand-cur">' + (cur ? '<img src="' + esc(cur) + '" alt="지금 ' + esc(b.label) + '">' : '<span class="shp-muted">지금: ' + esc(b.none) + '</span>') + '</span>' +
+          '<input class="shp-br-file" type="file" accept="image/png,image/jpeg,image/webp">' +
+          '<button type="button" class="shp-btn shp-btn-solid shp-br-set">바꾸기</button>' +
+          (cur ? '<button type="button" class="shp-btn shp-br-clear">기본으로</button>' : '') + '</div>' +
+          '<div class="shp-br-msg shp-muted"></div></div>';
+      }).join('') +
+        '<div class="shp-note">PNG · JPG · WebP, 512KB 까지. 카톡·인스타 공유 미리보기 그림(og.png)은 저장소 파일이라 여기서는 안 바뀝니다 (GitHub 에 새 og.png 를 올리면 됨).</div>');
+    }
+    h += card('로고 띠 미리보기', '홈페이지 아래쪽 — 마우스를 올리면 멈추고 컬러로', '<div class="shp-logo-prev"></div>');
     h += card('로고 목록', '위에서부터 이 순서로 돕니다 · 숨기면 홈페이지에서 빠짐', (LG.rows.length ? '<ul class="shp-lgl">' + LG.rows.map(function (x, i) {
       return '<li data-id="' + x.id + '"' + (x.active ? '' : ' class="off"') + '>' +
         (/^https:\/\//.test(x.logo_url || '') ? '<img src="' + esc(x.logo_url) + '" alt="">' : '<span class="shp-lgl-ph">로고 없음</span>') +
@@ -1063,6 +1124,36 @@
   function bindLogos(root) {
     var prev = root.querySelector('.shp-logo-prev');
     if (prev) renderLogos(prev);
+    [].forEach.call(root.querySelectorAll('.shp-brand-row'), function (row) {
+      var kind = row.getAttribute('data-kind'), spec = BRAND_KINDS.filter(function (b) { return b.k === kind; })[0];
+      var bset = row.querySelector('.shp-br-set'), bclr = row.querySelector('.shp-br-clear');
+      var bmsg = function (t) { var m = row.querySelector('.shp-br-msg'); if (m) m.textContent = t; };
+      var bdone = function (r, oldPath) {
+        if (r && r.error) { bmsg('실패: ' + r.error.message); return; }
+        if (oldPath) sb.storage.from('logos').remove([oldPath]);   //  예전 파일은 정리 (실패해도 그냥 둠)
+        loadBrand().then(render);
+      };
+      bset.addEventListener('click', function () {
+        var file = row.querySelector('.shp-br-file').files[0];
+        if (!file) { bmsg('파일을 골라 주세요.'); return; }
+        if (['image/png', 'image/jpeg', 'image/webp'].indexOf(file.type) < 0) { bmsg('PNG · JPG · WebP 만 됩니다.'); return; }
+        if (file.size > 524288) { bmsg('512KB 보다 큽니다 — 줄여서 올려 주세요.'); return; }
+        bset.disabled = true; bmsg('올리는 중…');
+        var path = 'brand/' + kind + '-' + Date.now() + '.' + (file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg');
+        var oldPath = brandPathOf(BR[kind]);
+        Promise.resolve(sb.storage.from('logos').upload(path, file, { contentType: file.type, upsert: false })).then(function (r) {
+          bset.disabled = false;
+          if (r && r.error) { bmsg('올리기 실패: ' + r.error.message); return; }
+          var pub = sb.storage.from('logos').getPublicUrl(path);
+          return saveBrand(spec.col, pub && pub.data && pub.data.publicUrl).then(function (r2) { bdone(r2, oldPath); });
+        }, function (e) { bset.disabled = false; bmsg('올리기 실패: ' + (e.message || e)); });
+      });
+      if (bclr) bclr.addEventListener('click', function () {
+        if (bclr.getAttribute('data-sure') !== '1') { bclr.setAttribute('data-sure', '1'); bclr.textContent = '정말 기본으로'; return; }
+        var oldPath = brandPathOf(BR[kind]);
+        saveBrand(spec.col, null).then(function (r) { bdone(r, oldPath); });
+      });
+    });
     var msg = function (t) { LG.msg = t; var m = root.querySelector('.shp-lg-msg'); if (m) m.textContent = t; };
     var after = function (r) { if (r && r.error) { msg('실패: ' + r.error.message); return; } loadLogoAdmin().then(render); };
     [].forEach.call(root.querySelectorAll('.shp-lgl [data-act]'), function (b) {
@@ -1276,6 +1367,9 @@
     //  로고 관리
     '.shp-lgl{list-style:none;margin:0;padding:0}.shp-lgl li{display:grid;grid-template-columns:96px minmax(0,1fr) auto auto auto auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid #f0f1f5;font-size:13px}.shp-lgl li.off{opacity:.5}',
     '.shp-lgl img{max-width:90px;max-height:32px;object-fit:contain}.shp-lgl-ph{font-size:11px;color:var(--mu)}',
+    //  학회 로고 (상단 마크를 그림으로)
+    '.shp-brand-on{background:none!important;padding:0!important;overflow:hidden}.shp-brand-img{width:100%;height:100%;object-fit:contain;display:block}',
+    '.shp-brand-cur img{height:40px;max-width:120px;object-fit:contain;vertical-align:middle;background:#fff;border:1px solid var(--bd);border-radius:8px;padding:2px}.shp-brand-row+.shp-brand-row{margin-top:12px;padding-top:12px;border-top:1px solid #f0f1f5}',
     //  로고 띠 (홈페이지)
     '.shp-logos{padding:36px 0 28px}.shp-logos-h{text-align:center;font-size:12px;letter-spacing:2.2px;color:var(--ts);font-weight:600;margin-bottom:18px}',
     '.shp-marquee{position:relative;display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}',
@@ -1320,11 +1414,13 @@
     document.addEventListener('click', onClick, true);
     document.addEventListener('auxclick', onClick, true);
     if (cfg.logos) renderLogos(cfg.logos);
+    if (cfg.brand) loadBrand();
   }
 
   window.SAFEPlus = {
     init: init, track: track, latestGen: latestGen, renderLogos: renderLogos,
     showStats: showStats, hideStats: hideStats, setOfficer: setOfficer, renderAnalyticsNotice: renderAnalyticsNotice,
+    loadBrand: loadBrand, applyBrand: applyBrand,
     //  시험용
     _classify: classify, _refHost: refHost, _campaign: campaignOf, _device: deviceOf, _entryYY: entryYY,
     _visitor: function () { return VID; }, _source: function () { return SRC_NOW; },
