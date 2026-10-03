@@ -514,8 +514,8 @@
     <a href="#home" class="nav-logo">
       <div class="logo-mark">SF</div>
       <div class="logo-text">
-        <span class="brand">SAFE</span>
-        <span class="sub">Sogang Analysis of Finance &amp; Economics</span>
+        <span class="brand" id="brandName">SAFE</span>
+        <span class="sub" id="brandSub">Sogang Analysis of Finance &amp; Economics</span>
       </div>
     </a>
     <div class="nav-links">
@@ -635,13 +635,36 @@
       </div>
       <div class="form-row"><textarea id="aV3Desc" rows="2" placeholder="설명 3"></textarea></div>
 
-      <div class="modal-group">📮 맨 아래 연락처</div>
-      <div class="field-hint" style="margin-bottom:10px;">
-        왼쪽에 <b>보이는 이름</b>, 오른쪽에 <b>연결할 주소</b>를 넣으세요.<br/>
-        📌 <b>주소를 비워두면 클릭되지 않는 글씨로만 표시됩니다.</b> (이메일 주소를 그대로 보여줄 때)
+      <div class="modal-group">🏷️ 학회 이름 (위쪽 메뉴 · 맨 아래 공통)</div>
+      <div class="form-row-grid">
+        <div class="form-row"><label>학회 이름</label><input type="text" id="fiBrandName" placeholder="SAFE"/></div>
+        <div class="form-row"><label>영문 이름</label><input type="text" id="fiBrandSub" placeholder="Sogang Analysis of Finance &amp; Economics"/></div>
       </div>
+      <div class="form-row"><label>맨 아래 한 줄 설명</label><input type="text" id="fiDesc" placeholder="서강대학교 경제·금융 학술 학회"/></div>
+
+      <div class="modal-group">📍 맨 아래(푸터) 링크 묶음</div>
+      <div class="field-hint" style="margin-bottom:10px;">
+        왼쪽에 <b>보이는 이름</b>, 오른쪽에 <b>연결할 주소</b>. 같은 페이지 안은 <code>#reports</code> 처럼, 바깥은 <code>https://…</code> 로.<br/>
+        📌 <b>주소를 비워두면 클릭되지 않는 글씨로만 표시됩니다.</b> (이메일·전화번호를 그대로 보여줄 때)
+      </div>
+      <div class="form-row"><label>첫째 묶음 제목</label><input type="text" id="fiCol1Title" placeholder="학회"/></div>
+      <div id="col1Rows"></div>
+      <button type="button" class="contact-add" onclick="addLinkRow('col1Rows')">+ 링크 추가</button>
+      <div class="form-row" style="margin-top:14px;"><label>둘째 묶음 제목</label><input type="text" id="fiCol2Title" placeholder="리서치"/></div>
+      <div id="col2Rows"></div>
+      <button type="button" class="contact-add" onclick="addLinkRow('col2Rows')">+ 링크 추가</button>
+      <div class="form-row" style="margin-top:14px;"><label>셋째 묶음 제목 (연락처)</label><input type="text" id="fiCol3Title" placeholder="연락처"/></div>
       <div id="contactRows"></div>
       <button type="button" class="contact-add" onclick="addContactRow()">+ 링크 추가</button>
+
+      <div class="modal-group">©️ 맨 아랫줄</div>
+      <div class="form-row"><label>왼쪽 (저작권 줄)</label><input type="text" id="fiCopy" placeholder="© 2026 SAFE — Sogang Analysis of Finance &amp; Economics"/></div>
+      <div class="form-row"><label>오른쪽 (장소)</label><input type="text" id="fiPlace" placeholder="Sogang University, Seoul, Korea"/></div>
+      <div class="form-row">
+        <label>방문 통계 안내 한 줄 (비워두면 기본 문구)</label>
+        <textarea id="fiNotice" rows="2" placeholder="방문 통계 안내 — 이 사이트는 익명 방문 기록을 학회 서버에 남깁니다. IP·위치·이름·학번은 남기지 않습니다."></textarea>
+        <div class="field-hint">익명 방문 기록을 남긴다는 사실은 적어 두는 게 좋습니다. 표현만 바꾸세요.</div>
+      </div>
 
       <div class="modal-error" id="aError"></div>
       <div class="modal-btns">
@@ -1009,11 +1032,12 @@
 
   <footer>
     <div class="footer-inner">
+      <!-- 푸터 글은 전부 관리자 «소개글 수정» 창에서 바꿉니다 (renderFooter) -->
       <div class="footer-brand">
-        <div class="brand-name">SAFE</div>
-        <p>Sogang Analysis of Finance &amp; Economics<br/>서강대학교 경제·금융 학술 학회</p>
+        <div class="brand-name" id="fBrandName">SAFE</div>
+        <p id="fBrandDesc">Sogang Analysis of Finance &amp; Economics<br/>서강대학교 경제·금융 학술 학회</p>
       </div>
-      <div class="footer-links">
+      <div class="footer-links" id="footerLinks">
         <div class="footer-col">
           <h5>학회</h5><a href="#about">학회 소개</a><a href="#members">멤버</a><a href="#news">공지사항</a>
         </div>
@@ -1027,8 +1051,8 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 SAFE — Sogang Analysis of Finance &amp; Economics</span>
-      <span>Sogang University, Seoul, Korea</span>
+      <span id="fCopy">© 2026 SAFE — Sogang Analysis of Finance &amp; Economics</span>
+      <span id="fPlace">Sogang University, Seoul, Korea</span>
     </div>
     <div id="shpNotice"></div>
   </footer>
@@ -1090,8 +1114,25 @@ const FALLBACK_ABOUT = {
   contacts: [
     { label: 'safe@sogang.ac.kr', url: '' },   // 주소가 비어 있으면 글씨만 표시됩니다
     { label: 'Instagram',         url: 'https://www.instagram.com/safe._.official/' }
-  ]
+  ],
+  //  맨 아래(푸터) · 위쪽 이름 — about.footer (jsonb) 에 통째로 저장됩니다. 비어 있는 칸은 아래 기본값.
+  footer: {
+    brand_name: 'SAFE', brand_sub: 'Sogang Analysis of Finance & Economics', desc: '서강대학교 경제·금융 학술 학회',
+    col1_title: '학회',   col1: [{ label: '학회 소개', url: '#about' }, { label: '멤버', url: '#members' }, { label: '공지사항', url: '#news' }],
+    col2_title: '리서치', col2: [{ label: '거시경제', url: '#reports' }, { label: '주식 분석', url: '#reports' }],
+    col3_title: '연락처',
+    copy: '© 2026 SAFE — Sogang Analysis of Finance & Economics', place: 'Sogang University, Seoul, Korea',
+    notice: ''
+  }
 };
+/* 푸터 값 — 저장된 게 비어 있으면 기본값 */
+function F(key) {
+  const f = aboutData && aboutData.footer;
+  const obj = (f && typeof f === 'object') ? f : (typeof f === 'string' ? (safeParse(f) || {}) : {});
+  const v = obj[key];
+  if (Array.isArray(v)) { const c = v.filter(x => x && String(x.label || '').trim()); return c.length ? c : FALLBACK_ABOUT.footer[key]; }
+  return (v == null || String(v).trim() === '') ? FALLBACK_ABOUT.footer[key] : String(v);
+}
 // 저장된 값이 비어 있으면 기본 문구를 씁니다
 function A(key) {
   const v = aboutData ? aboutData[key] : null;
@@ -1244,13 +1285,32 @@ function renderAbout() {
       </div>
     </div>`).join('');
 
-  // 맨 아래 연락처 — 주소가 있으면 링크, 없으면 그냥 글씨
-  document.getElementById('footerContacts').innerHTML = getContacts().map(c => {
+  renderFooter();
+}
+
+/* 링크 목록 → 글씨 (주소 있으면 링크, 없으면 그냥 글씨) */
+function linkList(list) {
+  return list.map(c => {
     const url = safeUrl(c.url);
     if (!url) return `<span class="footer-text">${esc(c.label)}</span>`;
     const ext = /^https?:/i.test(url) ? ' target="_blank" rel="noopener"' : '';
     return `<a href="${esc(url)}"${ext}>${esc(c.label)}</a>`;
   }).join('');
+}
+
+/* 위쪽 이름 · 맨 아래(푸터) — 전부 «소개글 수정» 창에서 바꿉니다 */
+function renderFooter() {
+  document.getElementById('brandName').textContent  = F('brand_name');
+  document.getElementById('brandSub').textContent   = F('brand_sub');
+  document.getElementById('fBrandName').textContent = F('brand_name');
+  document.getElementById('fBrandDesc').innerHTML   = esc(F('brand_sub')) + '<br/>' + esc(F('desc'));
+  document.getElementById('footerLinks').innerHTML = `
+    <div class="footer-col"><h5>${esc(F('col1_title'))}</h5>${linkList(F('col1'))}</div>
+    <div class="footer-col"><h5>${esc(F('col2_title'))}</h5>${linkList(F('col2'))}</div>
+    <div class="footer-col"><h5>${esc(F('col3_title'))}</h5><div id="footerContacts">${linkList(getContacts())}</div></div>`;
+  document.getElementById('fCopy').textContent  = F('copy');
+  document.getElementById('fPlace').textContent = F('place');
+  if (window.SAFEPlus) SAFEPlus.renderAnalyticsNotice('#shpNotice', F('notice') === FALLBACK_ABOUT.footer.notice ? '' : F('notice'));
 }
 
 /* 저장된 연락처 목록 (없으면 기본값) */
@@ -1272,6 +1332,7 @@ function safeUrl(raw) {
   const s = String(raw || '').trim();
   if (!s) return '';
   if (/^(javascript|data|vbscript):/i.test(s)) return '';
+  if (/^[#\/?]/.test(s)) return s;                       // 같은 페이지 안 (#reports) · 같은 사이트 안
   if (/^(https?:|mailto:|tel:)/i.test(s)) return s;
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return 'mailto:' + s;
   return 'https://' + s.replace(/^\/+/, '');
@@ -1287,25 +1348,39 @@ const ABOUT_FIELDS = {
   aV3Icon: 'v3_icon', aV3Title: 'v3_title', aV3Desc: 'v3_desc'
 };
 
-/* 연락처 편집 줄 */
-function addContactRow(label, url) {
+/* 링크 편집 줄 (푸터 묶음 · 연락처 공통) */
+function addLinkRow(containerId, label, url) {
   const wrap = document.createElement('div');
   wrap.className = 'contact-row';
   wrap.innerHTML = `
-    <input type="text" class="c-label" placeholder="Instagram" />
+    <input type="text" class="c-label" placeholder="보이는 이름" />
     <input type="text" class="c-url"   placeholder="주소 (비워두면 글씨만)" />
     <button type="button" class="contact-del" title="삭제">×</button>`;
   wrap.querySelector('.c-label').value = label || '';
   wrap.querySelector('.c-url').value   = url || '';
   wrap.querySelector('.contact-del').onclick = () => wrap.remove();
-  document.getElementById('contactRows').appendChild(wrap);
+  document.getElementById(containerId).appendChild(wrap);
 }
+function addContactRow(label, url) { addLinkRow('contactRows', label, url); }
+function readLinkRows(containerId) {
+  return Array.from(document.querySelectorAll('#' + containerId + ' .contact-row'))
+    .map(r => ({ label: r.querySelector('.c-label').value.trim(), url: safeUrl(r.querySelector('.c-url').value) }))
+    .filter(c => c.label);
+}
+//  푸터 입력칸 ↔ about.footer 키
+const FOOTER_FIELDS = { fiBrandName: 'brand_name', fiBrandSub: 'brand_sub', fiDesc: 'desc', fiCol1Title: 'col1_title',
+                        fiCol2Title: 'col2_title', fiCol3Title: 'col3_title', fiCopy: 'copy', fiPlace: 'place', fiNotice: 'notice' };
 
 function openAboutModal() {
   Object.keys(ABOUT_FIELDS).forEach(id => {
     document.getElementById(id).value = A(ABOUT_FIELDS[id]);
   });
-  document.getElementById('contactRows').innerHTML = '';
+  Object.keys(FOOTER_FIELDS).forEach(id => {
+    document.getElementById(id).value = F(FOOTER_FIELDS[id]);
+  });
+  ['col1Rows', 'col2Rows', 'contactRows'].forEach(id => document.getElementById(id).innerHTML = '');
+  F('col1').forEach(c => addLinkRow('col1Rows', c.label, c.url));
+  F('col2').forEach(c => addLinkRow('col2Rows', c.label, c.url));
   getContacts().forEach(c => addContactRow(c.label, c.url));
   document.getElementById('aError').textContent = '';
   document.getElementById('aboutModal').classList.add('open');
@@ -1319,12 +1394,12 @@ async function submitAbout() {
   if (!payload.title) return document.getElementById('aError').textContent = '소개 본문의 소제목을 입력해주세요.';
 
   // 이름만 있으면 저장됩니다 (주소는 비워도 됨 → 글씨만 표시)
-  payload.contacts = Array.from(document.querySelectorAll('#contactRows .contact-row'))
-    .map(r => ({
-      label: r.querySelector('.c-label').value.trim(),
-      url:   safeUrl(r.querySelector('.c-url').value)
-    }))
-    .filter(c => c.label);
+  payload.contacts = readLinkRows('contactRows');
+  //  맨 아래(푸터) · 위쪽 이름 — 한 덩어리(jsonb)로
+  payload.footer = {};
+  Object.keys(FOOTER_FIELDS).forEach(id => { payload.footer[FOOTER_FIELDS[id]] = document.getElementById(id).value.trim(); });
+  payload.footer.col1 = readLinkRows('col1Rows');
+  payload.footer.col2 = readLinkRows('col2Rows');
 
   busy('aSubmitBtn', true, '저장 중…', '저장');
   const { error } = await sb.from('about').upsert(payload, { onConflict: 'id' });
@@ -2085,7 +2160,8 @@ if (sb && window.SAFEPlus) {
     visitorKey: 'safe_visitor',       // 예전부터 쓰던 방문자 번호 키 — 그대로 이어 씁니다
     stats: '#shpStats',               // 방문 통계 창 안 (임원진만)
     logos: '#shpLogos',               // 푸터 위 로고 띠
-    logosTitle: 'SAFE 학회원이 진출·인턴한 곳'
+    logosTitle: 'SAFE 학회원이 진출·인턴한 곳',
+    brand: { mark: '.nav-logo .logo-mark', favicon: true }   // 학회 로고 — 대시보드 «로고» 탭에서 바꿈 (about.logo_url)
     // ── Amplitude (선택) — 학회원 실습용. 켜려면 아래 두 줄의 // 를 지우고 키를 넣으세요.
     // amplitudeKey: '여기에 Amplitude API Key',
     // amplitudeUrl: 'https://app.amplitude.com/analytics/프로젝트주소'
