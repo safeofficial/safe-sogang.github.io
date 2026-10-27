@@ -4,7 +4,7 @@
     { t: '홈 대시보드', d: '뉴스 클리핑 · 경제 캘린더 · 실적 일정을 아침마다 한눈에', v: 'home' },
     { t: '마켓 맵', d: '국내 · 미국 업종별 시가총액과 등락률을 지도로', v: 'map' },
     { t: '밸류에이션', d: 'DCF · 배수 · 컨센서스로 적정주가를 직접 계산', v: 'val' },
-    { t: '전광판 · 모의투자', d: '24시간 시세 전광판과 팀 대회 모의투자', v: 'board' },
+    { t: '모의 트레이딩', d: '실시간 시세로 팀 대회 모의 트레이딩', v: 'board' },
     { t: '재무제표', d: '국내 DART · 미국 SEC 공시로 분기 실적과 추이를', v: 'fin' }
   ];
   var css = `
@@ -57,7 +57,7 @@
     val: '<div style="display:grid;grid-template-columns:1.3fr 1fr;gap:12px"><div class="ts-c"><div class="ts-h">풋볼 필드<small>방법별 적정주가 범위 (예시)</small></div><div style="position:relative">' + bars([['DCF', 30, 36], ['PER', 30, 38], ['PBR', 18, 40], ['EV/EBITDA', 12, 40], ['컨센서스', 23, 28]]) + '<div style="position:absolute;left:calc(70px + 8px + (100% - 78px) * .48);top:-4px;bottom:-4px;border-left:1.5px dashed #c8352c"></div></div></div>'
       + '<div class="ts-c"><div class="ts-h">시총 대비 지표<small>최근 4분기 · 컨센서스</small></div>' + [['PER', '22.0배', '19.1배'], ['PSR', '17.6배', '6.9배'], ['PBR', '27.8배', '14.6배'], ['EV/EBITDA', '23.1배', '8.7배'], ['P/FCF', '16.9배', '15.1배']].map(function(x){ return '<div class="ts-row"><span>' + x[0] + '</span><b>' + x[1] + '</b><b style="color:#1f5fbf">' + x[2] + '</b></div>'; }).join('') + '</div></div>'
       + '<div class="ts-c" style="margin-top:12px"><div class="ts-h">DCF 연도별 가정<small>컨센서스 → 영구성장률</small></div><div style="display:flex;align-items:flex-end;gap:16px;height:54px;padding:0 6px">' + [[100, '#3a7bff'], [84, '#3a7bff'], [62, '#a9c7ff'], [48, '#a9c7ff'], [36, '#a9c7ff']].map(function(x){ return '<div style="flex:1;height:' + x[0] + '%;background:' + x[1] + ';border-radius:6px"></div>'; }).join('') + '</div></div>',
-    board: '<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;height:100%"><div class="ts-c" style="background:#0b0d14;border-color:#1c2030"><div class="ts-h" style="color:#e8ecf4">전광판<small style="color:#8a91a5">24시간</small></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'
+    board: '<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;height:100%"><div class="ts-c" style="background:#0b0d14;border-color:#1c2030"><div class="ts-h" style="color:#e8ecf4">시장 시세</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'
       + [['S&P 500', '7,676', '+0.70', 'up'], ['나스닥', '26,169', '+0.82', 'up'], ['코스피', '5,693', '+4.09', 'up'], ['VIX', '18.39', '-5.45', 'dn'], ['원/달러', '1,324.8', '-0.03', 'dn'], ['비트코인', '80,214', '+0.26', 'up'], ['금', '2,684', '+0.41', 'up'], ['미 10년물', '4.99%', '-0.04', 'dn']].map(function(x){ return '<div style="background:#141826;border-radius:8px;padding:5px 9px"><div style="font-size:.6rem;color:#8a91a5">' + x[0] + '</div><div style="font-size:.85rem;font-weight:700;color:#f2f4f8;font-family:ui-monospace,Menlo,monospace">' + x[1] + '</div><div style="font-size:.62rem;font-weight:700;color:' + (x[3] === 'up' ? '#ff6b5e' : '#6ea8ff') + '">' + x[2] + '%</div></div>'; }).join('') + '</div></div>'
       + '<div class="ts-c"><div class="ts-h">팀 대회 순위<small>예시</small></div>' + [['1위', 'A팀', '+6.2%', 'up'], ['2위', 'B팀', '+3.4%', 'up'], ['3위', 'C팀', '+0.9%', 'up'], ['4위', 'D팀', '-2.1%', 'dn'], ['5위', 'E팀', '-3.0%', 'dn'], ['6위', 'F팀', '-4.4%', 'dn']].map(function(x){ return '<div class="ts-row"><span><b style="color:#2c3e6b;margin-right:10px">' + x[0] + '</b>' + x[1] + '</span><b class="' + x[3] + '">' + x[2] + '</b></div>'; }).join('') + '</div></div>',
     fin: '<div class="ts-c" style="height:100%;box-sizing:border-box"><div class="ts-h">손익계산서<small>분기 · 단위 억 원 (예시)</small></div><div style="display:grid;grid-template-columns:1.3fr repeat(5,1fr) 1.2fr;font-size:.68rem;color:#3a4256">'
@@ -73,7 +73,7 @@
       + '<div><div class="ts-win" aria-label="SAFE Terminal 예시 화면"><div class="ts-bar"><em style="background:#ff5f57"></em><em style="background:#febc2e"></em><em style="background:#28c840"></em><span>SAFE Terminal</span></div>'
       + '<div class="ts-nav"><b><em>SF</em>SAFE Terminal</b>' + S.map(function(x, i){ return '<span data-n="' + i + '">' + x.t.split(' ·')[0] + '</span>'; }).join('') + '</div>'
       + '<div class="ts-stage">' + S.map(function(x, i){ return '<div class="ts-scr" data-s="' + i + '">' + V[x.v] + '</div>'; }).join('') + '</div></div>'
-      + '<div class="ts-dots">' + S.map(function(){ return '<i></i>'; }).join('') + '</div><p class="ts-note">화면은 예시이며 실제 데이터와 다를 수 있습니다.<a href="https://safeofficial.github.io/terminal/" target="_blank" rel="noopener">학회원 로그인</a></p></div></div></div>';
+      + '<div class="ts-dots">' + S.map(function(){ return '<i></i>'; }).join('') + '</div><p class="ts-note">화면은 예시이며 실제 데이터와 다를 수 있습니다.</p></div></div></div>';
     news.parentNode.insertBefore(sec, news.nextSibling);
     var cur = 0, tm = 0, items = sec.querySelectorAll('.ts-item'), scr = sec.querySelectorAll('.ts-scr'), dots = sec.querySelectorAll('.ts-dots i'), navs = sec.querySelectorAll('.ts-nav span');
     var go = function(i){ cur = (i + S.length) % S.length;
